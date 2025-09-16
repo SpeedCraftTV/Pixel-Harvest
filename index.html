@@ -631,7 +631,13 @@
             <div style="font-weight: bold; margin-bottom: 10px;">🌱 Plant Types:</div>
             <button class="plant-btn selected" data-plant="carrot">🥕 Carrot (Fast)</button><br>
             <button class="plant-btn" data-plant="tomato">🍅 Tomato (Normal)</button><br>
-            <button class="plant-btn" data-plant="rare">✨ Rare Plant (Slow)</button>
+            <button class="plant-btn" data-plant="rare">✨ Rare Plant (Slow)</button><br>
+            <button class="plant-btn" data-plant="potato">🥔 Potato (Medium)</button><br>
+            <button class="plant-btn" data-plant="cabbage">🥬 Cabbage (Medium)</button><br>
+            <button class="plant-btn" data-plant="corn">🌽 Corn (Slow)</button><br>
+            <button class="plant-btn" data-plant="watermelon">🍉 Watermelon (Slow)</button><br>
+            <button class="plant-btn" data-plant="pumpkin">🎃 Pumpkin (Slow)</button><br>
+            <button class="plant-btn" data-plant="apple">🍎 Apple Tree (Very Slow)</button>
             <div style="font-size: 12px; margin-top: 10px; opacity: 0.8;">
                 💰 Coins: <span id="coins">10</span>
             </div>
@@ -641,11 +647,22 @@
             <div id="carrotCount">🥕 Carrots: 0</div>
             <div id="tomatoCount">🍅 Tomatoes: 0</div>
             <div id="rareCount">✨ Rare Plants: 0</div>
+            <div id="potatoCount">🥔 Potatoes: 0</div>
+            <div id="cabbageCount">🥬 Cabbages: 0</div>
+            <div id="cornCount">🌽 Corn: 0</div>
+            <div id="watermelonCount">🍉 Watermelons: 0</div>
+            <div id="pumpkinCount">🎃 Pumpkins: 0</div>
+            <div id="appleCount">🍎 Apples: 0</div>
             <hr style="margin: 10px 0; border-color: rgba(255,255,255,0.3);">
             <div style="font-weight: bold; margin-bottom: 5px;">🔧 Equipment:</div>
             <div id="sprinklerCount">💧 Auto Sprinklers: 0</div>
             <div id="fertilizerCount">🌿 Fertilizer: 0</div>
             <div id="greenhouseCount">🏠 Greenhouses: 0</div>
+            <hr style="margin: 10px 0; border-color: rgba(255,255,255,0.3);">
+            <div style="font-weight: bold; margin-bottom: 5px;">🐄 Animal Products:</div>
+            <div id="eggInventory">🥚 Eggs: 0</div>
+            <div id="milkInventory">🥛 Milk: 0</div>
+            <div id="truffleInventory">🍄 Truffles: 0</div>
         </div>
         <div id="marketplace" style="display: none;">
             <div style="font-weight: bold; margin-bottom: 10px;">🏪 Marketplace:</div>
@@ -654,14 +671,33 @@
                 <h3>💰 Sell Produce</h3>
                 <button class="market-btn" onclick="sellAll('carrot')" id="sellCarrotBtn">Sell Carrots (1💰)</button><br>
                 <button class="market-btn" onclick="sellAll('tomato')" id="sellTomatoBtn">Sell Tomatoes (3💰)</button><br>
-                <button class="market-btn" onclick="sellAll('rare')" id="sellRareBtn">Sell Rare (10💰)</button>
+                <button class="market-btn" onclick="sellAll('rare')" id="sellRareBtn">Sell Rare (10💰)</button><br>
+                <button class="market-btn" onclick="sellAll('potato')" id="sellPotatoBtn">Sell Potatoes (2💰)</button><br>
+                <button class="market-btn" onclick="sellAll('cabbage')" id="sellCabbageBtn">Sell Cabbages (4💰)</button><br>
+                <button class="market-btn" onclick="sellAll('corn')" id="sellCornBtn">Sell Corn (5💰)</button><br>
+                <button class="market-btn" onclick="sellAll('watermelon')" id="sellWatermelonBtn">Sell Watermelons (8💰)</button><br>
+                <button class="market-btn" onclick="sellAll('pumpkin')" id="sellPumpkinBtn">Sell Pumpkins (6💰)</button><br>
+                <button class="market-btn" onclick="sellAll('apple')" id="sellAppleBtn">Sell Apples (12💰)</button>
+            </div>
+            
+            <div class="market-category">
+                <h3>🐄 Sell Animal Products</h3>
+                <button class="market-btn" onclick="sellAnimalProduct('eggs')" id="sellEggsBtn">Sell Eggs (2💰 each)</button><br>
+                <button class="market-btn" onclick="sellAnimalProduct('milk')" id="sellMilkBtn">Sell Milk (5💰 each)</button><br>
+                <button class="market-btn" onclick="sellAnimalProduct('truffles')" id="sellTrufflesBtn">Sell Truffles (8💰 each)</button>
             </div>
             
             <div class="market-category">
                 <h3>🌱 Seeds</h3>
                 <button class="market-btn" onclick="buySeeds('carrot', 1)" id="buyCarrotSeedsBtn">Buy Carrot Seeds (1💰)</button><br>
                 <button class="market-btn" onclick="buySeeds('tomato', 2)" id="buyTomatoSeedsBtn">Buy Tomato Seeds (2💰)</button><br>
-                <button class="market-btn" onclick="buySeeds('rare', 5)" id="buyRareSeedsBtn">Buy Rare Seeds (5💰)</button>
+                <button class="market-btn" onclick="buySeeds('rare', 5)" id="buyRareSeedsBtn">Buy Rare Seeds (5💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('potato', 2)" id="buyPotatoSeedsBtn">Buy Potato Seeds (2💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('cabbage', 3)" id="buyCabbageSeedsBtn">Buy Cabbage Seeds (3💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('corn', 3)" id="buyCornSeedsBtn">Buy Corn Seeds (3💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('watermelon', 4)" id="buyWatermelonSeedsBtn">Buy Watermelon Seeds (4💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('pumpkin', 4)" id="buyPumpkinSeedsBtn">Buy Pumpkin Seeds (4💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('apple', 6)" id="buyAppleSeedsBtn">Buy Apple Seeds (6💰)</button>
             </div>
             
             <div class="market-category">
@@ -887,29 +923,29 @@
             spring: {
                 name: 'Spring',
                 icon: '🌸',
-                availableCrops: ['carrot', 'tomato'],
-                growthBonus: { carrot: 1.2, tomato: 1.0, rare: 0.8 },
+                availableCrops: ['carrot', 'tomato', 'potato'],
+                growthBonus: { carrot: 1.2, tomato: 1.0, rare: 0.8, potato: 1.1, cabbage: 0.9, corn: 0.8, watermelon: 0.7, pumpkin: 0.8, apple: 0.9 },
                 bgTint: { r: 1.1, g: 1.0, b: 1.0 }
             },
             summer: {
                 name: 'Summer',
                 icon: '☀️',
-                availableCrops: ['tomato', 'rare'],
-                growthBonus: { carrot: 0.8, tomato: 1.3, rare: 1.1 },
+                availableCrops: ['tomato', 'corn', 'watermelon', 'rare'],
+                growthBonus: { carrot: 0.8, tomato: 1.3, rare: 1.1, potato: 0.7, cabbage: 0.6, corn: 1.4, watermelon: 1.3, pumpkin: 0.8, apple: 1.0 },
                 bgTint: { r: 1.2, g: 1.1, b: 0.9 }
             },
             autumn: {
                 name: 'Autumn',
                 icon: '🍂',
-                availableCrops: ['carrot', 'rare'],
-                growthBonus: { carrot: 1.1, tomato: 0.8, rare: 1.2 },
+                availableCrops: ['carrot', 'potato', 'pumpkin', 'apple', 'rare'],
+                growthBonus: { carrot: 1.1, tomato: 0.8, rare: 1.2, potato: 1.0, cabbage: 1.1, corn: 0.6, watermelon: 0.5, pumpkin: 1.3, apple: 1.4 },
                 bgTint: { r: 1.1, g: 0.9, b: 0.8 }
             },
             winter: {
                 name: 'Winter',
                 icon: '❄️',
-                availableCrops: ['rare'],
-                growthBonus: { carrot: 0.6, tomato: 0.6, rare: 1.0 },
+                availableCrops: ['potato', 'cabbage', 'rare'],
+                growthBonus: { carrot: 0.6, tomato: 0.6, rare: 1.0, potato: 1.2, cabbage: 1.3, corn: 0.4, watermelon: 0.3, pumpkin: 0.7, apple: 0.8 },
                 bgTint: { r: 0.9, g: 0.9, b: 1.1 }
             }
         };
@@ -1059,17 +1095,34 @@
         let inventory = {
             carrot: 0,
             tomato: 0,
-            rare: 0
+            rare: 0,
+            potato: 0,
+            cabbage: 0,
+            corn: 0,
+            watermelon: 0,
+            pumpkin: 0,
+            apple: 0
         };
         let seedInventory = {
             carrot: 5,
             tomato: 2,
-            rare: 1
+            rare: 1,
+            potato: 3,
+            cabbage: 2,
+            corn: 1,
+            watermelon: 1,
+            pumpkin: 2,
+            apple: 1
         };
         let equipment = {
             sprinkler: 0,
             fertilizer: 0,
             greenhouse: 0
+        };
+        let animalInventory = {
+            eggs: 0,
+            milk: 0,
+            truffles: 0
         };
         let activeSprinklers = []; // Array of sprinkler positions
         let objectives = {
@@ -1112,6 +1165,69 @@
                 seedCost: 5,
                 color: '#9370DB',
                 waterNeed: 0.8,
+                dayPreference: false
+            },
+            // New winter plants
+            potato: {
+                name: 'Potato',
+                emoji: '🥔',
+                growthTime: 3000, // 3 seconds per stage
+                value: 2,
+                seedCost: 2,
+                color: '#8B4513',
+                waterNeed: 0.4,
+                dayPreference: false
+            },
+            cabbage: {
+                name: 'Cabbage',
+                emoji: '🥬',
+                growthTime: 5000, // 5 seconds per stage
+                value: 4,
+                seedCost: 3,
+                color: '#228B22',
+                waterNeed: 0.6,
+                dayPreference: false
+            },
+            // New summer plants
+            corn: {
+                name: 'Corn',
+                emoji: '🌽',
+                growthTime: 6000, // 6 seconds per stage
+                value: 5,
+                seedCost: 3,
+                color: '#FFD700',
+                waterNeed: 0.7,
+                dayPreference: true
+            },
+            watermelon: {
+                name: 'Watermelon',
+                emoji: '🍉',
+                growthTime: 7000, // 7 seconds per stage
+                value: 8,
+                seedCost: 4,
+                color: '#FF69B4',
+                waterNeed: 0.9,
+                dayPreference: true
+            },
+            // New autumn plants
+            pumpkin: {
+                name: 'Pumpkin',
+                emoji: '🎃',
+                growthTime: 6500, // 6.5 seconds per stage
+                value: 6,
+                seedCost: 4,
+                color: '#FF7F00',
+                waterNeed: 0.5,
+                dayPreference: false
+            },
+            apple: {
+                name: 'Apple Tree',
+                emoji: '🍎',
+                growthTime: 9000, // 9 seconds per stage
+                value: 12,
+                seedCost: 6,
+                color: '#FF0000',
+                waterNeed: 0.4,
                 dayPreference: false
             }
         };
@@ -1327,6 +1443,7 @@
                 inventory: inventory,
                 seedInventory: seedInventory,
                 equipment: equipment,
+                animalInventory: animalInventory,
                 plots: plots.map(plot => ({
                     x: plot.x,
                     y: plot.y,
@@ -1372,9 +1489,16 @@
                 // Restore basic game state
                 score = gameState.score || 0;
                 coins = gameState.coins || 50;
-                inventory = gameState.inventory || { carrot: 0, tomato: 0, rare: 0 };
-                seedInventory = gameState.seedInventory || { carrot: 5, tomato: 2, rare: 1 };
+                inventory = gameState.inventory || { 
+                    carrot: 0, tomato: 0, rare: 0, potato: 0, cabbage: 0, 
+                    corn: 0, watermelon: 0, pumpkin: 0, apple: 0 
+                };
+                seedInventory = gameState.seedInventory || { 
+                    carrot: 5, tomato: 2, rare: 1, potato: 3, cabbage: 2,
+                    corn: 1, watermelon: 1, pumpkin: 2, apple: 1
+                };
                 equipment = gameState.equipment || { sprinkler: 0, fertilizer: 0, greenhouse: 0 };
+                animalInventory = gameState.animalInventory || { eggs: 0, milk: 0, truffles: 0 };
                 objectives = gameState.objectives || {
                     carrotsHarvested: 0,
                     dayNightCycles: 0,
@@ -1488,9 +1612,16 @@
             cameraFollowX = 0;
             cameraFollowZ = 0;
             
-            inventory = { carrot: 0, tomato: 0, rare: 0 };
-            seedInventory = { carrot: 5, tomato: 2, rare: 1 };
+            inventory = { 
+                carrot: 0, tomato: 0, rare: 0, potato: 0, cabbage: 0, 
+                corn: 0, watermelon: 0, pumpkin: 0, apple: 0 
+            };
+            seedInventory = { 
+                carrot: 5, tomato: 2, rare: 1, potato: 3, cabbage: 2,
+                corn: 1, watermelon: 1, pumpkin: 2, apple: 1
+            };
             equipment = { sprinkler: 0, fertilizer: 0, greenhouse: 0 };
+            animalInventory = { eggs: 0, milk: 0, truffles: 0 };
             activeSprinklers = [];
             objectives = {
                 carrotsHarvested: 0,
@@ -1713,7 +1844,6 @@
         
         function collectResource(resourceType) {
             let collected = 0;
-            let totalValue = 0;
             
             Object.keys(animals).forEach(animalType => {
                 const productInfo = ANIMAL_PRODUCTS[animalType];
@@ -1721,8 +1851,10 @@
                     const amount = animals[animalType][resourceType];
                     if (amount > 0) {
                         collected += amount;
-                        totalValue += amount * productInfo.value;
                         animals[animalType][resourceType] = 0;
+                        
+                        // Add to animal inventory instead of selling immediately
+                        animalInventory[resourceType] += amount;
                         
                         // Track quest progress
                         updateQuestProgress('collect', amount);
@@ -1731,16 +1863,13 @@
             });
             
             if (collected > 0) {
-                coins += totalValue;
-                objectives.coinsEarned += totalValue;
-                
                 updateUI();
                 updateAnimalsUI();
-                updateObjectives();
+                updateMarketplaceUI();
                 updateQuestsUI();
                 saveGame();
                 
-                showInstruction(`📦 Collected ${collected} ${resourceType} for ${totalValue} coins!`, 2000);
+                showInstruction(`📦 Collected ${collected} ${resourceType}! Sell them at the marketplace.`, 2000);
             }
         }
         
@@ -2836,9 +2965,20 @@
             document.getElementById('coins').textContent = coins;
             
             // Update inventory
-            document.getElementById('carrotCount').textContent = `🥕 Carrots: ${inventory.carrot}`;
-            document.getElementById('tomatoCount').textContent = `🍅 Tomatoes: ${inventory.tomato}`;
-            document.getElementById('rareCount').textContent = `✨ Rare Plants: ${inventory.rare}`;
+            document.getElementById('carrotCount').textContent = `🥕 Carrots: ${inventory.carrot || 0}`;
+            document.getElementById('tomatoCount').textContent = `🍅 Tomatoes: ${inventory.tomato || 0}`;
+            document.getElementById('rareCount').textContent = `✨ Rare Plants: ${inventory.rare || 0}`;
+            document.getElementById('potatoCount').textContent = `🥔 Potatoes: ${inventory.potato || 0}`;
+            document.getElementById('cabbageCount').textContent = `🥬 Cabbages: ${inventory.cabbage || 0}`;
+            document.getElementById('cornCount').textContent = `🌽 Corn: ${inventory.corn || 0}`;
+            document.getElementById('watermelonCount').textContent = `🍉 Watermelons: ${inventory.watermelon || 0}`;
+            document.getElementById('pumpkinCount').textContent = `🎃 Pumpkins: ${inventory.pumpkin || 0}`;
+            document.getElementById('appleCount').textContent = `🍎 Apples: ${inventory.apple || 0}`;
+            
+            // Update animal product inventory
+            document.getElementById('eggInventory').textContent = `🥚 Eggs: ${animalInventory.eggs || 0}`;
+            document.getElementById('milkInventory').textContent = `🥛 Milk: ${animalInventory.milk || 0}`;
+            document.getElementById('truffleInventory').textContent = `🍄 Truffles: ${animalInventory.truffles || 0}`;
             
             // Update equipment inventory
             document.getElementById('sprinklerCount').textContent = `💧 Auto Sprinklers: ${equipment.sprinkler}`;
@@ -2848,7 +2988,9 @@
             // Update plant buttons availability based on season and seeds
             document.querySelectorAll('.plant-btn').forEach(btn => {
                 const plantType = btn.dataset.plant;
-                const hasSeeds = seedInventory[plantType] > 0;
+                if (!plantType || !seedInventory.hasOwnProperty(plantType)) return;
+                
+                const hasSeeds = (seedInventory[plantType] || 0) > 0;
                 const inSeason = currentSeason.availableCrops.includes(plantType);
                 const available = hasSeeds && inSeason;
                 
@@ -2857,11 +2999,13 @@
                 
                 // Update button text with seed count and season availability
                 const plantConfig = PLANT_TYPES[plantType];
-                let buttonText = `${plantConfig.emoji} ${plantConfig.name} (${seedInventory[plantType]})`;
-                if (!inSeason) {
-                    buttonText += ` ❄️`;
+                if (plantConfig) {
+                    let buttonText = `${plantConfig.emoji} ${plantConfig.name} (${seedInventory[plantType] || 0})`;
+                    if (!inSeason) {
+                        buttonText += ` ❄️`;
+                    }
+                    btn.textContent = buttonText;
                 }
-                btn.textContent = buttonText;
             });
             
             // Update equipment buttons availability
@@ -2991,6 +3135,30 @@
             saveGame(); // Auto-save after selling
         }
         
+        function sellAnimalProduct(productType) {
+            const count = animalInventory[productType];
+            if (count <= 0) return;
+            
+            let price = 0;
+            if (productType === 'eggs') price = 2;
+            else if (productType === 'milk') price = 5;
+            else if (productType === 'truffles') price = 8;
+            
+            const earnings = count * price;
+            
+            animalInventory[productType] = 0;
+            coins += earnings;
+            objectives.coinsEarned += earnings;
+            
+            // Update quest progress
+            updateQuestProgress('coins', earnings);
+            
+            updateUI();
+            updateObjectives();
+            updateMarketplaceUI();
+            saveGame(); // Auto-save after selling
+        }
+        
         function buySeeds(plantType, baseCost) {
             const dynamicCost = getDynamicPrice(plantType, 'buy');
             if (coins >= dynamicCost) {
@@ -3003,22 +3171,40 @@
         }
         
         function updateMarketplaceUI() {
-            // Update sell buttons with dynamic prices
-            ['carrot', 'tomato', 'rare'].forEach(plantType => {
+            // Update sell buttons with dynamic prices for all plants
+            const allPlantTypes = ['carrot', 'tomato', 'rare', 'potato', 'cabbage', 'corn', 'watermelon', 'pumpkin', 'apple'];
+            allPlantTypes.forEach(plantType => {
                 const price = getDynamicPrice(plantType, 'sell');
                 const plantConfig = PLANT_TYPES[plantType];
                 const sellBtn = document.getElementById(`sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}Btn`);
-                if (sellBtn) {
+                if (sellBtn && plantConfig) {
                     sellBtn.textContent = `Sell ${plantConfig.name}s (${price}💰)`;
+                    const count = inventory[plantType] || 0;
+                    sellBtn.disabled = count <= 0;
+                    sellBtn.style.opacity = count > 0 ? '1' : '0.5';
                 }
             });
             
-            // Update seed purchase buttons with dynamic prices
-            ['carrot', 'tomato', 'rare'].forEach(plantType => {
+            // Update animal product sell buttons
+            const animalProducts = ['eggs', 'milk', 'truffles'];
+            const animalPrices = { eggs: 2, milk: 5, truffles: 8 };
+            animalProducts.forEach(productType => {
+                const price = animalPrices[productType];
+                const sellBtn = document.getElementById(`sell${productType.charAt(0).toUpperCase() + productType.slice(1)}Btn`);
+                if (sellBtn) {
+                    const count = animalInventory[productType] || 0;
+                    sellBtn.textContent = `Sell ${productType.charAt(0).toUpperCase() + productType.slice(1)} (${price}💰 each) [${count}]`;
+                    sellBtn.disabled = count <= 0;
+                    sellBtn.style.opacity = count > 0 ? '1' : '0.5';
+                }
+            });
+            
+            // Update seed purchase buttons with dynamic prices for all plants
+            allPlantTypes.forEach(plantType => {
                 const price = getDynamicPrice(plantType, 'buy');
                 const plantConfig = PLANT_TYPES[plantType];
                 const buyBtn = document.getElementById(`buy${plantType.charAt(0).toUpperCase() + plantType.slice(1)}SeedsBtn`);
-                if (buyBtn) {
+                if (buyBtn && plantConfig) {
                     buyBtn.textContent = `Buy ${plantConfig.name} Seeds (${price}💰)`;
                     buyBtn.disabled = coins < price;
                     buyBtn.style.opacity = coins >= price ? '1' : '0.5';
