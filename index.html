@@ -6234,7 +6234,7 @@
             }
 
             // Animals badge (total animals)
-            const animalsTotal = Object.values(animals).reduce((sum, count) => sum + count, 0);
+            const animalsTotal = Object.values(animals).reduce((sum, animal) => sum + (animal.count || 0), 0);
             const animalsBadge = document.getElementById('animalsBadge');
             if (animalsBadge) {
                 animalsBadge.textContent = animalsTotal;
@@ -6456,14 +6456,14 @@
                 <div class="mobile-grid-item" onclick="buyAnimal('chicken', 30)">
                     <div class="emoji">🐔</div>
                     <div class="name">Buy Chicken</div>
-                    <div class="count">Owned: ${animals.chicken || 0}</div>
+                    <div class="count">Owned: ${animals.chicken?.count || 0}</div>
                     <div class="price">30💰</div>
                 </div>
-                <div class="mobile-grid-item ${(animalResources.eggs || 0) === 0 ? 'disabled' : ''}" 
+                <div class="mobile-grid-item ${(animalInventory.eggs || 0) === 0 ? 'disabled' : ''}" 
                      onclick="collectResource('eggs')">
                     <div class="emoji">🥚</div>
                     <div class="name">Collect Eggs</div>
-                    <div class="count">${animalResources.eggs || 0} available</div>
+                    <div class="count">${animalInventory.eggs || 0} available</div>
                 </div>
             `;
 
@@ -6472,14 +6472,14 @@
                 <div class="mobile-grid-item ${coins < 100 ? 'disabled' : ''}" onclick="buyAnimal('cow', 100)">
                     <div class="emoji">🐄</div>
                     <div class="name">Buy Cow</div>
-                    <div class="count">Owned: ${animals.cow || 0}</div>
+                    <div class="count">Owned: ${animals.cow?.count || 0}</div>
                     <div class="price">100💰</div>
                 </div>
-                <div class="mobile-grid-item ${(animalResources.milk || 0) === 0 ? 'disabled' : ''}" 
+                <div class="mobile-grid-item ${(animalInventory.milk || 0) === 0 ? 'disabled' : ''}" 
                      onclick="collectResource('milk')">
                     <div class="emoji">🥛</div>
                     <div class="name">Collect Milk</div>
-                    <div class="count">${animalResources.milk || 0} available</div>
+                    <div class="count">${animalInventory.milk || 0} available</div>
                 </div>
             `;
 
@@ -6488,14 +6488,14 @@
                 <div class="mobile-grid-item ${coins < 150 ? 'disabled' : ''}" onclick="buyAnimal('pig', 150)">
                     <div class="emoji">🐷</div>
                     <div class="name">Buy Pig</div>
-                    <div class="count">Owned: ${animals.pig || 0}</div>
+                    <div class="count">Owned: ${animals.pig?.count || 0}</div>
                     <div class="price">150💰</div>
                 </div>
-                <div class="mobile-grid-item ${(animalResources.truffles || 0) === 0 ? 'disabled' : ''}" 
+                <div class="mobile-grid-item ${(animalInventory.truffles || 0) === 0 ? 'disabled' : ''}" 
                      onclick="collectResource('truffles')">
                     <div class="emoji">🍄</div>
                     <div class="name">Collect Truffles</div>
-                    <div class="count">${animalResources.truffles || 0} available</div>
+                    <div class="count">${animalInventory.truffles || 0} available</div>
                 </div>
             `;
 
@@ -6509,14 +6509,27 @@
 
             let html = '';
             
+            // Function to get quest icon based on quest type
+            function getQuestIcon(questType) {
+                switch(questType) {
+                    case 'harvest': return '🌾';
+                    case 'plant': return '🌱';
+                    case 'coins': return '💰';
+                    case 'collect': return '🐄';
+                    case 'water': return '💧';
+                    default: return '📋';
+                }
+            }
+            
             dailyQuests.forEach((quest, index) => {
                 const progressPercent = Math.min(100, (quest.progress / quest.target) * 100);
                 const isCompleted = quest.progress >= quest.target;
+                const questIcon = getQuestIcon(quest.type);
                 
                 html += `
                     <div class="mobile-grid-item ${isCompleted ? 'completed' : ''}" style="min-height: 120px; width: 100%; margin-bottom: 15px;">
-                        <div class="emoji">${quest.icon}</div>
-                        <div class="name">${quest.title}</div>
+                        <div class="emoji">${questIcon}</div>
+                        <div class="name">${quest.name}</div>
                         <div class="count">${quest.description}</div>
                         <div style="width: 100%; background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin: 8px 0; overflow: hidden;">
                             <div style="width: ${progressPercent}%; height: 100%; background: #4CAF50; transition: width 0.3s ease;"></div>
