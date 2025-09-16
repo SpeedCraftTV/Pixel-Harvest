@@ -1305,6 +1305,10 @@
                 </div>
                 
                 <!-- Menu Options -->
+                <button class="dropdown-menu-btn" onclick="showTutorialMenu()" style="width: 100%; background: #FF9800; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 3px 0; font-size: 13px;">
+                    🎓 <span data-translate="menu.tutorial">Tutorial</span>
+                </button>
+                
                 <button class="dropdown-menu-btn" onclick="openSettings()" style="width: 100%; background: #2196F3; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 3px 0; font-size: 13px;">
                     ⚙️ <span data-translate="menu.controls">Controls</span>
                 </button>
@@ -1479,6 +1483,12 @@
         <canvas id="canvas"></canvas>
     </div>
 
+    <!-- Tutorial System Scripts -->
+    <script src="src/tutorial/tutorial-localization.js"></script>
+    <script src="src/tutorial/tutorial-ui.js"></script>
+    <script src="src/tutorial/tutorial-steps.js"></script>
+    <script src="src/tutorial/tutorial-manager.js"></script>
+
     <script>
         // Internationalization System
         let currentLanguage = 'en';
@@ -1504,7 +1514,8 @@
                     newGame: 'New Game',
                     language: 'Language',
                     uiMode: 'UI Mode',
-                    settings: 'Settings'
+                    settings: 'Settings',
+                    tutorial: 'Tutorial'
                 },
                 plants: {
                     title: 'Plant Types:',
@@ -2530,6 +2541,20 @@
         let coins = 50; // Balanced starting amount
         let dayNightCycle = 0;
         let dayNightCycleCount = 0;
+        let isGamePaused = false;
+        
+        // Tutorial system
+        let tutorialManager = null;
+        let tutorialEnabled = true;
+        let tutorialProgress = {
+            characterMoved: false,
+            cameraToggled: false,
+            nearPlot: false,
+            plantedSeed: false,
+            wateredPlant: false,
+            harvestedPlant: false,
+            unlockedPlot: false
+        };
         
         // Weather System
         let currentWeather = {
@@ -3687,8 +3712,121 @@
             // Update all UI with current language
             updateAllUI();
             
+            // Initialize tutorial system
+            initTutorialSystem();
+            
             // Start game loop
             animate();
+        }
+        
+        // Tutorial System Integration
+        async function initTutorialSystem() {
+            if (!tutorialEnabled) return;
+            
+            try {
+                // Initialize localization first
+                if (window.TutorialLocalization) {
+                    TutorialLocalization.initialize();
+                }
+                
+                // Create tutorial manager
+                tutorialManager = new TutorialManager();
+                
+                // Create game interface for tutorial interaction
+                const gameInterface = {
+                    // Game state checking
+                    checkGameState: (conditions) => {
+                        for (const [key, expectedValue] of Object.entries(conditions)) {
+                            if (tutorialProgress[key] !== expectedValue) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    },
+                    
+                    // Game control functions
+                    pauseGame: () => {
+                        isGamePaused = true;
+                    },
+                    
+                    resumeGame: () => {
+                        isGamePaused = false;
+                    },
+                    
+                    focusCharacter: () => {
+                        cameraFollowCharacter = true;
+                        cameraFollowX = character.x;
+                        cameraFollowZ = character.z;
+                    },
+                    
+                    // Tutorial rewards
+                    giveReward: (rewards) => {
+                        if (rewards.coins) {
+                            coins += rewards.coins;
+                            showInstruction(`+${rewards.coins} coins earned!`, 2000);
+                        }
+                        
+                        if (rewards.seeds) {
+                            for (const [plantType, amount] of Object.entries(rewards.seeds)) {
+                                if (!seedInventory[plantType]) {
+                                    seedInventory[plantType] = 0;
+                                }
+                                seedInventory[plantType] += amount;
+                                showInstruction(`+${amount} ${plantType} seeds!`, 2000);
+                            }
+                        }
+                        
+                        if (rewards.experience) {
+                            score += rewards.experience;
+                            showInstruction(`+${rewards.experience} experience!`, 2000);
+                        }
+                        
+                        updateUI();
+                        saveGame();
+                    },
+                    
+                    // Analytics (optional)
+                    trackEvent: (eventName, data) => {
+                        console.log('Tutorial Event:', eventName, data);
+                        // Could integrate with actual analytics here
+                    }
+                };
+                
+                // Initialize tutorial with game interface and steps
+                await tutorialManager.initialize(gameInterface, TutorialSteps);
+                
+                console.log('Tutorial system initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize tutorial system:', error);
+                tutorialEnabled = false;
+            }
+        }
+        
+        // Tutorial progress tracking functions
+        function trackTutorialProgress(action, value = true) {
+            if (!tutorialManager || !tutorialManager.isActive) return;
+            
+            tutorialProgress[action] = value;
+            
+            // Trigger custom events for tutorial step advancement
+            if (action === 'nearPlot' && value) {
+                document.dispatchEvent(new CustomEvent('tutorialNearPlot'));
+            }
+        }
+        
+        // Tutorial helper functions
+        function showTutorialMenu() {
+            if (tutorialManager && tutorialManager.isAvailable()) {
+                tutorialManager.showWelcomeScreen();
+            } else {
+                showInstruction('Tutorial system not available', 2000);
+            }
+        }
+        
+        function restartTutorial() {
+            if (tutorialManager) {
+                tutorialManager.restartTutorial();
+            }
         }
         
         // Audio system functions
@@ -3978,6 +4116,9 @@
             if (event.code === controls.camera) {
                 freeCameraMode = !freeCameraMode;
                 cameraFollowCharacter = !freeCameraMode;
+                
+                // Track camera toggle for tutorial
+                trackTutorialProgress('cameraToggled', true);
                 
                 // Update camera mode display
                 document.getElementById('cameraMode').textContent = 
@@ -4281,6 +4422,9 @@
                 plot.waterLevel = Math.min(1.0, plot.waterLevel + 0.5);
                 plot.lastWatered = Date.now();
                 
+                // Track watering for tutorial
+                trackTutorialProgress('wateredPlant', true);
+                
                 // Update quest progress
                 updateQuestProgress('water');
                 
@@ -4426,6 +4570,9 @@
             seedInventory[plantType]--;
             objectives.seedsPlanted++;
             
+            // Track planting for tutorial
+            trackTutorialProgress('plantedSeed', true);
+            
             plot.stage = PLANT_STAGES.PLANTED;
             plot.plantType = plantType;
             plot.growthTimer = 0;
@@ -4476,6 +4623,9 @@
             
             // Add to inventory
             inventory[plantType]++;
+            
+            // Track harvesting for tutorial
+            trackTutorialProgress('harvestedPlant', true);
             
             // Add score (dynamic based on weather/season)
             const dynamicValue = getDynamicPrice(plantType, 'sell');
@@ -5138,6 +5288,9 @@
                 const lerpFactor = 0.1;
                 character.x += (character.targetX - character.x) * lerpFactor;
                 character.z += (character.targetZ - character.z) * lerpFactor;
+                
+                // Track character movement for tutorial
+                trackTutorialProgress('characterMoved', true);
             }
             
             // Smooth rotation
@@ -5188,6 +5341,12 @@
                 const distance = getDistanceToPlot(closestPlot);
                 if (distance <= 2.5) {
                     statusText += ` - Near plot (${distance.toFixed(1)}m)`;
+                    
+                    // Track being near plot for tutorial
+                    trackTutorialProgress('nearPlot', true);
+                } else {
+                    // Track being away from plot for tutorial
+                    trackTutorialProgress('nearPlot', false);
                 }
             }
             
@@ -5343,6 +5502,9 @@
                     coins -= closestPlot.unlockCost;
                     closestPlot.unlocked = true;
                     objectives.plotsUnlocked++;
+                    
+                    // Track plot unlocking for tutorial
+                    trackTutorialProgress('unlockedPlot', true);
                     
                     // Play unlock sound
                     playActionSound('unlock');
@@ -5997,6 +6159,18 @@
             if (handle) {
                 handle.style.transform = 'translate(0px, 0px)';
             }
+        }
+
+        function toggleCameraMode() {
+            freeCameraMode = !freeCameraMode;
+            cameraFollowCharacter = !freeCameraMode;
+            
+            // Track camera toggle for tutorial
+            trackTutorialProgress('cameraToggled', true);
+            
+            // Update camera mode display
+            document.getElementById('cameraMode').textContent = 
+                freeCameraMode ? 'Camera: Free Camera' : 'Camera: Character Follow';
         }
 
         function performMobileAction(action) {
