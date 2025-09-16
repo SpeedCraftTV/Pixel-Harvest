@@ -6579,16 +6579,36 @@
             // Setup mobile navigation buttons
             const navButtons = document.querySelectorAll('.mobile-nav-btn');
             navButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                // Remove any existing event listeners to avoid duplicates
+                btn.removeEventListener('click', btn._mobileClickHandler);
+                
+                // Create and store the click handler
+                btn._mobileClickHandler = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const panelType = btn.dataset.panel;
+                    console.log('Mobile nav button clicked:', panelType);
                     toggleMobilePanel(panelType);
-                });
+                };
+                
+                btn.addEventListener('click', btn._mobileClickHandler);
             });
 
             // Setup mobile panel close buttons
             const closeButtons = document.querySelectorAll('.mobile-panel-close');
             closeButtons.forEach(btn => {
-                btn.addEventListener('click', closeMobilePanels);
+                // Remove any existing event listeners to avoid duplicates
+                btn.removeEventListener('click', btn._mobileCloseHandler);
+                
+                // Create and store the close handler
+                btn._mobileCloseHandler = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Mobile panel close button clicked');
+                    closeMobilePanels();
+                };
+                
+                btn.addEventListener('click', btn._mobileCloseHandler);
             });
 
             // Close panels when clicking outside
