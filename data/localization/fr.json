@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "language": "fr",
+    "name": "Français",
+    "flag": "🇫🇷",
+    "code": "fr",
+    "completion": 100,
+    "contributors": ["Pixel-Harvest Team"],
+    "lastUpdated": "2024-12-19"
+  },
+  "ui": {
+    "common": {
+      "ok": "OK",
+      "cancel": "Annuler",
+      "save": "Sauvegarder",
+      "close": "Fermer",
+      "back": "Retour",
+      "next": "Suivant",
+      "previous": "Précédent",
+      "skip": "Passer",
+      "continue": "Continuer",
+      "loading": "Chargement...",
+      "error": "Erreur",
+      "success": "Succès",
+      "warning": "Attention",
+      "info": "Information"
+    },
+    "game": {
+      "score": "Score",
+      "coins": "Pièces",
+      "level": "Niveau",
+      "experience": "Expérience",
+      "inventory": "Inventaire",
+      "marketplace": "Marché",
+      "objectives": "Objectifs",
+      "settings": "Paramètres"
+    },
+    "menu": {
+      "main": "Menu Principal",
+      "tutorial": "Tutoriel",
+      "controls": "Contrôles",
+      "uiMode": "Mode Interface",
+      "newGame": "Nouvelle Partie",
+      "language": "Langue"
+    },
+    "instructions": {
+      "desktop": "🌱 Déplacez-vous avec ZQSD ou les flèches<br>⚡ ESPACE pour planter/récolter à la parcelle la plus proche<br>💧 E pour arroser les plantes<br>📹 C pour basculer le mode caméra<br>🌿 Les plantes poussent automatiquement (3 étapes)<br>🔒 Débloquez les parcelles en vous approchant et en appuyant sur ESPACE<br>🌙 Observez le cycle jour/nuit !<br>🖱️ Glissez pour faire pivoter la vue caméra<br>🔍 Molette de la souris pour zoomer",
+      "mobile": "🕹️ Utilisez le joystick virtuel pour vous déplacer<br>🌱 Appuyez sur le bouton vert pour planter/récolter<br>💧 Appuyez sur le bouton bleu pour arroser<br>📹 Utilisez les contrôles de caméra pour changer la vue<br>📋 Accédez aux panneaux via le menu du bas<br>👆 Touchez et glissez pour faire pivoter la caméra<br>🤏 Pincez pour zoomer"
+    }
+  },
+  "tutorial": {
+    "ui": {
+      "welcome": "Bienvenue",
+      "next": "Suivant →",
+      "previous": "← Précédent",
+      "skip": "Passer l'étape",
+      "close": "Ignorer le tutoriel",
+      "settings": "Paramètres du tutoriel",
+      "complete": "Terminer le tutoriel",
+      "restart": "Redémarrer le tutoriel",
+      "startPlaying": "🌟 Commencer à jouer !",
+      "stepOf": "Étape {current} sur {total}",
+      "hints": "Conseils",
+      "tutorialComplete": "Tutoriel terminé !",
+      "congratulations": "Félicitations !",
+      "progress": "Progression",
+      "menu": "Menu"
+    },
+    "welcome": {
+      "title": "🌱 Bienvenue dans Pixel-Harvest !",
+      "subtitle": "Prêt à commencer votre aventure agricole ?",
+      "description": "Ce tutoriel interactif vous apprendra tout ce que vous devez savoir !",
+      "learnAbout": "Vous apprendrez à :",
+      "features": [
+        "🌱 Planter et récolter des cultures",
+        "💧 Arroser vos plantes",
+        "🐄 Gérer les animaux de la ferme",
+        "💰 Acheter et vendre au marché",
+        "🎯 Compléter des quêtes et objectifs"
+      ],
+      "startTutorial": "🚀 Commencer le tutoriel",
+      "settings": "⚙️ Paramètres",
+      "skipTutorial": "⏭️ Ignorer le tutoriel"
+    },
+    "completion": {
+      "title": "🎉 Tutoriel terminé !",
+      "subtitle": "Félicitations ! Vous avez terminé le tutoriel Pixel-Harvest !",
+      "rewardsTitle": "🎁 Récompenses du tutoriel :",
+      "rewards": [
+        "💰 100 Pièces",
+        "🥕 10 Graines de carotte",
+        "🍅 5 Graines de tomate",
+        "⭐ 50 Points d'expérience"
+      ],
+      "encouragement": "Maintenant vous êtes prêt à construire votre empire agricole ! Bonne chance !",
+      "startPlaying": "🌟 Commencer à jouer !",
+      "restartTutorial": "🔄 Redémarrer le tutoriel"
+    },
+    "skipConfirmation": {
+      "title": "⏭️ Ignorer le tutoriel ?",
+      "message": "Êtes-vous sûr de vouloir ignorer le tutoriel ?",
+      "note": "Vous pouvez toujours le redémarrer plus tard depuis le menu du jeu.",
+      "confirmSkip": "✅ Oui, ignorer le tutoriel",
+      "continueTutorial": "❌ Continuer le tutoriel"
+    },
+    "settings": {
+      "title": "⚙️ Paramètres du tutoriel",
+      "autoAdvance": "Avancer automatiquement les étapes (quand possible)",
+      "showHints": "Afficher les conseils utiles",
+      "highlightElements": "Surligner les éléments interactifs",
+      "pauseGame": "Mettre en pause le jeu pendant le tutoriel",
+      "saveSettings": "💾 Sauvegarder les paramètres",
+      "cancel": "❌ Annuler"
+    },
+    "steps": {
+      "welcome": {
+        "title": "Bienvenue dans Pixel-Harvest !",
+        "description": "Bienvenue dans votre nouvelle ferme ! Vous allez apprendre à cultiver des récoltes, gérer des animaux et construire une entreprise agricole prospère. Ce tutoriel vous guidera à travers toutes les mécaniques essentielles du jeu étape par étape.",
+        "hints": [
+          "Vous pouvez passer n'importe quelle étape en cliquant sur \"Passer l'étape\"",
+          "Utilisez les flèches du clavier pour naviguer entre les étapes",
+          "Appuyez sur ESC pour quitter le tutoriel à tout moment"
+        ]
+      },
+      "character_movement": {
+        "title": "Déplacer votre personnage",
+        "description": "Commençons par apprendre à vous déplacer dans votre ferme ! Bureau : Utilisez les touches ZQSD ou les flèches pour vous déplacer. Mobile : Utilisez le joystick virtuel dans le coin inférieur gauche. Essayez de déplacer votre personnage maintenant. Remarquez comme la caméra vous suit !",
+        "hints": [
+          "La position du personnage est affichée dans le coin supérieur droit",
+          "Vous pouvez faire glisser la souris pour faire pivoter la vue de la caméra",
+          "La molette de la souris permet de zoomer"
+        ]
+      },
+      "camera_controls": {
+        "title": "Contrôles de la caméra",
+        "description": "Vous pouvez contrôler la caméra pour obtenir la meilleure vue de votre ferme. Bureau : Appuyez sur C pour basculer le mode caméra, glissez la souris pour faire pivoter, défilez pour zoomer. Mobile : Utilisez le bouton caméra, glissez pour faire pivoter, pincez pour zoomer. Essayez de basculer le mode caméra maintenant !",
+        "hints": [
+          "Le mode Suivi du Personnage garde la caméra centrée sur votre personnage",
+          "Le mode Caméra Libre vous permet de regarder indépendamment",
+          "Vous pouvez zoomer pour voir les détails ou dézoomer pour une vue plus large"
+        ]
+      },
+      "farm_plots": {
+        "title": "Comprendre les parcelles de ferme",
+        "description": "Votre ferme est divisée en parcelles où vous pouvez cultiver des récoltes. Certaines parcelles sont déjà débloquées, tandis que d'autres doivent être achetées. Approchez-vous d'une parcelle pour voir si vous pouvez interagir avec elle. Les parcelles débloquées ont une couleur de terre brune. Approchez-vous d'une parcelle vide pour continuer !",
+        "hints": [
+          "Les parcelles brunes sont prêtes pour la plantation",
+          "Les parcelles grises doivent être débloquées avec des pièces",
+          "Un cercle vert apparaît autour de votre personnage quand vous pouvez interagir"
+        ]
+      },
+      "planting_seeds": {
+        "title": "Planter vos premières graines",
+        "description": "Excellent ! Maintenant vous êtes proche d'une parcelle de ferme. Plantons vos premières graines ! Vous commencez avec quelques graines de carotte. Assurez-vous que les carottes sont sélectionnées dans le sélecteur de plantes, puis appuyez sur ESPACE pour planter. Plantez une graine de carotte maintenant !",
+        "hints": [
+          "Vérifiez le panneau Types de Plantes pour voir vos graines disponibles",
+          "Le type de plante sélectionné est surligné en bleu",
+          "Vous devez être proche d'une parcelle vide pour planter"
+        ]
+      },
+      "plant_growth": {
+        "title": "Observer la croissance des plantes",
+        "description": "Excellent ! Vous avez planté votre première graine. Les plantes dans Pixel-Harvest poussent automatiquement au fil du temps à travers 3 étapes : 🌱 Plantule → 🌿 Croissance → 🥕 Maturité. La météo et les saisons affectent la vitesse de croissance. Vous pouvez aussi arroser les plantes pour les aider à pousser plus vite !",
+        "hints": [
+          "Les plantes poussent plus vite par beau temps",
+          "Arroser les plantes accélère la croissance",
+          "Différentes plantes prennent différents temps pour pousser"
+        ]
+      },
+      "watering_plants": {
+        "title": "Arroser vos plantes",
+        "description": "Vous pouvez arroser vos plantes pour les aider à pousser plus vite ! Approchez-vous de la plante que vous venez de planter et appuyez sur E pour l'arroser. Observez l'animation d'arrosage et le boost de croissance !",
+        "hints": [
+          "Les plantes arrosées ont un effet d'étincelles bleues",
+          "Chaque session d'arrosage fournit un boost de croissance",
+          "Vous pouvez arroser les plantes à n'importe quel stade de croissance"
+        ]
+      },
+      "harvesting": {
+        "title": "Récolter vos cultures",
+        "description": "Quand les plantes atteignent la maturité complète, elles afficheront leur icône de récolte (comme 🥕 pour les carottes). Approchez-vous d'une plante mature et appuyez sur ESPACE pour la récolter et l'ajouter à votre inventaire. Pour ce tutoriel, nous simulerons une plante mature. Essayez de récolter maintenant !",
+        "hints": [
+          "Les plantes matures montrent l'icône de la récolte finale",
+          "Récolter ajoute des objets à votre inventaire",
+          "Vous gagnez des points et des pièces en récoltant"
+        ]
+      },
+      "inventory_management": {
+        "title": "Gérer votre inventaire",
+        "description": "Parfait ! Vous avez récolté votre première culture. Vérifiez votre inventaire pour voir ce que vous avez collecté. L'inventaire montre toutes vos récoltes, équipements et produits animaux. Vous pouvez vendre des objets au marché pour gagner des pièces !",
+        "hints": [
+          "L'inventaire est divisé en catégories : récoltes, équipement et produits animaux",
+          "Les nombres montrent combien vous avez de chaque objet",
+          "Les objets sont automatiquement triés par type"
+        ]
+      },
+      "marketplace_intro": {
+        "title": "Le marché",
+        "description": "Le marché est l'endroit où vous achetez des graines et de l'équipement, et vendez vos récoltes contre des pièces. Les prix changent dynamiquement selon l'offre et la demande ! Vendons votre récolte pour quelques pièces.",
+        "hints": [
+          "Les prix fluctuent selon les conditions du marché",
+          "Vendre des récoltes est le principal moyen de gagner des pièces",
+          "Utilisez les pièces pour acheter des graines, de l'équipement et débloquer des parcelles"
+        ]
+      },
+      "selling_crops": {
+        "title": "Vendre vos récoltes",
+        "description": "Dans la section \"Vendre des Produits\" du marché, cliquez sur \"Vendre des Carottes\" pour vendre votre récolte. Regardez votre compte de pièces augmenter quand vous faites la vente ! Essayez de vendre votre carotte maintenant.",
+        "hints": [
+          "Vous ne pouvez vendre que les objets que vous avez réellement",
+          "Les boutons désactivés signifient que vous n'avez aucun de cet objet",
+          "Chaque vente vous donne des pièces et de l'expérience"
+        ]
+      },
+      "buying_seeds": {
+        "title": "Acheter plus de graines",
+        "description": "Maintenant que vous avez des pièces, vous pouvez acheter plus de graines pour développer votre exploitation agricole ! Dans la section \"Graines\" du marché, essayez d'acheter des graines de tomate. Cliquez sur \"Acheter des Graines de Tomate\" pour les acheter.",
+        "hints": [
+          "Différentes graines ont différents coûts et temps de croissance",
+          "Certaines graines ne sont disponibles qu'à certaines saisons",
+          "Commencez par les graines moins chères et progressez"
+        ]
+      },
+      "changing_plant_types": {
+        "title": "Sélectionner les types de plantes",
+        "description": "Parfait ! Vous avez maintenant des graines de tomate. Pour les planter, vous devez sélectionner les tomates dans le panneau Types de Plantes. Cliquez sur le bouton tomate dans le panneau Types de Plantes pour le sélectionner. Remarquez comment la plante sélectionnée est surlignée en bleu.",
+        "hints": [
+          "Seul le type de plante sélectionné sera planté",
+          "Vous pouvez voir combien de graines vous avez de chaque type",
+          "Certaines plantes nécessitent des saisons spécifiques pour pousser"
+        ]
+      },
+      "unlocking_plots": {
+        "title": "Débloquer de nouvelles parcelles",
+        "description": "Pour agrandir votre ferme, vous devez débloquer de nouvelles parcelles en utilisant des pièces. Approchez-vous d'une parcelle grise (verrouillée) et appuyez sur ESPACE pour la débloquer. Chaque parcelle coûte des pièces à débloquer, mais vous donne plus d'espace pour cultiver des récoltes !",
+        "hints": [
+          "Les parcelles verrouillées apparaissent grises et montrent un coût de déverrouillage",
+          "Débloquer des parcelles agrandit définitivement votre ferme",
+          "Commencez par les parcelles proches de vos existantes"
+        ]
+      },
+      "objectives_system": {
+        "title": "Objectifs et buts",
+        "description": "Consultez le panneau Objectifs pour voir vos buts actuels ! Compléter les objectifs vous donne une direction et des récompenses. Essayez de compléter les objectifs visibles en jouant naturellement au jeu.",
+        "hints": [
+          "Les objectifs fournissent des conseils sur quoi faire ensuite",
+          "Les objectifs complétés donnent des récompenses et en débloquent de nouveaux",
+          "Concentrez-vous d'abord sur les objectifs plus faciles"
+        ]
+      },
+      "day_night_cycle": {
+        "title": "Cycle jour et nuit",
+        "description": "Pixel-Harvest propose un cycle jour/nuit dynamique qui affecte le gameplay ! Différentes choses se passent pendant le jour et la nuit - les plantes poussent différemment, et l'atmosphère change. Observez l'indicateur de temps pour suivre l'heure actuelle du jour.",
+        "hints": [
+          "Le cycle jour/nuit affecte les taux de croissance des plantes",
+          "Certains animaux sont plus actifs à certains moments",
+          "L'éclairage et l'ambiance changent avec le temps"
+        ]
+      },
+      "weather_system": {
+        "title": "Effets météorologiques",
+        "description": "La météo affecte la vitesse de croissance de vos plantes et votre efficacité agricole globale. ☀️ Le temps ensoleillé fait pousser les plantes plus vite. 🌧️ Le temps pluvieux fournit un arrosage naturel. ❄️ Le temps froid ralentit la croissance mais certaines plantes prospèrent.",
+        "hints": [
+          "Vérifiez le panneau météo pour planifier votre agriculture",
+          "Certaines plantes préfèrent certaines conditions météorologiques",
+          "La météo change aléatoirement tout au long du jeu"
+        ]
+      },
+      "seasons_system": {
+        "title": "Changements saisonniers",
+        "description": "Le jeu propose quatre saisons, chacune durant 20 jours de jeu : 🌸 Printemps : Meilleur pour la plupart des récoltes. ☀️ Été : Temps chaud, parfait pour les plantes qui aiment la chaleur. 🍂 Automne : Saison des récoltes avec des cultures uniques. ❄️ Hiver : Croissance limitée, mais certaines plantes spéciales prospèrent.",
+        "hints": [
+          "Certaines plantes ne peuvent être cultivées qu'à des saisons spécifiques",
+          "Les événements et festivals saisonniers se produisent régulièrement",
+          "Planifiez vos cultures autour du calendrier saisonnier"
+        ]
+      },
+      "animals_intro": {
+        "title": "Animaux de ferme",
+        "description": "Vous pouvez acheter et élever des animaux dans votre ferme ! Les animaux produisent des ressources précieuses : 🐔 Les poules produisent des œufs. 🐄 Les vaches produisent du lait. 🐷 Les cochons trouvent des truffes. Prenez soin de vos animaux et collectez leurs produits régulièrement !",
+        "hints": [
+          "Les animaux ont besoin de soins et d'alimentation réguliers",
+          "Collectez les produits quotidiennement pour un profit maximum",
+          "Les produits animaux se vendent à de bons prix"
+        ]
+      },
+      "daily_quests": {
+        "title": "Quêtes quotidiennes",
+        "description": "Complétez les quêtes quotidiennes pour gagner des récompenses et de l'expérience supplémentaires ! Les quêtes se réinitialisent quotidiennement et fournissent des objectifs spécifiques à atteindre. Vérifiez le panneau Quêtes Quotidiennes pour voir quels défis vous attendent.",
+        "hints": [
+          "Les quêtes fournissent des pièces et de l'expérience bonus",
+          "De nouvelles quêtes apparaissent quotidiennement",
+          "Concentrez-vous sur les quêtes qui correspondent à vos activités actuelles"
+        ]
+      },
+      "equipment_intro": {
+        "title": "Équipement agricole",
+        "description": "En progressant, vous pouvez acheter de l'équipement pour automatiser et améliorer votre ferme : 💧 Arroseurs automatiques : Arrosent automatiquement les plantes proches. 🌿 Engrais : Booste la vitesse de croissance des plantes. 🏠 Serres : Protègent les plantes des intempéries.",
+        "hints": [
+          "L'équipement est cher mais fait gagner du temps à long terme",
+          "Certains équipements fonctionnent automatiquement",
+          "Améliorez votre ferme progressivement en gagnant plus de pièces"
+        ]
+      },
+      "game_menu": {
+        "title": "Menu de jeu et paramètres",
+        "description": "Accédez au menu de jeu dans le coin supérieur droit pour diverses options : ⚙️ Contrôles : Personnalisez vos contrôles clavier. 🔧 Mode Interface : Réorganisez les panneaux d'interface. 🆕 Nouvelle Partie : Recommencez à tout moment. 🌍 Langue : Changez la langue du jeu.",
+        "hints": [
+          "Personnalisez les contrôles selon vos préférences",
+          "Sauvegardez automatiquement votre progression de jeu",
+          "Le Mode Interface vous permet de faire glisser les panneaux"
+        ]
+      },
+      "mobile_controls": {
+        "title": "Contrôles mobiles",
+        "description": "Sur les appareils mobiles, utilisez ces contrôles tactiles : 🕹️ Joystick virtuel pour le mouvement. 🌱 Bouton vert pour planter/récolter. 💧 Bouton bleu pour arroser les plantes. 📋 Menu du bas pour les panneaux. Touchez et glissez pour faire pivoter la caméra, pincez pour zoomer.",
+        "hints": [
+          "L'interface mobile s'adapte automatiquement",
+          "Utilisez le menu de navigation en bas",
+          "Les panneaux s'ouvrent en superpositions plein écran sur mobile"
+        ]
+      },
+      "tutorial_complete": {
+        "title": "Tutoriel terminé !",
+        "description": "Félicitations ! Vous avez appris toutes les bases de Pixel-Harvest ! Voici ce que vous maîtrisez : Mouvement du personnage et contrôles de caméra, Planter, arroser et récolter des cultures, Acheter et vendre au marché, Débloquer de nouvelles parcelles de ferme, Comprendre les objectifs et quêtes, Animaux de ferme et leurs produits, Systèmes météorologiques et saisonniers. Maintenant allez construire votre empire agricole !",
+        "hints": [
+          "Rappelez-vous : vous pouvez redémarrer ce tutoriel à tout moment depuis le menu du jeu",
+          "Expérimentez avec différentes cultures et stratégies",
+          "Amusez-vous et profitez de votre aventure agricole !"
+        ]
+      }
+    }
+  },
+  "game": {
+    "plants": {
+      "carrot": "Carotte",
+      "tomato": "Tomate",
+      "potato": "Pomme de terre",
+      "cabbage": "Chou",
+      "corn": "Maïs",
+      "watermelon": "Pastèque",
+      "pumpkin": "Citrouille",
+      "apple": "Pommier",
+      "rare": "Plante rare"
+    },
+    "animals": {
+      "chicken": "Poule",
+      "cow": "Vache",
+      "pig": "Cochon"
+    },
+    "equipment": {
+      "sprinkler": "Arroseur automatique",
+      "fertilizer": "Engrais",
+      "greenhouse": "Mini serre"
+    },
+    "weather": {
+      "sunny": "Ensoleillé",
+      "rainy": "Pluvieux",
+      "cloudy": "Nuageux",
+      "snowy": "Neigeux",
+      "stormy": "Orageux"
+    },
+    "seasons": {
+      "spring": "Printemps",
+      "summer": "Été",
+      "autumn": "Automne",
+      "winter": "Hiver"
+    },
+    "objectives": {
+      "harvest_crops": "Récolter {count} {crop}",
+      "earn_coins": "Gagner {amount} pièces",
+      "plant_seeds": "Planter {count} graines",
+      "unlock_plots": "Débloquer {count} parcelles",
+      "buy_equipment": "Acheter n'importe quel équipement",
+      "survive_cycles": "Survivre à {count} cycles jour/nuit",
+      "total_plants": "Récolter {count} plantes au total"
+    },
+    "marketplace": {
+      "sell": "Vendre",
+      "buy": "Acheter",
+      "seeds": "Graines",
+      "equipment": "Équipement",
+      "animalProducts": "Produits animaux"
+    }
+  },
+  "messages": {
+    "errors": {
+      "notEnoughCoins": "Pas assez de pièces !",
+      "notEnoughSeeds": "Pas assez de graines !",
+      "plotNotUnlocked": "Parcelle non débloquée !",
+      "invalidAction": "Action invalide !",
+      "saveError": "Échec de la sauvegarde de la progression du jeu"
+    },
+    "success": {
+      "planted": "{plant} planté !",
+      "harvested": "{plant} récolté !",
+      "watered": "Plantes arrosées !",
+      "sold": "{item} vendu !",
+      "bought": "{item} acheté !",
+      "unlocked": "Parcelle débloquée !",
+      "gameSaved": "Progression du jeu sauvegardée !"
+    },
+    "info": {
+      "dayStart": "Un nouveau jour commence !",
+      "nightStart": "La nuit tombe sur la ferme...",
+      "seasonChange": "Saison changée en {season} !",
+      "weatherChange": "Météo changée en {weather} !"
+    }
+  }
+}

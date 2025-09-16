@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel-Harvest I18n Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f8ff;
+        }
+        .demo-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .language-switcher {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .language-switcher button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .language-switcher button:hover {
+            background: #45a049;
+        }
+        .language-switcher button.active {
+            background: #2196F3;
+        }
+        .demo-content {
+            line-height: 1.6;
+        }
+        .validation-results {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .tutorial-preview {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 data-translate="demo.title">🌍 Pixel-Harvest Internationalization Demo</h1>
+    
+    <div class="language-switcher">
+        <button onclick="switchLanguage('en')" id="btn-en" class="active">🇺🇸 English</button>
+        <button onclick="switchLanguage('fr')" id="btn-fr">🇫🇷 Français</button>
+        <button onclick="switchLanguage('es')" id="btn-es">🇪🇸 Español</button>
+    </div>
+
+    <div class="demo-section">
+        <h2 data-translate="demo.ui_elements.title">UI Elements Translation</h2>
+        <div class="demo-content">
+            <p><strong data-translate="ui.common.save">Save</strong> | 
+               <strong data-translate="ui.common.cancel">Cancel</strong> | 
+               <strong data-translate="ui.common.close">Close</strong></p>
+            
+            <p><span data-translate="ui.game.score">Score</span>: 1,250 | 
+               <span data-translate="ui.game.coins">Coins</span>: 89 | 
+               <span data-translate="ui.game.level">Level</span>: 5</p>
+
+            <p><span data-translate="ui.menu.tutorial">Tutorial</span> | 
+               <span data-translate="ui.menu.controls">Controls</span> | 
+               <span data-translate="ui.menu.settings">Settings</span></p>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 data-translate="demo.game_elements.title">Game Elements</h2>
+        <div class="demo-content">
+            <p><strong data-translate="demo.plants">Plants:</strong> 
+               <span data-translate="game.plants.carrot">Carrot</span>, 
+               <span data-translate="game.plants.tomato">Tomato</span>, 
+               <span data-translate="game.plants.potato">Potato</span></p>
+
+            <p><strong data-translate="demo.animals">Animals:</strong> 
+               <span data-translate="game.animals.chicken">Chicken</span>, 
+               <span data-translate="game.animals.cow">Cow</span>, 
+               <span data-translate="game.animals.pig">Pig</span></p>
+
+            <p><strong data-translate="demo.weather">Weather:</strong> 
+               <span data-translate="game.weather.sunny">Sunny</span>, 
+               <span data-translate="game.weather.rainy">Rainy</span>, 
+               <span data-translate="game.weather.snowy">Snowy</span></p>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 data-translate="demo.tutorial_preview.title">Tutorial Preview</h2>
+        <div class="tutorial-preview">
+            <h3 data-translate="tutorial.steps.welcome.title">Welcome to Pixel-Harvest!</h3>
+            <p data-translate="tutorial.steps.welcome.description">Welcome to your new farm! You're about to learn how to grow crops, manage animals, and build a thriving agricultural business.</p>
+            
+            <div style="margin-top: 15px;">
+                <strong data-translate="tutorial.ui.hints">Hints:</strong>
+                <ul id="tutorial-hints">
+                    <!-- Hints will be populated by JavaScript -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 data-translate="demo.interpolation.title">String Interpolation</h2>
+        <div class="demo-content">
+            <p id="step-demo">Step 3 of 24</p>
+            <p id="harvest-demo">Harvest 5 carrots</p>
+            <p id="earn-demo">Earn 100 coins</p>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 data-translate="demo.messages.title">System Messages</h2>
+        <div class="demo-content">
+            <p style="color: green;"><strong data-translate="demo.success">Success:</strong> 
+               <span data-translate="messages.success.planted">Carrot planted!</span></p>
+            
+            <p style="color: red;"><strong data-translate="demo.error">Error:</strong> 
+               <span data-translate="messages.errors.notEnoughCoins">Not enough coins!</span></p>
+            
+            <p style="color: blue;"><strong data-translate="demo.info">Info:</strong> 
+               <span data-translate="messages.info.dayStart">A new day begins!</span></p>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 data-translate="demo.statistics.title">Translation Statistics</h2>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-keys">203</div>
+                <div data-translate="demo.stats.total_keys">Total Translation Keys</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="tutorial-steps">24</div>
+                <div data-translate="demo.stats.tutorial_steps">Tutorial Steps</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="supported-languages">3</div>
+                <div data-translate="demo.stats.languages">Supported Languages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completion-rate">100%</div>
+                <div data-translate="demo.stats.completion">Translation Completion</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 data-translate="demo.validation.title">Validation Results</h2>
+        <button onclick="runValidation()" data-translate="demo.validation.run_button">Run Validation</button>
+        <div id="validation-output" class="validation-results"></div>
+    </div>
+
+    <!-- Internationalization System -->
+    <script src="../src/internationalization.js"></script>
+    <script src="../src/tutorial/tutorial-validator.js"></script>
+
+    <script>
+        // Add demo-specific translations
+        const demoTranslations = {
+            en: {
+                demo: {
+                    title: "🌍 Pixel-Harvest Internationalization Demo",
+                    ui_elements: { title: "UI Elements Translation" },
+                    game_elements: { title: "Game Elements" },
+                    tutorial_preview: { title: "Tutorial Preview" },
+                    interpolation: { title: "String Interpolation" },
+                    messages: { title: "System Messages" },
+                    statistics: { title: "Translation Statistics" },
+                    validation: { 
+                        title: "Validation Results",
+                        run_button: "Run Validation"
+                    },
+                    plants: "Plants",
+                    animals: "Animals", 
+                    weather: "Weather",
+                    success: "Success",
+                    error: "Error",
+                    info: "Info",
+                    stats: {
+                        total_keys: "Total Translation Keys",
+                        tutorial_steps: "Tutorial Steps",
+                        languages: "Supported Languages",
+                        completion: "Translation Completion"
+                    }
+                }
+            },
+            fr: {
+                demo: {
+                    title: "🌍 Démo d'Internationalisation Pixel-Harvest",
+                    ui_elements: { title: "Traduction des Éléments d'Interface" },
+                    game_elements: { title: "Éléments de Jeu" },
+                    tutorial_preview: { title: "Aperçu du Tutoriel" },
+                    interpolation: { title: "Interpolation de Chaînes" },
+                    messages: { title: "Messages Système" },
+                    statistics: { title: "Statistiques de Traduction" },
+                    validation: { 
+                        title: "Résultats de Validation",
+                        run_button: "Exécuter la Validation"
+                    },
+                    plants: "Plantes",
+                    animals: "Animaux",
+                    weather: "Météo",
+                    success: "Succès",
+                    error: "Erreur",
+                    info: "Info",
+                    stats: {
+                        total_keys: "Clés de Traduction Totales",
+                        tutorial_steps: "Étapes du Tutoriel",
+                        languages: "Langues Supportées",
+                        completion: "Complétude de la Traduction"
+                    }
+                }
+            },
+            es: {
+                demo: {
+                    title: "🌍 Demo de Internacionalización Pixel-Harvest",
+                    ui_elements: { title: "Traducción de Elementos de UI" },
+                    game_elements: { title: "Elementos del Juego" },
+                    tutorial_preview: { title: "Vista Previa del Tutorial" },
+                    interpolation: { title: "Interpolación de Cadenas" },
+                    messages: { title: "Mensajes del Sistema" },
+                    statistics: { title: "Estadísticas de Traducción" },
+                    validation: { 
+                        title: "Resultados de Validación",
+                        run_button: "Ejecutar Validación"
+                    },
+                    plants: "Plantas",
+                    animals: "Animales",
+                    weather: "Clima",
+                    success: "Éxito",
+                    error: "Error",
+                    info: "Información",
+                    stats: {
+                        total_keys: "Claves de Traducción Totales",
+                        tutorial_steps: "Pasos del Tutorial",
+                        languages: "Idiomas Soportados",
+                        completion: "Finalización de Traducción"
+                    }
+                }
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        // Initialize demo
+        async function initDemo() {
+            // Extend i18n with demo translations
+            if (window.i18n) {
+                // Add demo translations to loaded translations
+                for (const [lang, translations] of Object.entries(demoTranslations)) {
+                    if (window.i18n.loadedTranslations.has(lang)) {
+                        const existing = window.i18n.loadedTranslations.get(lang);
+                        existing.demo = translations.demo;
+                    }
+                }
+                
+                await window.i18n.initialize();
+                currentLanguage = window.i18n.getCurrentLanguage().code;
+                updateActiveButton();
+            }
+            
+            updateInterpolationExamples();
+            updateTutorialHints();
+        }
+
+        function switchLanguage(lang) {
+            if (window.i18n) {
+                window.i18n.setLanguage(lang).then(() => {
+                    currentLanguage = lang;
+                    updateActiveButton();
+                    updateInterpolationExamples();
+                    updateTutorialHints();
+                });
+            }
+        }
+
+        function updateActiveButton() {
+            document.querySelectorAll('.language-switcher button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`btn-${currentLanguage}`).classList.add('active');
+        }
+
+        function updateInterpolationExamples() {
+            if (window.i18n) {
+                // Step example
+                const stepText = window.i18n.t('tutorial.ui.stepOf', { current: 3, total: 24 });
+                document.getElementById('step-demo').textContent = stepText;
+
+                // Harvest example
+                const harvestText = window.i18n.t('game.objectives.harvest_crops', { 
+                    count: 5, 
+                    crop: window.i18n.t('game.plants.carrot') 
+                });
+                document.getElementById('harvest-demo').textContent = harvestText;
+
+                // Earn coins example
+                const earnText = window.i18n.t('game.objectives.earn_coins', { amount: 100 });
+                document.getElementById('earn-demo').textContent = earnText;
+            }
+        }
+
+        function updateTutorialHints() {
+            if (window.i18n) {
+                const hints = window.i18n.t('tutorial.steps.welcome.hints');
+                const hintsList = document.getElementById('tutorial-hints');
+                hintsList.innerHTML = '';
+                
+                if (Array.isArray(hints)) {
+                    hints.forEach(hint => {
+                        const li = document.createElement('li');
+                        li.textContent = hint;
+                        hintsList.appendChild(li);
+                    });
+                }
+            }
+        }
+
+        async function runValidation() {
+            const output = document.getElementById('validation-output');
+            output.textContent = 'Running validation...';
+            
+            try {
+                const validator = new TutorialLocalizationValidator();
+                const results = await validator.validateAllTranslations();
+                
+                let report = 'Validation Results:\n';
+                report += '==================\n\n';
+                report += `Total Languages: ${results.summary.totalLanguages}\n`;
+                report += `Valid Languages: ${results.summary.validLanguages}\n`;
+                report += `Total Warnings: ${results.summary.warnings}\n`;
+                report += `Total Errors: ${results.summary.errors}\n\n`;
+                
+                for (const [lang, result] of results.languages) {
+                    const status = result.isValid ? '✅' : '❌';
+                    report += `${status} ${lang.toUpperCase()}: ${result.completeness?.toFixed(1) || 'N/A'}% complete\n`;
+                    
+                    if (result.tutorialSteps) {
+                        const stepCompletion = (result.tutorialSteps.translated / result.tutorialSteps.total) * 100;
+                        report += `   Tutorial: ${result.tutorialSteps.translated}/${result.tutorialSteps.total} steps (${stepCompletion.toFixed(1)}%)\n`;
+                    }
+                }
+                
+                if (results.recommendations.length > 0) {
+                    report += '\nRecommendations:\n';
+                    results.recommendations.forEach(rec => {
+                        const icon = rec.type === 'high' ? '🔴' : rec.type === 'medium' ? '🟡' : '🟢';
+                        report += `${icon} ${rec.message}\n`;
+                    });
+                }
+                
+                output.textContent = report;
+            } catch (error) {
+                output.textContent = `Validation failed: ${error.message}`;
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', initDemo);
+    </script>
+</body>
+</html>

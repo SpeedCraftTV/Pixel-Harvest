@@ -1483,6 +1483,9 @@
         <canvas id="canvas"></canvas>
     </div>
 
+    <!-- Internationalization System -->
+    <script src="src/internationalization.js"></script>
+    
     <!-- Tutorial System Scripts -->
     <script src="src/tutorial/tutorial-localization.js"></script>
     <script src="src/tutorial/tutorial-ui.js"></script>
@@ -1490,7 +1493,161 @@
     <script src="src/tutorial/tutorial-manager.js"></script>
 
     <script>
-        // Internationalization System
+        // Enhanced language change functionality
+        function changeLanguage(langCode) {
+            console.log(`🌍 Changing language to: ${langCode}`);
+            
+            // Try to use the main i18n system first
+            if (window.i18n && window.i18n.setLanguage) {
+                window.i18n.setLanguage(langCode).then(success => {
+                    if (success) {
+                        console.log(`✅ Language changed via i18n system: ${langCode}`);
+                        
+                        // Update tutorial system
+                        if (window.TutorialLocalization) {
+                            window.TutorialLocalization.setLanguage(langCode);
+                        }
+                        
+                        // Update UI elements that use legacy system
+                        updateLegacyTranslations(langCode);
+                        
+                        // Update current language in global translations
+                        currentLanguage = langCode;
+                        
+                        // Emit event for other systems
+                        document.dispatchEvent(new CustomEvent('languageChanged', {
+                            detail: { language: langCode }
+                        }));
+                        
+                        console.log(`🎉 Language successfully changed to ${langCode}`);
+                    } else {
+                        console.warn(`⚠️ Failed to change language via i18n system, falling back to legacy`);
+                        changeLegacyLanguage(langCode);
+                    }
+                }).catch(error => {
+                    console.error('Error changing language via i18n system:', error);
+                    changeLegacyLanguage(langCode);
+                });
+            } else {
+                // Fallback to legacy system
+                changeLegacyLanguage(langCode);
+            }
+        }
+
+        // Legacy language change function
+        function changeLegacyLanguage(langCode) {
+            if (translations[langCode]) {
+                currentLanguage = langCode;
+                updateLegacyTranslations(langCode);
+                
+                // Update tutorial system
+                if (window.TutorialLocalization) {
+                    window.TutorialLocalization.setLanguage(langCode);
+                }
+                
+                // Emit event
+                document.dispatchEvent(new CustomEvent('languageChanged', {
+                    detail: { language: langCode }
+                }));
+                
+                console.log(`📚 Language changed via legacy system: ${langCode}`);
+            } else {
+                console.warn(`Language not supported in legacy system: ${langCode}`);
+            }
+        }
+
+        // Update UI elements that still use the legacy translation system
+        function updateLegacyTranslations(langCode) {
+            // Update instructions based on device type
+            if (typeof updateInstructionsForMobile !== 'undefined') {
+                if (window.innerWidth <= 768) {
+                    updateInstructionsForMobile();
+                } else if (typeof updateInstructionsForDesktop !== 'undefined') {
+                    updateInstructionsForDesktop();
+                }
+            }
+            
+            // Update any other legacy UI elements as needed
+            // This can be expanded to cover other parts of the UI that don't use data-translate
+        }
+
+        // Setup language selector
+        document.addEventListener('DOMContentLoaded', () => {
+            const languageSelector = document.getElementById('languageSelector');
+            if (languageSelector) {
+                // Set initial value
+                if (window.i18n && window.i18n.getCurrentLanguage) {
+                    const currentLang = window.i18n.getCurrentLanguage();
+                    if (currentLang && currentLang.code) {
+                        languageSelector.value = currentLang.code;
+                    }
+                } else {
+                    languageSelector.value = currentLanguage;
+                }
+                
+                // Listen for changes
+                languageSelector.addEventListener('change', (e) => {
+                    changeLanguage(e.target.value);
+                });
+            }
+        });
+
+        // Listen for language changes from i18n system
+        document.addEventListener('i18nInitialized', () => {
+            if (window.i18n && window.i18n.on) {
+                window.i18n.on('languageChanged', (data) => {
+                    const languageSelector = document.getElementById('languageSelector');
+                    if (languageSelector && languageSelector.value !== data.newLanguage) {
+                        languageSelector.value = data.newLanguage;
+                    }
+                    
+                    // Update legacy system
+                    currentLanguage = data.newLanguage;
+                    updateLegacyTranslations(data.newLanguage);
+                });
+            }
+        });
+
+        // Enhanced get translation function that works with both systems
+        function t(key, params = {}) {
+            // Try main i18n system first
+            if (window.i18n && window.i18n.t && window.i18n.isInitialized) {
+                const translation = window.i18n.t(key, params);
+                if (translation && translation !== key) {
+                    return translation;
+                }
+            }
+            
+            // Fallback to legacy system
+            const keys = key.split('.');
+            let translation = translations[currentLanguage];
+            
+            for (const k of keys) {
+                if (translation && typeof translation === 'object' && k in translation) {
+                    translation = translation[k];
+                } else {
+                    // Fallback to English
+                    translation = translations.en;
+                    for (const fallbackKey of keys) {
+                        if (translation && typeof translation === 'object' && fallbackKey in translation) {
+                            translation = translation[fallbackKey];
+                        } else {
+                            return key;
+                        }
+                    }
+                    break;
+                }
+            }
+            
+            // Simple interpolation
+            if (typeof translation === 'string' && Object.keys(params).length > 0) {
+                return translation.replace(/\{(\w+)\}/g, (match, param) => {
+                    return params[param] || match;
+                });
+            }
+            
+            return translation || key;
+        }
         let currentLanguage = 'en';
         
         const translations = {
@@ -6793,7 +6950,26 @@
 
         // Initialize draggable UI when the game loads
         window.addEventListener('load', () => {
-            setTimeout(() => {
+            setTimeout(async () => {
+                // Initialize internationalization system
+                if (window.i18n) {
+                    await window.i18n.initialize();
+                    
+                    // Update tutorial localization integration
+                    if (window.TutorialLocalization) {
+                        window.TutorialLocalization.setI18nIntegration(true);
+                    }
+                    
+                    // Emit event for other systems
+                    document.dispatchEvent(new CustomEvent('i18nInitialized'));
+                    console.log('🌍 Internationalization system ready');
+                }
+
+                // Initialize tutorial localization (as fallback)
+                if (window.TutorialLocalization) {
+                    window.TutorialLocalization.initialize();
+                }
+
                 initDraggableUI();
                 initMobileControls();
                 initMobileInterface();
