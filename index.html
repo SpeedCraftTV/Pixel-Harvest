@@ -1517,6 +1517,32 @@
                     settings: 'Settings',
                     tutorial: 'Tutorial'
                 },
+                
+                // Mobile specific instructions
+                mobileInstructions: `
+                    🕹️ Use virtual joystick to move<br>
+                    🌱 Green button to plant/harvest<br>
+                    💧 Blue button to water plants<br>
+                    📹 Purple button to toggle camera<br>
+                    🔍 Pinch to zoom, drag to rotate camera<br>
+                    📋 Tap bottom menu buttons for inventory, plants, etc.<br>
+                    🌿 Plants grow automatically (3 stages)<br>
+                    🔒 Get close to plots and tap green button to unlock<br>
+                    🌙 Watch the day/night cycle!
+                `,
+                
+                // Desktop specific instructions  
+                desktopInstructions: `
+                    🌱 Move with ZQSD or arrow keys<br>
+                    ⚡ SPACE to plant/harvest at closest plot<br>
+                    💧 E to water plants<br>
+                    📹 C to toggle camera mode<br>
+                    🌿 Plants grow automatically (3 stages)<br>
+                    🔒 Unlock plots by getting close and pressing SPACE<br>
+                    🌙 Watch the day/night cycle!<br>
+                    🖱️ Drag to rotate camera view<br>
+                    🔍 Scroll wheel to zoom in/out
+                `,
                 plants: {
                     title: 'Plant Types:',
                     carrot: 'Carrot',
@@ -1671,8 +1697,35 @@
                     newGame: 'Nouveau Jeu',
                     language: 'Langue',
                     uiMode: 'Mode Interface',
-                    settings: 'Paramètres'
+                    settings: 'Paramètres',
+                    tutorial: 'Tutoriel'
                 },
+                
+                // Mobile specific instructions
+                mobileInstructions: `
+                    🕹️ Utilisez le joystick virtuel pour vous déplacer<br>
+                    🌱 Bouton vert pour planter/récolter<br>
+                    💧 Bouton bleu pour arroser les plantes<br>
+                    📹 Bouton violet pour basculer la caméra<br>
+                    🔍 Pincez pour zoomer, glissez pour faire pivoter la caméra<br>
+                    📋 Appuyez sur les boutons du menu pour l'inventaire, les plantes, etc.<br>
+                    🌿 Les plantes poussent automatiquement (3 étapes)<br>
+                    🔒 Approchez-vous des parcelles et appuyez sur le bouton vert pour débloquer<br>
+                    🌙 Observez le cycle jour/nuit !
+                `,
+                
+                // Desktop specific instructions  
+                desktopInstructions: `
+                    🌱 Déplacez-vous avec ZQSD ou les touches fléchées<br>
+                    ⚡ ESPACE pour planter/récolter à la parcelle la plus proche<br>
+                    💧 E pour arroser les plantes<br>
+                    📹 C pour changer de mode caméra<br>
+                    🌿 Les plantes poussent automatiquement (3 étapes)<br>
+                    🔒 Débloquez les parcelles en vous approchant et en appuyant sur ESPACE<br>
+                    🌙 Regardez le cycle jour/nuit !<br>
+                    🖱️ Faites glisser pour faire pivoter la vue de la caméra<br>
+                    🔍 Molette de la souris pour zoomer/dézoomer
+                `,
                 plants: {
                     title: 'Types de Plantes :',
                     carrot: 'Carotte',
@@ -1827,8 +1880,35 @@
                     newGame: 'Nuevo Juego',
                     language: 'Idioma',
                     uiMode: 'Modo Interfaz',
-                    settings: 'Configuración'
+                    settings: 'Configuración',
+                    tutorial: 'Tutorial'
                 },
+                
+                // Mobile specific instructions
+                mobileInstructions: `
+                    🕹️ Usa el joystick virtual para moverte<br>
+                    🌱 Botón verde para plantar/cosechar<br>
+                    💧 Botón azul para regar plantas<br>
+                    📹 Botón morado para cambiar cámara<br>
+                    🔍 Pellizca para hacer zoom, arrastra para rotar cámara<br>
+                    📋 Toca los botones del menú para inventario, plantas, etc.<br>
+                    🌿 Las plantas crecen automáticamente (3 etapas)<br>
+                    🔒 Acércate a las parcelas y toca el botón verde para desbloquear<br>
+                    🌙 ¡Observa el ciclo día/noche!
+                `,
+                
+                // Desktop specific instructions  
+                desktopInstructions: `
+                    🌱 Muévete con ZQSD o las teclas de flecha<br>
+                    ⚡ ESPACIO para plantar/cosechar en la parcela más cercana<br>
+                    💧 E para regar plantas<br>
+                    📹 C para cambiar modo de cámara<br>
+                    🌿 Las plantas crecen automáticamente (3 etapas)<br>
+                    🔒 Desbloquea parcelas acercándote y presionando ESPACIO<br>
+                    🌙 ¡Observa el ciclo día/noche!<br>
+                    🖱️ Arrastra para rotar la vista de la cámara<br>
+                    🔍 Rueda del ratón para acercar/alejar
+                `,
                 plants: {
                     title: 'Tipos de Plantas:',
                     carrot: 'Zanahoria',
@@ -5639,34 +5719,14 @@
         function updateInstructionsForMobile() {
             const instructions = document.getElementById('instructions');
             if (instructions) {
-                instructions.innerHTML = `
-                    🕹️ Use virtual joystick to move<br>
-                    🌱 Green button to plant/harvest<br>
-                    💧 Blue button to water plants<br>
-                    📹 Purple button to toggle camera<br>
-                    🔍 Pinch to zoom, drag to rotate camera<br>
-                    📋 Tap bottom menu buttons for inventory, plants, etc.<br>
-                    🌿 Plants grow automatically (3 stages)<br>
-                    🔒 Get close to plots and tap green button to unlock<br>
-                    🌙 Watch the day/night cycle!
-                `;
+                instructions.innerHTML = t('mobileInstructions');
             }
         }
 
         function updateInstructionsForDesktop() {
             const instructions = document.getElementById('instructions');
             if (instructions) {
-                instructions.innerHTML = `
-                    🌱 Move with ZQSD or arrow keys<br>
-                    ⚡ SPACE to plant/harvest at closest plot<br>
-                    💧 E to water plants<br>
-                    📹 C to toggle camera mode<br>
-                    🌿 Plants grow automatically (3 stages)<br>
-                    🔒 Unlock plots by getting close and pressing SPACE<br>
-                    🌙 Watch the day/night cycle!<br>
-                    🖱️ Drag to rotate camera view<br>
-                    🔍 Scroll wheel to zoom in/out
-                `;
+                instructions.innerHTML = t('desktopInstructions');
             }
         }
         
