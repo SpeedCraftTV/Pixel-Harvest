@@ -5,7 +5,9 @@
     "flag": "🇮🇹",
     "code": "it",
     "completion": 100,
-    "contributors": ["Pixel-Harvest Team"],
+    "contributors": [
+      "Pixel-Harvest Team"
+    ],
     "lastUpdated": "2024-12-19"
   },
   "ui": {
@@ -340,32 +342,20 @@
     "plants": {
       "carrot": "Carota",
       "tomato": "Pomodoro",
-      "wheat": "Grano",
-      "corn": "Mais",
       "potato": "Patata",
-      "lettuce": "Lattuga",
       "cabbage": "Cavolo",
-      "onion": "Cipolla",
-      "apple": "Mela",
-      "pumpkin": "Zucca",
+      "corn": "Mais",
       "watermelon": "Anguria",
+      "pumpkin": "Zucca",
+      "apple": "Albero di mele",
       "rare": "Pianta rara"
     },
     "animals": {
-      "cow": "Mucca",
       "chicken": "Pollo",
-      "sheep": "Pecora",
-      "pig": "Maiale",
-      "goat": "Capra",
-      "duck": "Anatra"
+      "cow": "Mucca",
+      "pig": "Maiale"
     },
     "equipment": {
-      "shovel": "Pala",
-      "watering_can": "Annaffiatoio",
-      "plow": "Aratro",
-      "harvester": "Mietitrice",
-      "tractor": "Trattore",
-      "irrigation": "Irrigazione",
       "sprinkler": "Spruzzatore automatico",
       "fertilizer": "Fertilizzante",
       "greenhouse": "Mini serra"
@@ -374,9 +364,8 @@
       "sunny": "Soleggiato",
       "rainy": "Piovoso",
       "cloudy": "Nuvoloso",
-      "stormy": "Tempestoso",
-      "foggy": "Nebbioso",
-      "snowy": "Nevoso"
+      "snowy": "Nevoso",
+      "stormy": "Tempestoso"
     },
     "seasons": {
       "spring": "Primavera",
@@ -385,13 +374,11 @@
       "winter": "Inverno"
     },
     "objectives": {
-      "plant_crops": "Pianta {count} colture",
       "harvest_crops": "Raccogli {count} {crop}",
       "earn_coins": "Guadagna {amount} monete",
       "plant_seeds": "Pianta {count} semi",
       "unlock_plots": "Sblocca {count} parcelle",
-      "buy_equipment": "Compra equipaggiamento",
-      "complete_daily": "Completa missione giornaliera",
+      "buy_equipment": "Compra qualsiasi attrezzatura",
       "survive_cycles": "Sopravvivi a {count} cicli giorno/notte",
       "total_plants": "Raccogli {count} piante totali"
     },
@@ -399,32 +386,19 @@
       "sell": "Vendi",
       "buy": "Compra",
       "seeds": "Semi",
-      "equipment": "Equipaggiamento",
+      "equipment": "Attrezzatura",
       "animalProducts": "Prodotti animali"
     }
   },
   "messages": {
     "errors": {
-      "save_failed": "Salvataggio fallito",
-      "load_failed": "Caricamento fallito",
-      "network_error": "Errore di rete",
-      "invalid_action": "Azione non valida",
-      "insufficient_funds": "Fondi insufficienti",
-      "plot_occupied": "Parcella occupata",
-      "no_seeds": "Nessun seme disponibile",
       "notEnoughCoins": "Non abbastanza monete!",
       "notEnoughSeeds": "Non abbastanza semi!",
       "plotNotUnlocked": "Parcella non sbloccata!",
       "invalidAction": "Azione non valida!",
-      "saveError": "Errore nel salvare il progresso del gioco"
+      "saveError": "Impossibile salvare il progresso del gioco"
     },
     "success": {
-      "game_saved": "Gioco salvato",
-      "crop_planted": "Coltura piantata",
-      "crop_harvested": "Coltura raccolta",
-      "item_purchased": "Oggetto acquistato",
-      "plot_unlocked": "Parcella sbloccata",
-      "objective_completed": "Obiettivo completato",
       "planted": "{plant} piantato!",
       "harvested": "{plant} raccolto!",
       "watered": "Piante innaffiate!",
@@ -434,11 +408,6 @@
       "gameSaved": "Progresso del gioco salvato!"
     },
     "info": {
-      "season_changed": "Stagione cambiata a {season}",
-      "weather_changed": "Tempo cambiato a {weather}",
-      "level_up": "Livello aumentato! Nuovo livello: {level}",
-      "daily_quest_available": "Nuova missione giornaliera disponibile",
-      "tutorial_available": "Tutorial disponibile",
       "dayStart": "Inizia un nuovo giorno!",
       "nightStart": "La notte cala sulla fattoria...",
       "seasonChange": "Stagione cambiata a {season}!",
