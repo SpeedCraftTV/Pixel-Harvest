@@ -13,6 +13,7 @@ Pixel Harvest est un jeu de farm 3D relax en ligne. Plante, fais pousser et réc
 - **Objectifs**: Système de progression avec défis et récompenses
 - **Customisation**: Interface personnalisable et contrôles adaptatifs
 - **Support Mobile**: Interface tactile optimisée pour appareils mobiles
+- **Tutoriel Interactif**: Système de tutoriel complet avec 24 étapes pour apprendre tous les mécaniques de jeu
 
 ## 🚀 Fonctionnalités Planifiées
 
@@ -68,6 +69,7 @@ Pour une vue détaillée du planning et des priorités de développement, consul
    - [Spécifications Techniques](design/FEATURE-SPECS.md)
    - [Documentation des Modules](src/features/)
    - [Configuration des Fonctionnalités](data/features.json)
+   - [Documentation du Tutoriel](docs/TUTORIAL.md)
 
 2. **Choisissez un Module**
    - `src/features/multiplayer/` - Système multijoueur
