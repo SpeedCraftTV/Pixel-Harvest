@@ -394,6 +394,52 @@
             border: 2px solid #FF6347;
         }
 
+        /* Leaderboard Panel */
+        #leaderboardPanel {
+            position: absolute;
+            top: 580px;
+            right: 20px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 300px;
+            max-height: 280px;
+            overflow-y: auto;
+            border: 2px solid #FFD700;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .leaderboard-item.current-player {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #FFD700;
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            min-width: 30px;
+        }
+
+        .leaderboard-player {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .leaderboard-score {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
         .weather-icon {
             font-size: 32px;
             text-align: center;
@@ -1242,6 +1288,20 @@
                 <button class="market-btn" onclick="resetDailyQuests()" style="font-size: 11px; padding: 5px 10px;">🔄 New Quests (50💰)</button>
             </div>
         </div>
+        
+        <!-- Leaderboard Panel -->
+        <div id="leaderboardPanel" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">🏆 Leaderboard</div>
+            <div style="font-size: 11px; text-align: center; margin-bottom: 10px; opacity: 0.7;" id="leaderboardStatus">
+                Loading...
+            </div>
+            <div id="leaderboardList">
+                <!-- Leaderboard will be populated dynamically -->
+            </div>
+            <div style="margin-top: 15px; text-align: center; font-size: 12px; opacity: 0.8;">
+                <button class="market-btn" onclick="refreshLeaderboard()" style="font-size: 11px; padding: 5px 10px;">🔄 Refresh</button>
+            </div>
+        </div>
         <button id="settingsButton" style="display: none;">⚙️ Controls</button>
         <button id="newGameButton" style="display: none;">🆕 New Game</button>
         <button id="profileButton" style="display: none;">👤 Profile</button>
@@ -1447,6 +1507,12 @@
                 action: "highlight"
             },
             {
+                title: "🏆 Leaderboard",
+                text: "See how you rank against other players! Your high scores are saved and can be synced online if Supabase is configured.",
+                target: "#leaderboardPanel", 
+                action: "highlight"
+            },
+            {
                 title: "🎮 Movement Controls",
                 text: "Use ZQSD or arrow keys to move your character around the farm. Get close to plots to interact with them.",
                 target: null,
@@ -1477,10 +1543,62 @@
         };
         let profiles = [];
         
-        // Supabase Integration (will be implemented)
+        // Supabase Integration
+        // To enable online features, set up a Supabase project:
+        // 1. Go to https://supabase.com and create a new project
+        // 2. Get your project URL and anon key from Settings > API
+        // 3. Replace the values below with your actual Supabase credentials
+        // 4. Create the following table in your Supabase database:
+        /*
+        CREATE TABLE profiles (
+            id TEXT PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            character TEXT NOT NULL,
+            character_color TEXT NOT NULL,
+            high_score INTEGER DEFAULT 0,
+            total_coins INTEGER DEFAULT 0,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            last_played TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+        
+        -- Enable Row Level Security
+        ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+        
+        -- Create policy to allow all operations (adjust as needed for your security requirements)
+        CREATE POLICY "Allow all operations on profiles" ON profiles FOR ALL USING (true);
+        */
+        
         let supabaseUrl = 'https://your-project.supabase.co';
         let supabaseKey = 'your-anon-key';
         let supabaseClient = null;
+        let onlineMode = false; // Set to true when Supabase is configured
+        
+        // Supabase-like client mock for demonstration
+        const createSupabaseClient = (url, key) => {
+            return {
+                from: (table) => ({
+                    select: () => ({ data: [], error: null }),
+                    insert: (data) => ({ data: data, error: null }),
+                    update: (data) => ({ data: data, error: null }),
+                    upsert: (data) => ({ data: data, error: null }),
+                    eq: (column, value) => ({ data: [], error: null })
+                }),
+                auth: {
+                    signUp: () => ({ data: null, error: null }),
+                    signIn: () => ({ data: null, error: null }),
+                    signOut: () => ({ data: null, error: null }),
+                    user: () => null
+                }
+            };
+        };
+
+        // Initialize Supabase client (mock for now)
+        if (supabaseUrl !== 'https://your-project.supabase.co' && supabaseKey !== 'your-anon-key') {
+            onlineMode = true;
+            // In real implementation: supabaseClient = createClient(supabaseUrl, supabaseKey);
+        } else {
+            supabaseClient = createSupabaseClient(supabaseUrl, supabaseKey);
+        }
         
         // Weather System
         let currentWeather = {
@@ -2955,12 +3073,228 @@
                 localStorage.setItem(`pixelHarvestGame_${currentProfile.id}`, JSON.stringify(gameData));
                 
                 // Update profile stats
+                const oldHighScore = currentProfile.highScore;
                 currentProfile.highScore = Math.max(currentProfile.highScore, score);
                 currentProfile.totalCoins = coins;
+                currentProfile.lastPlayed = Date.now();
                 saveProfiles();
+                
+                // Sync to Supabase if online
+                if (onlineMode && oldHighScore !== currentProfile.highScore) {
+                    syncProfileToSupabase();
+                }
+                
+                updatePlayerInfoDisplay();
             } catch (e) {
                 console.error('Failed to save game data for profile:', e);
             }
+        }
+
+        // Supabase Integration Functions
+        async function syncProfileToSupabase() {
+            if (!onlineMode || !currentProfile.id) return;
+            
+            try {
+                const profileData = {
+                    id: currentProfile.id,
+                    username: currentProfile.username,
+                    character: currentProfile.character,
+                    character_color: currentProfile.characterColor,
+                    high_score: currentProfile.highScore,
+                    total_coins: currentProfile.totalCoins,
+                    created_at: new Date(currentProfile.created).toISOString(),
+                    last_played: new Date(currentProfile.lastPlayed || Date.now()).toISOString()
+                };
+
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .upsert(profileData);
+
+                if (error) {
+                    console.error('Failed to sync profile to Supabase:', error);
+                } else {
+                    console.log('Profile synced to Supabase successfully');
+                }
+            } catch (e) {
+                console.error('Error syncing to Supabase:', e);
+            }
+        }
+
+        async function loadProfilesFromSupabase() {
+            if (!onlineMode) return [];
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .order('high_score', { ascending: false })
+                    .limit(100);
+
+                if (error) {
+                    console.error('Failed to load profiles from Supabase:', error);
+                    return [];
+                }
+
+                return data.map(profile => ({
+                    id: profile.id,
+                    username: profile.username,
+                    character: profile.character,
+                    characterColor: profile.character_color,
+                    highScore: profile.high_score,
+                    totalCoins: profile.total_coins,
+                    created: new Date(profile.created_at).getTime(),
+                    lastPlayed: new Date(profile.last_played).getTime()
+                }));
+            } catch (e) {
+                console.error('Error loading from Supabase:', e);
+                return [];
+            }
+        }
+
+        async function getLeaderboard(limit = 10) {
+            if (!onlineMode) {
+                // Return local leaderboard
+                return profiles
+                    .sort((a, b) => b.highScore - a.highScore)
+                    .slice(0, limit)
+                    .map((profile, index) => ({
+                        rank: index + 1,
+                        username: profile.username,
+                        character: profile.character,
+                        highScore: profile.highScore,
+                        isCurrentPlayer: profile.id === currentProfile.id
+                    }));
+            }
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .select('id, username, character, high_score')
+                    .order('high_score', { ascending: false })
+                    .limit(limit);
+
+                if (error) {
+                    console.error('Failed to get leaderboard from Supabase:', error);
+                    return [];
+                }
+
+                return data.map((profile, index) => ({
+                    rank: index + 1,
+                    username: profile.username,
+                    character: profile.character,
+                    highScore: profile.high_score,
+                    isCurrentPlayer: profile.id === currentProfile.id
+                }));
+            } catch (e) {
+                console.error('Error getting leaderboard:', e);
+                return [];
+            }
+        }
+
+        // Enhanced profile creation with Supabase sync
+        async function createProfile() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (!username) {
+                alert('Please enter a username!');
+                return;
+            }
+
+            // Check for username uniqueness locally
+            if (profiles.some(p => p.username.toLowerCase() === username.toLowerCase())) {
+                alert('Username already exists locally! Please choose a different one.');
+                return;
+            }
+
+            // Check username uniqueness on Supabase if online
+            if (onlineMode) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('profiles')
+                        .select('username')
+                        .eq('username', username);
+
+                    if (error) {
+                        console.error('Error checking username:', error);
+                    } else if (data && data.length > 0) {
+                        alert('Username already exists online! Please choose a different one.');
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Error checking username online:', e);
+                }
+            }
+
+            const selectedCharacter = document.querySelector('.character-option[data-character].selected');
+            const selectedColor = document.querySelector('.character-option[data-color].selected');
+
+            currentProfile = {
+                username: username,
+                character: selectedCharacter ? selectedCharacter.dataset.character : 'farmer',
+                characterColor: selectedColor ? selectedColor.dataset.color : '#4169E1',
+                highScore: 0,
+                totalCoins: 0,
+                created: Date.now(),
+                lastPlayed: Date.now(),
+                id: generateProfileId()
+            };
+
+            profiles.push(currentProfile);
+            saveProfiles();
+            
+            // Apply profile to character
+            character.color = currentProfile.characterColor;
+            
+            hideProfileScreen();
+            updatePlayerInfoDisplay();
+            
+            // Save this as the last used profile
+            localStorage.setItem('pixelHarvestLastProfile', currentProfile.id);
+            
+            // Sync to Supabase if online
+            if (onlineMode) {
+                await syncProfileToSupabase();
+            }
+            
+            // Check if tutorial should be shown
+            const tutorialCompleted = localStorage.getItem('pixelHarvestTutorialCompleted');
+            if (!tutorialCompleted) {
+                startTutorial();
+            }
+            
+            const onlineStatus = onlineMode ? " (synced online)" : " (local only)";
+            showInstruction(`Welcome ${currentProfile.username}! Profile created successfully${onlineStatus}!`, 3000);
+        }
+
+        // Leaderboard Functions
+        async function updateLeaderboard() {
+            const leaderboard = await getLeaderboard(10);
+            const leaderboardList = document.getElementById('leaderboardList');
+            const leaderboardStatus = document.getElementById('leaderboardStatus');
+            
+            if (!leaderboardList) return;
+            
+            leaderboardStatus.textContent = onlineMode ? "Online Rankings" : "Local Rankings";
+            
+            if (leaderboard.length === 0) {
+                leaderboardList.innerHTML = '<div style="text-align: center; opacity: 0.7;">No players yet</div>';
+                return;
+            }
+            
+            leaderboardList.innerHTML = leaderboard.map(player => `
+                <div class="leaderboard-item ${player.isCurrentPlayer ? 'current-player' : ''}">
+                    <div class="leaderboard-rank">#${player.rank}</div>
+                    <div class="leaderboard-player">
+                        ${getCharacterEmoji(player.character)} ${player.username}
+                        ${player.isCurrentPlayer ? ' (You)' : ''}
+                    </div>
+                    <div class="leaderboard-score">${player.highScore}</div>
+                </div>
+            `).join('');
+        }
+
+        async function refreshLeaderboard() {
+            await updateLeaderboard();
+            showInstruction("Leaderboard refreshed!", 1500);
         }
 
         function init() {
@@ -3047,6 +3381,7 @@
             document.getElementById('seasonPanel').style.display = 'block';
             document.getElementById('animalsPanel').style.display = 'block';
             document.getElementById('questsPanel').style.display = 'block';
+            document.getElementById('leaderboardPanel').style.display = 'block';
             
             // Check if user has a profile
             if (profiles.length === 0 || !currentProfile.username) {
@@ -3075,6 +3410,9 @@
                 if (!tutorialCompleted) {
                     setTimeout(() => startTutorial(), 1000); // Small delay to ensure UI is ready
                 }
+                
+                // Initialize leaderboard
+                setTimeout(() => updateLeaderboard(), 1500);
             }
             
             // Start game loop
@@ -5055,7 +5393,8 @@
             { id: 'weatherPanel', name: 'Weather' },
             { id: 'seasonPanel', name: 'Season' },
             { id: 'animalsPanel', name: 'Animals' },
-            { id: 'questsPanel', name: 'Quests' }
+            { id: 'questsPanel', name: 'Quests' },
+            { id: 'leaderboardPanel', name: 'Leaderboard' }
         ];
 
         function initDraggableUI() {
