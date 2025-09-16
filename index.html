@@ -1468,6 +1468,10 @@
                 🏪
                 <span class="badge" id="marketBadge" style="display: none;">0</span>
             </button>
+            <button class="mobile-nav-btn" id="mobileObjectivesBtn" data-panel="objectives">
+                🎯
+                <span class="badge" id="objectivesBadge" style="display: none;">0</span>
+            </button>
             <button class="mobile-nav-btn" id="mobileAnimalsBtn" data-panel="animals">
                 🐄
                 <span class="badge" id="animalsBadge" style="display: none;">0</span>
@@ -1521,6 +1525,16 @@
             </div>
             <div class="mobile-panel-content" id="mobileAnimalsContent">
                 <!-- Animals content will be dynamically populated -->
+            </div>
+        </div>
+
+        <div id="mobileObjectivesPanel" class="mobile-panel">
+            <div class="mobile-panel-header">
+                <div class="mobile-panel-title">🎯 Objectives</div>
+                <button class="mobile-panel-close">×</button>
+            </div>
+            <div class="mobile-panel-content" id="mobileObjectivesContent">
+                <!-- Objectives content will be dynamically populated -->
             </div>
         </div>
 
@@ -6883,6 +6897,22 @@
                 animalsBadge.style.display = animalsTotal > 0 ? 'flex' : 'none';
             }
 
+            // Objectives badge (completed objectives)
+            const completedObjectives = 
+                (objectives.carrotsHarvested >= 5 ? 1 : 0) +
+                (objectives.dayNightCycles >= 2 ? 1 : 0) +
+                (objectives.coinsEarned >= 20 ? 1 : 0) +
+                (objectives.plantsHarvested >= 25 ? 1 : 0) +
+                (objectives.equipmentBought >= 1 ? 1 : 0) +
+                (objectives.coinsEarned >= 500 ? 1 : 0) +
+                (objectives.seedsPlanted >= 50 ? 1 : 0) +
+                (objectives.plotsUnlocked >= 25 ? 1 : 0);
+            const objectivesBadge = document.getElementById('objectivesBadge');
+            if (objectivesBadge) {
+                objectivesBadge.textContent = completedObjectives;
+                objectivesBadge.style.display = completedObjectives > 0 ? 'flex' : 'none';
+            }
+
             // Quests badge (available quests)
             const questsBadge = document.getElementById('questsBadge');
             if (questsBadge) {
@@ -6900,6 +6930,9 @@
                     break;
                 case 'market':
                     updateMobileMarketContent();
+                    break;
+                case 'objectives':
+                    updateMobileObjectivesContent();
                     break;
                 case 'animals':
                     updateMobileAnimalsContent();
@@ -7083,6 +7116,74 @@
                     </div>
                 </div>
             `;
+
+            content.innerHTML = html;
+        }
+
+        function updateMobileObjectivesContent() {
+            const content = document.getElementById('mobileObjectivesContent');
+            if (!content) return;
+
+            let html = '<div style="padding: 15px;">';
+            
+            // Current objectives list
+            html += '<div style="margin-bottom: 15px; text-align: center; color: #FFD700; font-weight: bold;">🎯 Current Goals</div>';
+            
+            // Basic objectives (always visible)
+            html += `
+                <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <div style="color: ${objectives.carrotsHarvested >= 5 ? '#4CAF50' : '#fff'};">
+                        🥕 Harvest 5 carrots (${objectives.carrotsHarvested}/5)
+                    </div>
+                </div>
+                <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <div style="color: ${objectives.dayNightCycles >= 2 ? '#4CAF50' : '#fff'};">
+                        🌙 Survive 2 day/night cycles (${objectives.dayNightCycles}/2)
+                    </div>
+                </div>
+                <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <div style="color: ${objectives.coinsEarned >= 20 ? '#4CAF50' : '#fff'};">
+                        💰 Earn 20 coins (${objectives.coinsEarned}/20)
+                    </div>
+                </div>
+            `;
+            
+            // Advanced objectives (shown when basic ones are complete)
+            const basicComplete = objectives.carrotsHarvested >= 5 && 
+                                   objectives.dayNightCycles >= 2 && 
+                                   objectives.coinsEarned >= 20;
+            
+            if (basicComplete) {
+                html += `
+                    <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                        <div style="color: ${objectives.plantsHarvested >= 25 ? '#4CAF50' : '#fff'};">
+                            🌾 Harvest 25 total plants (${objectives.plantsHarvested}/25)
+                        </div>
+                    </div>
+                    <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                        <div style="color: ${objectives.equipmentBought >= 1 ? '#4CAF50' : '#fff'};">
+                            🔧 Buy any equipment (${objectives.equipmentBought}/1)
+                        </div>
+                    </div>
+                    <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                        <div style="color: ${objectives.coinsEarned >= 500 ? '#4CAF50' : '#fff'};">
+                            💰 Earn 500 coins (${objectives.coinsEarned}/500)
+                        </div>
+                    </div>
+                    <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                        <div style="color: ${objectives.seedsPlanted >= 50 ? '#4CAF50' : '#fff'};">
+                            🌱 Plant 50 seeds (${objectives.seedsPlanted}/50)
+                        </div>
+                    </div>
+                    <div class="objective-item" style="padding: 10px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                        <div style="color: ${objectives.plotsUnlocked >= 25 ? '#4CAF50' : '#fff'};">
+                            🏆 Unlock all plots (${objectives.plotsUnlocked}/25)
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
 
             content.innerHTML = html;
         }
