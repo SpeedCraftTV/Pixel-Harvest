@@ -2988,7 +2988,7 @@
         }
 
         function generateProfileId() {
-            return 'profile_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            return 'profile_' + crypto.randomUUID();
         }
 
         function loadExistingProfile() {
