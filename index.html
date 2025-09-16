@@ -808,17 +808,19 @@
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
             padding: 20px;
-            transform: translateY(100%);
+            transform: translateY(100%) !important;
             transition: transform 0.3s ease;
             z-index: 350;
             max-height: 60vh;
             overflow-y: auto;
             border-top: 3px solid #4CAF50;
+            display: none; /* Hide by default */
         }
 
         .mobile-panel.active {
-            transform: translateY(0);
+            transform: translateY(0) !important;
             z-index: 400; /* Higher z-index when active */
+            display: block !important; /* Show when active */
         }
 
         .mobile-panel-header {
@@ -6569,6 +6571,7 @@
                 const mobilePanels = document.querySelectorAll('.mobile-panel');
                 mobilePanels.forEach(panel => {
                     panel.classList.remove('active');
+                    panel.style.display = 'none';
                     panel.style.transform = 'translateY(100%)';
                 });
             }, 100);
@@ -6614,18 +6617,24 @@
             document.querySelectorAll('.mobile-panel').forEach(p => {
                 if (p.id !== panelId) {
                     p.classList.remove('active');
+                    p.style.display = 'none';
+                    p.style.transform = 'translateY(100%)';
                 }
             });
 
             // Toggle the requested panel
             if (currentMobilePanel === panelId) {
                 panel.classList.remove('active');
+                panel.style.display = 'none';
+                panel.style.transform = 'translateY(100%)';
                 currentMobilePanel = null;
                 
                 // Remove active state from navigation button
                 document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
             } else {
                 panel.classList.add('active');
+                panel.style.display = 'block';
+                panel.style.transform = 'translateY(0)';
                 currentMobilePanel = panelId;
                 
                 // Add active state to navigation button
@@ -6647,6 +6656,8 @@
             // Close all mobile panels
             document.querySelectorAll('.mobile-panel').forEach(panel => {
                 panel.classList.remove('active');
+                panel.style.display = 'none';
+                panel.style.transform = 'translateY(100%)';
             });
             
             currentMobilePanel = null;
