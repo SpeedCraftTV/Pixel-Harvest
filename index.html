@@ -293,6 +293,24 @@
             background: #D84315;
         }
         
+        #profileButton {
+            position: absolute;
+            top: 20px;
+            right: 540px;
+            z-index: 100;
+            background: #9C27B0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #profileButton:hover {
+            background: #7B1FA2;
+        }
+        
         #canvas {
             display: block;
             border: none;
@@ -604,6 +622,189 @@
             padding-top: 10px;
         }
 
+        /* Tutorial System Styles */
+        #tutorialOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tutorial-content {
+            background: rgba(30, 30, 30, 0.95);
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .tutorial-content h2 {
+            color: #4CAF50;
+            margin-top: 0;
+            font-size: 28px;
+        }
+
+        .tutorial-step {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .tutorial-highlight {
+            position: absolute;
+            border: 3px solid #FFD700;
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.2);
+            pointer-events: none;
+            z-index: 999;
+            display: none;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: tutorialPulse 2s infinite;
+        }
+
+        @keyframes tutorialPulse {
+            0%, 100% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        .tutorial-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .tutorial-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .tutorial-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .tutorial-btn.secondary {
+            background: #2196F3;
+        }
+
+        .tutorial-btn.secondary:hover {
+            background: #1976D2;
+        }
+
+        .tutorial-btn.skip {
+            background: #f44336;
+        }
+
+        .tutorial-btn.skip:hover {
+            background: #da190b;
+        }
+
+        /* Profile System Styles */
+        #profileOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-content {
+            background: rgba(30, 30, 30, 0.95);
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-content h2 {
+            color: #4CAF50;
+            margin-top: 0;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .profile-form input[type="text"] {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #4CAF50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .profile-form input[type="text"]:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .character-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .character-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 32px;
+            transition: all 0.2s ease;
+        }
+
+        .character-option:hover {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .character-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+
         /* Adjust existing panels to work with draggable system */
         .draggable-panel .drag-handle + * {
             margin-top: 25px;
@@ -864,6 +1065,7 @@
     <div id="gameContainer">
         <div class="loading" id="loading">Loading Pixel-Harvest...</div>
         <div id="ui" style="display: none;">
+            <div id="playerInfo" style="margin-bottom: 10px; color: #FFD700; font-weight: bold;">Player: Guest</div>
             <div id="score">Score: 0</div>
             <div id="instructions">
                 🌱 Move with WASD or arrow keys<br>
@@ -1042,7 +1244,64 @@
         </div>
         <button id="settingsButton" style="display: none;">⚙️ Controls</button>
         <button id="newGameButton" style="display: none;">🆕 New Game</button>
+        <button id="profileButton" style="display: none;">👤 Profile</button>
         <button id="uiModeToggle" class="ui-mode-toggle" style="display: none;">🔧 UI Mode</button>
+        
+        <!-- Tutorial System -->
+        <div id="tutorialOverlay">
+            <div class="tutorial-content">
+                <h2 id="tutorialTitle">🌱 Welcome to Pixel-Harvest!</h2>
+                <div id="tutorialText">
+                    <div class="tutorial-step">
+                        Welcome to your new farm! This tutorial will guide you through all the game features.
+                        Let's start by learning the basics of farming.
+                    </div>
+                </div>
+                <div class="tutorial-buttons">
+                    <button class="tutorial-btn" id="tutorialNext">Start Tutorial</button>
+                    <button class="tutorial-btn skip" id="tutorialSkip">Skip Tutorial</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tutorial Highlight -->
+        <div id="tutorialHighlight" class="tutorial-highlight"></div>
+        
+        <!-- Profile System -->
+        <div id="profileOverlay">
+            <div class="profile-content">
+                <h2>👤 Create Your Profile</h2>
+                <div class="profile-form">
+                    <input type="text" id="usernameInput" placeholder="Enter your username..." maxlength="20">
+                    
+                    <div>
+                        <label style="color: #4CAF50; font-weight: bold; margin-bottom: 10px; display: block;">Choose your character:</label>
+                        <div class="character-selection">
+                            <div class="character-option" data-character="farmer">👨‍🌾</div>
+                            <div class="character-option" data-character="girl">👩‍🌾</div>
+                            <div class="character-option" data-character="boy">🧑‍🌾</div>
+                            <div class="character-option" data-character="old">🧓</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label style="color: #4CAF50; font-weight: bold; margin-bottom: 10px; display: block;">Character color:</label>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <div class="character-option" data-color="#4169E1" style="background: #4169E1; font-size: 16px;">💙</div>
+                            <div class="character-option" data-color="#32CD32" style="background: #32CD32; font-size: 16px;">💚</div>
+                            <div class="character-option" data-color="#FF6347" style="background: #FF6347; font-size: 16px;">❤️</div>
+                            <div class="character-option" data-color="#FFD700" style="background: #FFD700; font-size: 16px;">💛</div>
+                            <div class="character-option" data-color="#9370DB" style="background: #9370DB; font-size: 16px;">💜</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-buttons">
+                    <button class="tutorial-btn" id="createProfileBtn">Create Profile</button>
+                    <button class="tutorial-btn secondary" id="loadProfileBtn">Load Existing</button>
+                </div>
+            </div>
+        </div>
         
         <!-- Mobile Controls -->
         <div id="mobileControls">
@@ -1127,6 +1386,101 @@
         let coins = 50; // Balanced starting amount
         let dayNightCycle = 0;
         let dayNightCycleCount = 0;
+        
+        // Tutorial System
+        let tutorialActive = false;
+        let tutorialStep = 0;
+        let tutorialSteps = [
+            {
+                title: "🌱 Welcome to Pixel-Harvest!",
+                text: "Welcome to your new farm! This tutorial will guide you through all the game features. Let's start by learning the basics of farming.",
+                target: null,
+                action: "continue"
+            },
+            {
+                title: "📊 Game Information",
+                text: "This panel shows your current score and basic controls. Your score increases as you harvest crops and complete objectives.",
+                target: "#ui",
+                action: "highlight"
+            },
+            {
+                title: "🌱 Plant Selection",
+                text: "Here you can choose which type of plant to grow. Different plants have different growth times and values. Try clicking on a plant type!",
+                target: "#plantSelector",
+                action: "wait_interaction",
+                element: ".plant-btn"
+            },
+            {
+                title: "📦 Your Inventory",
+                text: "This shows all the items you've collected. Harvested crops, equipment, and animal products are stored here.",
+                target: "#inventory",
+                action: "highlight"
+            },
+            {
+                title: "🏪 Marketplace",
+                text: "Use the marketplace to sell your crops for coins, buy new seeds, and purchase equipment to improve your farm.",
+                target: "#marketplace",
+                action: "highlight"
+            },
+            {
+                title: "🎯 Objectives",
+                text: "Complete these objectives to progress and earn rewards. They help guide your farming activities.",
+                target: "#objectives",
+                action: "highlight"
+            },
+            {
+                title: "🌤️ Weather & Seasons",
+                text: "Weather affects plant growth and water consumption. Seasons change which crops grow best. Plan accordingly!",
+                target: "#weatherPanel",
+                action: "highlight"
+            },
+            {
+                title: "🐄 Farm Animals",
+                text: "Buy animals to produce eggs, milk, and truffles. These provide passive income and additional objectives.",
+                target: "#animalsPanel",
+                action: "highlight"
+            },
+            {
+                title: "📋 Daily Quests",
+                text: "Complete daily quests for extra rewards. They reset regularly and provide bonus coins.",
+                target: "#questsPanel",
+                action: "highlight"
+            },
+            {
+                title: "🎮 Movement Controls",
+                text: "Use ZQSD or arrow keys to move your character around the farm. Get close to plots to interact with them.",
+                target: null,
+                action: "movement_demo"
+            },
+            {
+                title: "🌱 Planting & Harvesting",
+                text: "Press SPACE when near a plot to plant seeds or harvest mature crops. Press E to water your plants. Try planting your first crop!",
+                target: null,
+                action: "wait_plant"
+            },
+            {
+                title: "🎉 Tutorial Complete!",
+                text: "Great job! You now know the basics of Pixel-Harvest. Keep farming, complete objectives, and build the ultimate farm!",
+                target: null,
+                action: "complete"
+            }
+        ];
+
+        // Profile System
+        let currentProfile = {
+            username: "",
+            character: "farmer",
+            characterColor: "#4169E1",
+            highScore: 0,
+            totalCoins: 0,
+            created: Date.now()
+        };
+        let profiles = [];
+        
+        // Supabase Integration (will be implemented)
+        let supabaseUrl = 'https://your-project.supabase.co';
+        let supabaseKey = 'your-anon-key';
+        let supabaseClient = null;
         
         // Weather System
         let currentWeather = {
@@ -2265,6 +2619,350 @@
             });
         }
         
+        // Tutorial System Functions
+        function startTutorial() {
+            tutorialActive = true;
+            tutorialStep = 0;
+            document.getElementById('tutorialOverlay').style.display = 'flex';
+            showTutorialStep();
+        }
+
+        function showTutorialStep() {
+            const step = tutorialSteps[tutorialStep];
+            if (!step) return;
+
+            document.getElementById('tutorialTitle').textContent = step.title;
+            document.getElementById('tutorialText').innerHTML = `<div class="tutorial-step">${step.text}</div>`;
+            
+            // Hide highlight first
+            hideHighlight();
+            
+            // Handle different action types
+            switch (step.action) {
+                case "continue":
+                    setupContinueButton();
+                    break;
+                case "highlight":
+                    highlightElement(step.target);
+                    setupContinueButton();
+                    break;
+                case "wait_interaction":
+                    highlightElement(step.target);
+                    setupWaitForInteraction(step.element);
+                    break;
+                case "movement_demo":
+                    setupMovementDemo();
+                    break;
+                case "wait_plant":
+                    setupWaitForPlanting();
+                    break;
+                case "complete":
+                    setupCompleteTutorial();
+                    break;
+            }
+        }
+
+        function setupContinueButton() {
+            const nextBtn = document.getElementById('tutorialNext');
+            nextBtn.textContent = "Continue";
+            nextBtn.onclick = nextTutorialStep;
+            
+            const skipBtn = document.getElementById('tutorialSkip');
+            skipBtn.style.display = 'inline-block';
+        }
+
+        function setupWaitForInteraction(elementSelector) {
+            const nextBtn = document.getElementById('tutorialNext');
+            nextBtn.textContent = "Click the highlighted element";
+            nextBtn.style.display = 'none';
+            
+            // Wait for interaction with the specified element
+            const elements = document.querySelectorAll(elementSelector);
+            elements.forEach(el => {
+                el.addEventListener('click', handleTutorialInteraction, { once: true });
+            });
+        }
+
+        function setupMovementDemo() {
+            const nextBtn = document.getElementById('tutorialNext');
+            nextBtn.textContent = "Try moving with ZQSD or arrow keys";
+            nextBtn.onclick = nextTutorialStep;
+            
+            // Hide tutorial overlay temporarily to show movement
+            document.getElementById('tutorialOverlay').style.display = 'none';
+            
+            // Show a temporary instruction
+            showInstruction("Try moving your character with ZQSD or arrow keys, then press this button to continue", 0);
+            
+            // Add a floating continue button
+            const continueBtn = document.createElement('button');
+            continueBtn.textContent = "Continue Tutorial";
+            continueBtn.className = 'tutorial-btn';
+            continueBtn.style.position = 'fixed';
+            continueBtn.style.top = '50%';
+            continueBtn.style.left = '50%';
+            continueBtn.style.transform = 'translate(-50%, -50%)';
+            continueBtn.style.zIndex = '500';
+            continueBtn.onclick = () => {
+                document.body.removeChild(continueBtn);
+                document.getElementById('tutorialOverlay').style.display = 'flex';
+                nextTutorialStep();
+            };
+            document.body.appendChild(continueBtn);
+        }
+
+        function setupWaitForPlanting() {
+            const nextBtn = document.getElementById('tutorialNext');
+            nextBtn.textContent = "Plant your first seed";
+            nextBtn.style.display = 'none';
+            
+            // Hide tutorial overlay to allow planting
+            document.getElementById('tutorialOverlay').style.display = 'none';
+            
+            // Show instruction
+            showInstruction("Get close to the center plot and press SPACE to plant a seed!", 0);
+            
+            // Listen for planting action
+            let originalPlantSeed = plantSeed;
+            plantSeed = function(plot, plantType) {
+                originalPlantSeed(plot, plantType);
+                // Restore original function
+                plantSeed = originalPlantSeed;
+                // Continue tutorial
+                setTimeout(() => {
+                    document.getElementById('tutorialOverlay').style.display = 'flex';
+                    nextTutorialStep();
+                }, 1500);
+            };
+        }
+
+        function setupCompleteTutorial() {
+            const nextBtn = document.getElementById('tutorialNext');
+            nextBtn.textContent = "Start Playing!";
+            nextBtn.onclick = endTutorial;
+            
+            const skipBtn = document.getElementById('tutorialSkip');
+            skipBtn.style.display = 'none';
+        }
+
+        function handleTutorialInteraction() {
+            setTimeout(() => {
+                nextTutorialStep();
+            }, 500);
+        }
+
+        function nextTutorialStep() {
+            tutorialStep++;
+            if (tutorialStep >= tutorialSteps.length) {
+                endTutorial();
+            } else {
+                showTutorialStep();
+            }
+        }
+
+        function endTutorial() {
+            tutorialActive = false;
+            document.getElementById('tutorialOverlay').style.display = 'none';
+            hideHighlight();
+            
+            // Save that tutorial was completed
+            localStorage.setItem('pixelHarvestTutorialCompleted', 'true');
+            
+            showInstruction("Tutorial completed! Welcome to Pixel-Harvest!", 3000);
+        }
+
+        function skipTutorial() {
+            endTutorial();
+        }
+
+        function highlightElement(selector) {
+            if (!selector) return;
+            
+            const element = document.querySelector(selector);
+            if (!element) return;
+            
+            const highlight = document.getElementById('tutorialHighlight');
+            const rect = element.getBoundingClientRect();
+            
+            highlight.style.display = 'block';
+            highlight.style.left = (rect.left - 5) + 'px';
+            highlight.style.top = (rect.top - 5) + 'px';
+            highlight.style.width = (rect.width + 10) + 'px';
+            highlight.style.height = (rect.height + 10) + 'px';
+        }
+
+        function hideHighlight() {
+            document.getElementById('tutorialHighlight').style.display = 'none';
+        }
+
+        // Profile System Functions
+        function showProfileScreen() {
+            document.getElementById('profileOverlay').style.display = 'flex';
+            loadProfiles();
+        }
+
+        function hideProfileScreen() {
+            document.getElementById('profileOverlay').style.display = 'none';
+        }
+
+        function loadProfiles() {
+            try {
+                const saved = localStorage.getItem('pixelHarvestProfiles');
+                profiles = saved ? JSON.parse(saved) : [];
+            } catch (e) {
+                console.error('Failed to load profiles:', e);
+                profiles = [];
+            }
+        }
+
+        function saveProfiles() {
+            try {
+                localStorage.setItem('pixelHarvestProfiles', JSON.stringify(profiles));
+            } catch (e) {
+                console.error('Failed to save profiles:', e);
+            }
+        }
+
+        function createProfile() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (!username) {
+                alert('Please enter a username!');
+                return;
+            }
+
+            if (profiles.some(p => p.username === username)) {
+                alert('Username already exists! Please choose a different one.');
+                return;
+            }
+
+            const selectedCharacter = document.querySelector('.character-option[data-character].selected');
+            const selectedColor = document.querySelector('.character-option[data-color].selected');
+
+            currentProfile = {
+                username: username,
+                character: selectedCharacter ? selectedCharacter.dataset.character : 'farmer',
+                characterColor: selectedColor ? selectedColor.dataset.color : '#4169E1',
+                highScore: 0,
+                totalCoins: 0,
+                created: Date.now(),
+                id: generateProfileId()
+            };
+
+            profiles.push(currentProfile);
+            saveProfiles();
+            
+            // Apply profile to character
+            character.color = currentProfile.characterColor;
+            
+            hideProfileScreen();
+            updatePlayerInfoDisplay();
+            
+            // Save this as the last used profile
+            localStorage.setItem('pixelHarvestLastProfile', currentProfile.id);
+            
+            // Check if tutorial should be shown
+            const tutorialCompleted = localStorage.getItem('pixelHarvestTutorialCompleted');
+            if (!tutorialCompleted) {
+                startTutorial();
+            }
+            
+            showInstruction(`Welcome ${currentProfile.username}! Profile created successfully!`, 3000);
+        }
+
+        function generateProfileId() {
+            return 'profile_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function loadExistingProfile() {
+            if (profiles.length === 0) {
+                alert('No profiles found! Please create a new profile.');
+                return;
+            }
+
+            // Simple profile selection for now - could be enhanced with a better UI
+            const usernames = profiles.map(p => p.username);
+            const selected = prompt('Select profile:\n' + usernames.map((u, i) => `${i + 1}. ${u}`).join('\n') + '\n\nEnter the number:');
+            
+            const index = parseInt(selected) - 1;
+            if (index >= 0 && index < profiles.length) {
+                currentProfile = profiles[index];
+                character.color = currentProfile.characterColor;
+                hideProfileScreen();
+                updatePlayerInfoDisplay();
+                
+                // Save this as the last used profile
+                localStorage.setItem('pixelHarvestLastProfile', currentProfile.id);
+                
+                showInstruction(`Welcome back ${currentProfile.username}!`, 3000);
+                
+                // Load profile's game state if exists
+                loadGameForProfile();
+            } else {
+                alert('Invalid selection!');
+            }
+        }
+
+        function loadGameForProfile() {
+            try {
+                const gameData = localStorage.getItem(`pixelHarvestGame_${currentProfile.id}`);
+                if (gameData) {
+                    const data = JSON.parse(gameData);
+                    // Restore game state
+                    score = data.score || 0;
+                    coins = data.coins || 50;
+                    inventory = data.inventory || {};
+                    objectives = data.objectives || {};
+                    updateUI();
+                }
+            } catch (e) {
+                console.error('Failed to load game data for profile:', e);
+            }
+            
+            // Update player info display
+            updatePlayerInfoDisplay();
+        }
+
+        function updatePlayerInfoDisplay() {
+            const playerInfoElement = document.getElementById('playerInfo');
+            if (playerInfoElement && currentProfile.username) {
+                const characterEmoji = getCharacterEmoji(currentProfile.character);
+                playerInfoElement.innerHTML = `${characterEmoji} Player: ${currentProfile.username} | High Score: ${currentProfile.highScore}`;
+            }
+        }
+
+        function getCharacterEmoji(character) {
+            switch (character) {
+                case 'farmer': return '👨‍🌾';
+                case 'girl': return '👩‍🌾';
+                case 'boy': return '🧑‍🌾';
+                case 'old': return '🧓';
+                default: return '👨‍🌾';
+            }
+        }
+
+        function saveGameForProfile() {
+            if (!currentProfile.id) return;
+            
+            try {
+                const gameData = {
+                    score: score,
+                    coins: coins,
+                    inventory: inventory,
+                    objectives: objectives,
+                    lastPlayed: Date.now()
+                };
+                
+                localStorage.setItem(`pixelHarvestGame_${currentProfile.id}`, JSON.stringify(gameData));
+                
+                // Update profile stats
+                currentProfile.highScore = Math.max(currentProfile.highScore, score);
+                currentProfile.totalCoins = coins;
+                saveProfiles();
+            } catch (e) {
+                console.error('Failed to save game data for profile:', e);
+            }
+        }
+
         function init() {
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
@@ -2278,6 +2976,13 @@
             
             // Load saved controls
             loadSavedControls();
+            
+            // Initialize tutorial and profile event listeners
+            initTutorialEvents();
+            initProfileEvents();
+            
+            // Check for existing profiles
+            loadProfiles();
             
             // Try to load saved game, otherwise create new game
             if (!loadGame()) {
@@ -2318,8 +3023,13 @@
             // Update instructions with current controls
             updateInstructions();
             
-            // Set up auto-save (every 10 seconds)
-            autoSaveInterval = setInterval(saveGame, 10000);
+            // Set up auto-save (every 10 seconds) - now includes profile saving
+            autoSaveInterval = setInterval(() => {
+                saveGame();
+                if (currentProfile.id) {
+                    saveGameForProfile();
+                }
+            }, 10000);
             
             // Hide loading screen
             document.getElementById('loading').style.display = 'none';
@@ -2331,14 +3041,81 @@
             document.getElementById('objectives').style.display = 'block';
             document.getElementById('settingsButton').style.display = 'block';
             document.getElementById('newGameButton').style.display = 'block';
+            document.getElementById('profileButton').style.display = 'block';
             document.getElementById('uiModeToggle').style.display = 'block';
             document.getElementById('weatherPanel').style.display = 'block';
             document.getElementById('seasonPanel').style.display = 'block';
             document.getElementById('animalsPanel').style.display = 'block';
             document.getElementById('questsPanel').style.display = 'block';
             
+            // Check if user has a profile
+            if (profiles.length === 0 || !currentProfile.username) {
+                showProfileScreen();
+            } else {
+                // Auto-load last used profile if exists
+                const lastProfile = localStorage.getItem('pixelHarvestLastProfile');
+                if (lastProfile) {
+                    const found = profiles.find(p => p.id === lastProfile);
+                    if (found) {
+                        currentProfile = found;
+                        character.color = currentProfile.characterColor;
+                        loadGameForProfile();
+                        localStorage.setItem('pixelHarvestLastProfile', currentProfile.id);
+                    }
+                } else if (profiles.length > 0) {
+                    // If no last profile but profiles exist, use the first one
+                    currentProfile = profiles[0];
+                    character.color = currentProfile.characterColor;
+                    loadGameForProfile();
+                    localStorage.setItem('pixelHarvestLastProfile', currentProfile.id);
+                }
+                
+                // Check tutorial
+                const tutorialCompleted = localStorage.getItem('pixelHarvestTutorialCompleted');
+                if (!tutorialCompleted) {
+                    setTimeout(() => startTutorial(), 1000); // Small delay to ensure UI is ready
+                }
+            }
+            
             // Start game loop
             animate();
+        }
+
+        function initTutorialEvents() {
+            document.getElementById('tutorialNext').addEventListener('click', nextTutorialStep);
+            document.getElementById('tutorialSkip').addEventListener('click', skipTutorial);
+        }
+
+        function initProfileEvents() {
+            document.getElementById('createProfileBtn').addEventListener('click', createProfile);
+            document.getElementById('loadProfileBtn').addEventListener('click', loadExistingProfile);
+            
+            // Profile button in main UI
+            document.getElementById('profileButton').addEventListener('click', showProfileScreen);
+            
+            // Character selection events
+            document.querySelectorAll('.character-option[data-character]').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.character-option[data-character]').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Character color selection events
+            document.querySelectorAll('.character-option[data-color]').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.character-option[data-color]').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Set default selections
+            setTimeout(() => {
+                const farmerOption = document.querySelector('.character-option[data-character="farmer"]');
+                const blueOption = document.querySelector('.character-option[data-color="#4169E1"]');
+                if (farmerOption) farmerOption.classList.add('selected');
+                if (blueOption) blueOption.classList.add('selected');
+            }, 100);
         }
         
         // Audio system functions
