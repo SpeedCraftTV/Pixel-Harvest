@@ -1299,7 +1299,7 @@
                 <!-- Quests will be populated dynamically -->
             </div>
             <div style="margin-top: 15px; text-align: center; font-size: 12px; opacity: 0.8;">
-                <button class="market-btn" onclick="resetDailyQuests()" style="font-size: 11px; padding: 5px 10px;">🔄 New Quests (50💰)</button>
+                <button class="market-btn" id="questResetBtn" onclick="resetDailyQuests()" style="font-size: 11px; padding: 5px 10px;">🔄 New Quests (50💰)</button>
             </div>
         </div>
         <button id="settingsButton" style="display: none;">⚙️ Controls</button>
@@ -2365,6 +2365,7 @@
             updateSeasonUI();
             updateAnimalsUI();
             updateQuestsUI();
+            updateQuestButtonText();
             updateTimeUI();
         }
         
@@ -3882,12 +3883,63 @@
             saveGame();
         }
         
+        function updateQuestButtonText() {
+            // Function to get the appropriate button text and cost for quest generation
+            function getQuestButtonInfo() {
+                const allQuestsCompleted = dailyQuests.length > 0 && dailyQuests.every(quest => quest.completed);
+                
+                if (allQuestsCompleted || dailyQuests.length === 0) {
+                    return { text: '🔄 New Quests (Free)', cost: 0 };
+                } else if (coins >= 50) {
+                    return { text: '🔄 New Quests (50💰)', cost: 50 };
+                } else if (coins >= 25) {
+                    return { text: '🔄 New Quests (25💰)', cost: 25 };
+                } else {
+                    return { text: '🔄 New Quests (Free)', cost: 0 };
+                }
+            }
+            
+            const buttonInfo = getQuestButtonInfo();
+            
+            // Update desktop button
+            const desktopBtn = document.getElementById('questResetBtn');
+            if (desktopBtn) {
+                desktopBtn.textContent = buttonInfo.text;
+            }
+            
+            // Update mobile button (will be updated in updateMobileQuestsContent)
+            // We'll handle this in the mobile content update function
+        }
+
         function resetDailyQuests() {
-            if (coins >= 50) {
+            // Check if all current quests are completed
+            const allQuestsCompleted = dailyQuests.length > 0 && dailyQuests.every(quest => quest.completed);
+            
+            // Free quest generation if all quests are completed or if player has no quests
+            if (allQuestsCompleted || dailyQuests.length === 0) {
+                generateDailyQuests();
+                updateUI();
+                showInstruction('🔄 New daily quests generated!', 2000);
+            }
+            // Standard cost if player has incomplete quests and enough coins
+            else if (coins >= 50) {
                 coins -= 50;
                 generateDailyQuests();
                 updateUI();
                 showInstruction('🔄 New daily quests generated!', 2000);
+            }
+            // Reduced cost if player has low coins but some incomplete quests
+            else if (coins >= 25) {
+                coins -= 25;
+                generateDailyQuests();
+                updateUI();
+                showInstruction('🔄 New daily quests generated (discounted)!', 2000);
+            }
+            // Free generation if player has very few coins to prevent getting stuck
+            else if (coins < 25) {
+                generateDailyQuests();
+                updateUI();
+                showInstruction('🔄 Free quest generation (low coins)!', 2000);
             }
         }
         
@@ -7006,6 +7058,21 @@
                 }
             }
             
+            // Function to get the appropriate button text and cost for quest generation
+            function getQuestButtonInfo() {
+                const allQuestsCompleted = dailyQuests.length > 0 && dailyQuests.every(quest => quest.completed);
+                
+                if (allQuestsCompleted || dailyQuests.length === 0) {
+                    return { text: '🔄 New Quests (Free)', cost: 0 };
+                } else if (coins >= 50) {
+                    return { text: '🔄 New Quests (50💰)', cost: 50 };
+                } else if (coins >= 25) {
+                    return { text: '🔄 New Quests (25💰)', cost: 25 };
+                } else {
+                    return { text: '🔄 New Quests (Free)', cost: 0 };
+                }
+            }
+            
             dailyQuests.forEach((quest, index) => {
                 const progressPercent = Math.min(100, (quest.progress / quest.target) * 100);
                 const isCompleted = quest.progress >= quest.target;
@@ -7030,11 +7097,12 @@
                 html = '<div style="text-align: center; color: #999; padding: 40px;">No active quests</div>';
             }
 
+            const buttonInfo = getQuestButtonInfo();
             html += `
                 <div style="text-align: center; margin-top: 20px;">
                     <button onclick="resetDailyQuests()" 
                             style="background: #FF9800; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer;">
-                        🔄 New Quests (50💰)
+                        ${buttonInfo.text}
                     </button>
                 </div>
             `;
