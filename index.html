@@ -1118,7 +1118,7 @@
             </div>
         </div>
         <div id="plantSelector" style="display: none;">
-            <div style="font-weight: bold; margin-bottom: 10px;">🌱 Plant Types:</div>
+            <div style="font-weight: bold; margin-bottom: 10px;"></div>
             <button class="plant-btn selected" data-plant="carrot">🥕 <span data-plant-name="carrot">Carrot</span> (<span data-seed-count="carrot">5</span>)</button><br>
             <button class="plant-btn" data-plant="tomato">🍅 <span data-plant-name="tomato">Tomato</span> (<span data-seed-count="tomato">2</span>)</button><br>
             <button class="plant-btn" data-plant="rare">✨ <span data-plant-name="rare">Rare Plant</span> (<span data-seed-count="rare">1</span>) ❄️</button><br>
@@ -1155,7 +1155,7 @@
             <div id="truffleInventory">🍄 Truffles: 0</div>
         </div>
         <div id="marketplace" style="display: none;">
-            <div style="font-weight: bold; margin-bottom: 10px;">🏪 Marketplace:</div>
+            <div style="font-weight: bold; margin-bottom: 10px;"></div>
             
             <div class="market-category">
                 <h3>💰 Sell Produce</h3>
@@ -1218,7 +1218,7 @@
         
         <!-- Weather Panel -->
         <div id="weatherPanel" style="display: none;">
-            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">🌤️ Weather</div>
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;"></div>
             <div class="weather-icon" id="weatherIcon">☀️</div>
             <div id="weatherName" style="text-align: center; margin-bottom: 5px;">Sunny</div>
             <div id="weatherEffect" style="font-size: 12px; text-align: center; opacity: 0.8;">Plants grow normally</div>
@@ -1226,7 +1226,7 @@
 
         <!-- Season Panel -->
         <div id="seasonPanel" style="display: none;">
-            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">🍂 Season</div>
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;"></div>
             <div class="season-icon" id="seasonIcon">🌸</div>
             <div id="seasonName" style="text-align: center; margin-bottom: 5px;">Spring</div>
             <div id="seasonDay" style="font-size: 12px; text-align: center; opacity: 0.8;">Day 1 of 20</div>
@@ -1234,7 +1234,7 @@
 
         <!-- Animals Panel -->
         <div id="animalsPanel" style="display: none;">
-            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">🐄 Farm Animals</div>
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;"></div>
             
             <div class="animal-item">
                 <div>
@@ -1272,7 +1272,7 @@
 
         <!-- Daily Quests Panel -->
         <div id="questsPanel" style="display: none;">
-            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">📋 Daily Quests</div>
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;"></div>
             <div id="questList">
                 <!-- Quests will be populated dynamically -->
             </div>
@@ -1600,7 +1600,8 @@
                     summer: 'Summer',
                     autumn: 'Autumn',
                     winter: 'Winter',
-                    day: 'Day'
+                    day: 'Day',
+                    of: 'of'
                 },
                 animals: {
                     title: 'Farm Animals',
@@ -1755,7 +1756,8 @@
                     summer: 'Été',
                     autumn: 'Automne',
                     winter: 'Hiver',
-                    day: 'Jour'
+                    day: 'Jour',
+                    of: 'de'
                 },
                 animals: {
                     title: 'Animaux de Ferme',
@@ -1910,7 +1912,8 @@
                     summer: 'Verano',
                     autumn: 'Otoño',
                     winter: 'Invierno',
-                    day: 'Día'
+                    day: 'Día',
+                    of: 'de'
                 },
                 animals: {
                     title: 'Animales de Granja',
@@ -2249,7 +2252,20 @@
                 const sellBtn = document.getElementById(`sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}Btn`);
                 if (sellBtn) {
                     const count = inventory[plantType] || 0;
-                    const sellText = plantType === 'apple' ? t('marketplace.sellApples') : t(`marketplace.sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}`);
+                    const sellText = (() => {
+                        switch(plantType) {
+                            case 'carrot': return t('marketplace.sellCarrots');
+                            case 'tomato': return t('marketplace.sellTomatoes');
+                            case 'rare': return t('marketplace.sellRare');
+                            case 'potato': return t('marketplace.sellPotatoes');
+                            case 'cabbage': return t('marketplace.sellCabbages');
+                            case 'corn': return t('marketplace.sellCorn');
+                            case 'watermelon': return t('marketplace.sellWatermelons');
+                            case 'pumpkin': return t('marketplace.sellPumpkins');
+                            case 'apple': return t('marketplace.sellApples');
+                            default: return t(`marketplace.sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}`);
+                        }
+                    })();
                     sellBtn.textContent = `${sellText} (${price}💰)`;
                     sellBtn.disabled = count <= 0;
                     sellBtn.style.opacity = count > 0 ? '1' : '0.5';
@@ -2264,7 +2280,14 @@
                 const sellBtn = document.getElementById(`sell${productType.charAt(0).toUpperCase() + productType.slice(1)}Btn`);
                 if (sellBtn) {
                     const count = animalInventory[productType] || 0;
-                    const productTranslation = t(`marketplace.sell${productType.charAt(0).toUpperCase() + productType.slice(1)}`);
+                    const productTranslation = (() => {
+                        switch(productType) {
+                            case 'eggs': return t('marketplace.sellEggs');
+                            case 'milk': return t('marketplace.sellMilk');
+                            case 'truffles': return t('marketplace.sellTruffles');
+                            default: return t(`marketplace.sell${productType.charAt(0).toUpperCase() + productType.slice(1)}`);
+                        }
+                    })();
                     sellBtn.textContent = `${productTranslation} (${price}💰 ${t('marketplace.each')}) [${count}]`;
                     sellBtn.disabled = count <= 0;
                     sellBtn.style.opacity = count > 0 ? '1' : '0.5';
@@ -2378,7 +2401,7 @@
             
             const seasonDay = document.getElementById('seasonDay');
             if (seasonDay) {
-                seasonDay.textContent = `${t('season.day')} ${currentSeason.day} of ${currentSeason.maxDays}`;
+                seasonDay.textContent = `${t('season.day')} ${currentSeason.day} ${t('season.of')} ${currentSeason.maxDays}`;
             }
         }
         
@@ -2388,35 +2411,42 @@
                 animalsTitle.innerHTML = `🐄 ${t('animals.title')}`;
             }
             
-            // Update animal type labels and buttons
-            const animalTypes = ['chicken', 'cow', 'pig'];
-            animalTypes.forEach(animalType => {
-                // Update animal count display
-                const countDisplay = document.getElementById(`${animalType}Count`);
-                if (countDisplay) {
-                    const count = animals[animalType]?.count || 0;
-                    countDisplay.textContent = count;
-                }
+            // Update animal names and labels
+            const animalItems = document.querySelectorAll('#animalsPanel .animal-item');
+            animalItems.forEach((item, index) => {
+                const animalTypes = ['chicken', 'cow', 'pig'];
+                const animalType = animalTypes[index];
                 
-                // Update produce labels
-                const produceLabels = document.querySelectorAll(`#animalsPanel [style*="font-size: 11px"]`);
-                produceLabels.forEach(label => {
-                    if (label.textContent.includes('Produce:')) {
-                        label.innerHTML = label.innerHTML.replace('Produce:', t('animals.produce') + ':');
+                if (animalType) {
+                    // Update animal name label
+                    const animalLabel = item.querySelector('div:first-child div:first-child');
+                    if (animalLabel) {
+                        const count = animals[animalType]?.count || 0;
+                        const animalName = t(`animals.${animalType}s`);
+                        animalLabel.innerHTML = `${animalType === 'chicken' ? '🐔' : animalType === 'cow' ? '🐄' : '🐷'} ${animalName}: <span id="${animalType}Count">${count}</span>`;
                     }
-                });
-                
-                // Update buy buttons
-                const buyBtn = document.getElementById(`buy${animalType.charAt(0).toUpperCase() + animalType.slice(1)}Btn`);
-                if (buyBtn) {
-                    const cost = ANIMAL_COSTS[animalType];
-                    buyBtn.textContent = `${t('animals.buy')} (${cost}💰)`;
-                }
-                
-                // Update collect buttons
-                const collectBtn = document.getElementById(`collect${animalType === 'chicken' ? 'Eggs' : animalType === 'cow' ? 'Milk' : 'Truffles'}Btn`);
-                if (collectBtn) {
-                    collectBtn.textContent = t('animals.collect');
+                    
+                    // Update produce label
+                    const produceLabel = item.querySelector('[style*="font-size: 11px"]');
+                    if (produceLabel) {
+                        const produceType = animalType === 'chicken' ? 'eggs' : animalType === 'cow' ? 'milk' : 'truffles';
+                        const produceCount = animals[animalType]?.[produceType] || 0;
+                        const produceEmoji = animalType === 'chicken' ? '🥚' : animalType === 'cow' ? '🥛' : '🍄';
+                        produceLabel.innerHTML = `${t('animals.produce')}: <span id="${produceType}Count">${produceCount}</span> ${produceEmoji}`;
+                    }
+                    
+                    // Update buy button
+                    const buyBtn = item.querySelector(`#buy${animalType.charAt(0).toUpperCase() + animalType.slice(1)}Btn`);
+                    if (buyBtn) {
+                        const cost = ANIMAL_COSTS[animalType];
+                        buyBtn.textContent = `${t('animals.buy')} (${cost}💰)`;
+                    }
+                    
+                    // Update collect button
+                    const collectBtn = item.querySelector(`#collect${animalType === 'chicken' ? 'Eggs' : animalType === 'cow' ? 'Milk' : 'Truffles'}Btn`);
+                    if (collectBtn) {
+                        collectBtn.textContent = t('animals.collect');
+                    }
                 }
             });
         }
@@ -3374,11 +3404,6 @@
             saveGame();
         }
         
-        function updateWeatherUI() {
-            document.getElementById('weatherIcon').textContent = currentWeather.icon;
-            document.getElementById('weatherName').textContent = currentWeather.name;
-            document.getElementById('weatherEffect').textContent = currentWeather.effect;
-        }
         
         function updateBackgroundForWeather() {
             const weatherConfig = WEATHER_TYPES[currentWeather.type];
@@ -3446,12 +3471,6 @@
             saveGame();
         }
         
-        function updateSeasonUI() {
-            document.getElementById('seasonIcon').textContent = currentSeason.icon;
-            document.getElementById('seasonName').textContent = currentSeason.name;
-            document.getElementById('seasonDay').textContent = `Day ${currentSeason.day} of ${currentSeason.maxDays}`;
-        }
-
         // Animals System Functions
         function updateAnimals(deltaTime) {
             const currentTime = Date.now();
@@ -3517,27 +3536,6 @@
             }
         }
         
-        function updateAnimalsUI() {
-            // Update animal counts
-            document.getElementById('chickenCount').textContent = animals.chicken.count;
-            document.getElementById('cowCount').textContent = animals.cow.count;
-            document.getElementById('pigCount').textContent = animals.pig.count;
-            
-            // Update resource counts
-            document.getElementById('eggCount').textContent = animals.chicken.eggs;
-            document.getElementById('milkCount').textContent = animals.cow.milk;
-            document.getElementById('truffleCount').textContent = animals.pig.truffles;
-            
-            // Update button states
-            document.getElementById('buyChickenBtn').disabled = coins < ANIMAL_COSTS.chicken;
-            document.getElementById('buyCowBtn').disabled = coins < ANIMAL_COSTS.cow;
-            document.getElementById('buyPigBtn').disabled = coins < ANIMAL_COSTS.pig;
-            
-            document.getElementById('collectEggsBtn').disabled = animals.chicken.eggs === 0;
-            document.getElementById('collectMilkBtn').disabled = animals.cow.milk === 0;
-            document.getElementById('collectTrufflesBtn').disabled = animals.pig.truffles === 0;
-        }
-
         // Daily Quests System Functions  
         function generateDailyQuests() {
             dailyQuests = [];
@@ -3609,34 +3607,6 @@
             }
         }
         
-        function updateQuestsUI() {
-            const questList = document.getElementById('questList');
-            questList.innerHTML = '';
-            
-            dailyQuests.forEach(quest => {
-                const questDiv = document.createElement('div');
-                questDiv.className = `quest-item ${quest.completed ? 'quest-completed' : ''}`;
-                
-                const progressPercent = (quest.progress / quest.target) * 100;
-                
-                questDiv.innerHTML = `
-                    <div style="font-weight: bold; margin-bottom: 5px;">
-                        ${quest.completed ? '✅' : '📋'} ${quest.name}
-                    </div>
-                    <div style="font-size: 11px; opacity: 0.8; margin-bottom: 5px;">
-                        ${quest.description}
-                    </div>
-                    <div class="quest-progress">
-                        <div class="quest-progress-bar" style="width: ${progressPercent}%"></div>
-                    </div>
-                    <div style="font-size: 11px; margin-top: 5px;">
-                        Progress: ${quest.progress}/${quest.target} | Reward: ${quest.reward}💰
-                    </div>
-                `;
-                
-                questList.appendChild(questDiv);
-            });
-        }
         
         function init() {
             // Load saved language first
@@ -4760,47 +4730,7 @@
             }
         }
         
-        function updateMarketplaceUI() {
-            // Update sell buttons with dynamic prices for all plants
-            const allPlantTypes = ['carrot', 'tomato', 'rare', 'potato', 'cabbage', 'corn', 'watermelon', 'pumpkin', 'apple'];
-            allPlantTypes.forEach(plantType => {
-                const price = getDynamicPrice(plantType, 'sell');
-                const plantConfig = PLANT_TYPES[plantType];
-                const sellBtn = document.getElementById(`sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}Btn`);
-                if (sellBtn && plantConfig) {
-                    sellBtn.textContent = `Sell ${plantConfig.name}s (${price}💰)`;
-                    const count = inventory[plantType] || 0;
-                    sellBtn.disabled = count <= 0;
-                    sellBtn.style.opacity = count > 0 ? '1' : '0.5';
-                }
-            });
-            
-            // Update animal product sell buttons
-            const animalProducts = ['eggs', 'milk', 'truffles'];
-            const animalPrices = { eggs: 2, milk: 5, truffles: 8 };
-            animalProducts.forEach(productType => {
-                const price = animalPrices[productType];
-                const sellBtn = document.getElementById(`sell${productType.charAt(0).toUpperCase() + productType.slice(1)}Btn`);
-                if (sellBtn) {
-                    const count = animalInventory[productType] || 0;
-                    sellBtn.textContent = `Sell ${productType.charAt(0).toUpperCase() + productType.slice(1)} (${price}💰 each) [${count}]`;
-                    sellBtn.disabled = count <= 0;
-                    sellBtn.style.opacity = count > 0 ? '1' : '0.5';
-                }
-            });
-            
-            // Update seed purchase buttons with dynamic prices for all plants
-            allPlantTypes.forEach(plantType => {
-                const price = getDynamicPrice(plantType, 'buy');
-                const plantConfig = PLANT_TYPES[plantType];
-                const buyBtn = document.getElementById(`buy${plantType.charAt(0).toUpperCase() + plantType.slice(1)}SeedsBtn`);
-                if (buyBtn && plantConfig) {
-                    buyBtn.textContent = `Buy ${plantConfig.name} Seeds (${price}💰)`;
-                    buyBtn.disabled = coins < price;
-                    buyBtn.style.opacity = coins >= price ? '1' : '0.5';
-                }
-            });
-        }
+
         
         function buyItem(itemType, cost) {
             if (coins >= cost) {
