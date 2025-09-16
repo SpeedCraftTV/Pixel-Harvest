@@ -121,6 +121,137 @@
             border-radius: 10px;
             min-width: 250px;
         }
+
+        #settingsMenu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 300;
+            color: white;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            min-width: 400px;
+            display: none;
+            border: 2px solid #4CAF50;
+        }
+
+        #settingsMenu h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .control-label {
+            font-weight: bold;
+            min-width: 120px;
+        }
+
+        .key-button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 14px;
+            min-width: 60px;
+        }
+
+        .key-button:hover {
+            background: #1976D2;
+        }
+
+        .key-button.recording {
+            background: #FF5722;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .preset-btn {
+            background: #9C27B0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .preset-btn:hover {
+            background: #7B1FA2;
+        }
+
+        .menu-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .menu-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .menu-btn:hover {
+            background: #45a049;
+        }
+
+        .cancel-btn {
+            background: #f44336;
+        }
+
+        .cancel-btn:hover {
+            background: #da190b;
+        }
+
+        #settingsButton {
+            position: absolute;
+            top: 20px;
+            right: 280px;
+            z-index: 100;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #settingsButton:hover {
+            background: #45a049;
+        }
         
         #canvas {
             display: block;
@@ -202,6 +333,60 @@
                 Character: Idle
             </div>
         </div>
+        <button id="settingsButton" style="display: none;">⚙️ Controls</button>
+        
+        <!-- Settings Menu -->
+        <div id="settingsMenu">
+            <h2>⚙️ Control Settings</h2>
+            
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="setControlPreset('azerty')">AZERTY Preset</button>
+                <button class="preset-btn" onclick="setControlPreset('qwerty')">QWERTY Preset</button>
+                <button class="preset-btn" onclick="setControlPreset('arrows')">Arrow Keys</button>
+            </div>
+            
+            <div class="control-row">
+                <span class="control-label">Move Forward:</span>
+                <button class="key-button" id="key-forward" onclick="recordKey('forward')">Z</button>
+            </div>
+            
+            <div class="control-row">
+                <span class="control-label">Move Left:</span>
+                <button class="key-button" id="key-left" onclick="recordKey('left')">Q</button>
+            </div>
+            
+            <div class="control-row">
+                <span class="control-label">Move Backward:</span>
+                <button class="key-button" id="key-backward" onclick="recordKey('backward')">S</button>
+            </div>
+            
+            <div class="control-row">
+                <span class="control-label">Move Right:</span>
+                <button class="key-button" id="key-right" onclick="recordKey('right')">D</button>
+            </div>
+            
+            <div class="control-row">
+                <span class="control-label">Plant/Harvest:</span>
+                <button class="key-button" id="key-action" onclick="recordKey('action')">SPACE</button>
+            </div>
+            
+            <div class="control-row">
+                <span class="control-label">Water Plants:</span>
+                <button class="key-button" id="key-water" onclick="recordKey('water')">E</button>
+            </div>
+            
+            <div class="control-row">
+                <span class="control-label">Toggle Camera:</span>
+                <button class="key-button" id="key-camera" onclick="recordKey('camera')">C</button>
+            </div>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="saveControls()">Save</button>
+                <button class="menu-btn cancel-btn" onclick="cancelControls()">Cancel</button>
+                <button class="menu-btn" onclick="resetControls()">Reset to Default</button>
+            </div>
+        </div>
+        
         <canvas id="canvas"></canvas>
     </div>
 
@@ -243,6 +428,23 @@
         
         // Keyboard state
         let keys = {};
+        
+        // Control mappings (AZERTY by default)
+        let controls = {
+            forward: 'KeyZ',
+            left: 'KeyQ', 
+            backward: 'KeyS',
+            right: 'KeyD',
+            action: 'Space',
+            water: 'KeyE',
+            camera: 'KeyC'
+        };
+        
+        // Backup controls for cancelling changes
+        let backupControls = {};
+        
+        // Key recording state
+        let recordingKey = null;
         
         // Game objects
         let plots = [];
@@ -492,6 +694,9 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             
+            // Load saved controls
+            loadSavedControls();
+            
             // Initialize camera
             cameraAngleX = -0.3; // Look down slightly
             cameraAngleY = 0;
@@ -505,6 +710,9 @@
             // Initialize UI
             setupUI();
             
+            // Update instructions with current controls
+            updateInstructions();
+            
             // Hide loading screen
             document.getElementById('loading').style.display = 'none';
             document.getElementById('ui').style.display = 'block';
@@ -513,6 +721,7 @@
             document.getElementById('inventory').style.display = 'block';
             document.getElementById('marketplace').style.display = 'block';
             document.getElementById('objectives').style.display = 'block';
+            document.getElementById('settingsButton').style.display = 'block';
             
             // Start game loop
             animate();
@@ -552,6 +761,9 @@
                 });
             });
             
+            // Settings button
+            document.getElementById('settingsButton').addEventListener('click', openSettings);
+            
             updateUI();
         }
         
@@ -574,10 +786,30 @@
         }
         
         function onKeyDown(event) {
+            // Handle key recording
+            if (recordingKey) {
+                event.preventDefault();
+                const keyCode = event.code;
+                
+                // Update the control mapping
+                controls[recordingKey] = keyCode;
+                
+                // Update the button display
+                document.getElementById(`key-${recordingKey}`).textContent = getKeyDisplayName(keyCode);
+                document.getElementById(`key-${recordingKey}`).classList.remove('recording');
+                
+                // Stop recording
+                recordingKey = null;
+                
+                // Update instructions
+                updateInstructions();
+                return;
+            }
+            
             keys[event.code] = true;
             
             // Toggle camera mode
-            if (event.code === 'KeyC') {
+            if (event.code === controls.camera) {
                 freeCameraMode = !freeCameraMode;
                 cameraFollowCharacter = !freeCameraMode;
                 
@@ -587,14 +819,185 @@
             }
             
             // Action keys
-            if (event.code === 'Space') {
+            if (event.code === controls.action) {
                 event.preventDefault();
                 performCharacterAction();
             }
             
-            if (event.code === 'KeyE') {
+            if (event.code === controls.water) {
                 event.preventDefault();
                 performWateringAction();
+            }
+            
+            // Open settings with Escape key
+            if (event.code === 'Escape') {
+                event.preventDefault();
+                if (document.getElementById('settingsMenu').style.display === 'block') {
+                    cancelControls();
+                } else {
+                    openSettings();
+                }
+            }
+        }
+        
+        function updateInstructions() {
+            const forwardKey = getKeyDisplayName(controls.forward);
+            const leftKey = getKeyDisplayName(controls.left);
+            const backwardKey = getKeyDisplayName(controls.backward);
+            const rightKey = getKeyDisplayName(controls.right);
+            const actionKey = getKeyDisplayName(controls.action);
+            const waterKey = getKeyDisplayName(controls.water);
+            const cameraKey = getKeyDisplayName(controls.camera);
+            
+            document.getElementById('instructions').innerHTML = `
+                🌱 Move with ${forwardKey}${leftKey}${backwardKey}${rightKey} or arrow keys<br>
+                ⚡ ${actionKey} to plant/harvest at closest plot<br>
+                💧 ${waterKey} to water plants<br>
+                📹 ${cameraKey} to toggle camera mode<br>
+                🌿 Plants grow automatically (3 stages)<br>
+                🔒 Unlock plots by getting close and pressing ${actionKey}<br>
+                🌙 Watch the day/night cycle!<br>
+                🖱️ Drag to rotate camera view<br>
+                🔍 Scroll wheel to zoom in/out<br>
+                ⚙️ ESC to open settings
+            `;
+        }
+        
+        function getKeyDisplayName(keyCode) {
+            const keyMap = {
+                'KeyZ': 'Z', 'KeyQ': 'Q', 'KeyS': 'S', 'KeyD': 'D',
+                'KeyW': 'W', 'KeyA': 'A', 'KeyE': 'E', 'KeyC': 'C',
+                'Space': 'SPACE', 'ArrowUp': '↑', 'ArrowDown': '↓',
+                'ArrowLeft': '←', 'ArrowRight': '→', 'ShiftLeft': 'SHIFT',
+                'ControlLeft': 'CTRL', 'AltLeft': 'ALT'
+            };
+            return keyMap[keyCode] || keyCode.replace('Key', '').replace('Digit', '');
+        }
+        
+        // Settings menu functions
+        function openSettings() {
+            // Backup current controls
+            backupControls = {...controls};
+            
+            // Update button displays
+            updateControlButtons();
+            
+            // Show settings menu
+            document.getElementById('settingsMenu').style.display = 'block';
+        }
+        
+        function updateControlButtons() {
+            Object.keys(controls).forEach(action => {
+                const button = document.getElementById(`key-${action}`);
+                if (button) {
+                    button.textContent = getKeyDisplayName(controls[action]);
+                }
+            });
+        }
+        
+        function recordKey(action) {
+            if (recordingKey === action) {
+                // Cancel recording
+                document.getElementById(`key-${action}`).classList.remove('recording');
+                recordingKey = null;
+                return;
+            }
+            
+            // Stop any current recording
+            if (recordingKey) {
+                document.getElementById(`key-${recordingKey}`).classList.remove('recording');
+            }
+            
+            // Start recording for this action
+            recordingKey = action;
+            document.getElementById(`key-${action}`).classList.add('recording');
+            document.getElementById(`key-${action}`).textContent = 'Press key...';
+        }
+        
+        function setControlPreset(preset) {
+            // Stop any recording
+            if (recordingKey) {
+                document.getElementById(`key-${recordingKey}`).classList.remove('recording');
+                recordingKey = null;
+            }
+            
+            switch(preset) {
+                case 'azerty':
+                    controls.forward = 'KeyZ';
+                    controls.left = 'KeyQ';
+                    controls.backward = 'KeyS';
+                    controls.right = 'KeyD';
+                    break;
+                case 'qwerty':
+                    controls.forward = 'KeyW';
+                    controls.left = 'KeyA';
+                    controls.backward = 'KeyS';
+                    controls.right = 'KeyD';
+                    break;
+                case 'arrows':
+                    controls.forward = 'ArrowUp';
+                    controls.left = 'ArrowLeft';
+                    controls.backward = 'ArrowDown';
+                    controls.right = 'ArrowRight';
+                    break;
+            }
+            
+            updateControlButtons();
+        }
+        
+        function saveControls() {
+            // Save to localStorage
+            localStorage.setItem('pixelHarvestControls', JSON.stringify(controls));
+            
+            // Update instructions
+            updateInstructions();
+            
+            // Close settings menu
+            document.getElementById('settingsMenu').style.display = 'none';
+            
+            // Clear recording state
+            recordingKey = null;
+        }
+        
+        function cancelControls() {
+            // Restore backup controls
+            controls = {...backupControls};
+            
+            // Update button displays
+            updateControlButtons();
+            
+            // Close settings menu
+            document.getElementById('settingsMenu').style.display = 'none';
+            
+            // Clear recording state
+            if (recordingKey) {
+                document.getElementById(`key-${recordingKey}`).classList.remove('recording');
+                recordingKey = null;
+            }
+        }
+        
+        function resetControls() {
+            // Reset to AZERTY default
+            controls = {
+                forward: 'KeyZ',
+                left: 'KeyQ',
+                backward: 'KeyS',
+                right: 'KeyD',
+                action: 'Space',
+                water: 'KeyE',
+                camera: 'KeyC'
+            };
+            updateControlButtons();
+        }
+        
+        function loadSavedControls() {
+            const saved = localStorage.getItem('pixelHarvestControls');
+            if (saved) {
+                try {
+                    controls = JSON.parse(saved);
+                } catch (e) {
+                    console.log('Failed to load saved controls, using defaults');
+                }
             }
         }
         
@@ -1218,10 +1621,10 @@
             let moveX = 0;
             let moveZ = 0;
             
-            if (keys['KeyW'] || keys['ArrowUp']) moveZ -= 1;
-            if (keys['KeyS'] || keys['ArrowDown']) moveZ += 1;
-            if (keys['KeyA'] || keys['ArrowLeft']) moveX -= 1;
-            if (keys['KeyD'] || keys['ArrowRight']) moveX += 1;
+            if (keys[controls.forward] || keys['ArrowUp']) moveZ -= 1;
+            if (keys[controls.backward] || keys['ArrowDown']) moveZ += 1;
+            if (keys[controls.left] || keys['ArrowLeft']) moveX -= 1;
+            if (keys[controls.right] || keys['ArrowRight']) moveX += 1;
             
             // Normalize movement
             if (moveX !== 0 || moveZ !== 0) {
@@ -1421,13 +1824,13 @@
                     
                     let actionText = '';
                     if (closestPlot.stage === PLANT_STAGES.EMPTY && closestPlot.unlocked) {
-                        actionText = '⚡ SPACE to plant';
+                        actionText = `⚡ ${getKeyDisplayName(controls.action)} to plant`;
                     } else if (closestPlot.stage === PLANT_STAGES.MATURE) {
-                        actionText = '⚡ SPACE to harvest';
+                        actionText = `⚡ ${getKeyDisplayName(controls.action)} to harvest`;
                     } else if (!closestPlot.unlocked && coins >= closestPlot.unlockCost) {
-                        actionText = `⚡ SPACE to unlock (${closestPlot.unlockCost}💰)`;
+                        actionText = `⚡ ${getKeyDisplayName(controls.action)} to unlock (${closestPlot.unlockCost}💰)`;
                     } else if (closestPlot.stage !== PLANT_STAGES.EMPTY) {
-                        actionText = '💧 E to water';
+                        actionText = `💧 ${getKeyDisplayName(controls.water)} to water`;
                     }
                     
                     if (actionText) {
