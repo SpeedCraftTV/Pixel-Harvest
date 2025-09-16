@@ -390,8 +390,9 @@ const TutorialLocalization = {
             localStorage.setItem('pixelHarvestLanguage', languageCode);
             console.log(`Tutorial language changed to: ${languageCode}`);
             
-            // Sync with main translation loader if available
-            if (window.translationLoader && window.translationLoader.isLoaded()) {
+            // Sync with main translation loader if available (but prevent recursion)
+            if (window.translationLoader && window.translationLoader.isLoaded() && 
+                window.translationLoader.getCurrentLanguage() !== languageCode) {
                 window.translationLoader.setLanguage(languageCode);
             }
         } else {

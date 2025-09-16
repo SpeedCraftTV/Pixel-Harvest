@@ -228,10 +228,11 @@ class TranslationLoader {
             updateAllUI();
         }
         
-        // Trigger language change event for tutorial system
-        document.dispatchEvent(new CustomEvent('languageChanged', {
-            detail: { language: languageCode }
-        }));
+        // Trigger language change event for tutorial system (but prevent recursion)
+        if (window.TutorialLocalization && 
+            window.TutorialLocalization.getCurrentLanguage() !== languageCode) {
+            window.TutorialLocalization.setLanguage(languageCode);
+        }
         
         console.log(`Language changed to: ${languageCode}`);
         return true;
