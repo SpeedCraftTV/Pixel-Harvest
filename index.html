@@ -527,15 +527,18 @@
             font-weight: bold;
             border-radius: 8px 8px 0 0;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
 
         .draggable-panel:hover .drag-handle {
             opacity: 1;
+            visibility: visible;
         }
 
         .draggable-panel.dragging .drag-handle {
             opacity: 1;
+            visibility: visible;
         }
 
         .drag-handle::before {
@@ -552,13 +555,15 @@
             height: 20px;
             cursor: se-resize;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
             background: linear-gradient(135deg, transparent 40%, rgba(76, 175, 80, 0.8) 40%);
             border-radius: 0 0 8px 0;
         }
 
         .draggable-panel:hover .resize-handle {
             opacity: 1;
+            visibility: visible;
         }
 
         .resize-handle::after {
@@ -3831,9 +3836,15 @@
                     if (panel) {
                         panel.style.border = '2px dashed rgba(76, 175, 80, 0.5)';
                         const handle = panel.querySelector('.drag-handle');
-                        if (handle) handle.style.opacity = '1';
+                        if (handle) {
+                            handle.style.opacity = '1';
+                            handle.style.visibility = 'visible';
+                        }
                         const resizeHandle = panel.querySelector('.resize-handle');
-                        if (resizeHandle) resizeHandle.style.opacity = '1';
+                        if (resizeHandle) {
+                            resizeHandle.style.opacity = '1';
+                            resizeHandle.style.visibility = 'visible';
+                        }
                     }
                 });
                 
@@ -3848,9 +3859,15 @@
                     if (panel) {
                         panel.style.border = '2px solid transparent';
                         const handle = panel.querySelector('.drag-handle');
-                        if (handle) handle.style.opacity = '0';
+                        if (handle) {
+                            handle.style.opacity = '0';
+                            handle.style.visibility = 'hidden';
+                        }
                         const resizeHandle = panel.querySelector('.resize-handle');
-                        if (resizeHandle) resizeHandle.style.opacity = '0';
+                        if (resizeHandle) {
+                            resizeHandle.style.opacity = '0';
+                            resizeHandle.style.visibility = 'hidden';
+                        }
                     }
                 });
                 
