@@ -5252,7 +5252,7 @@
             
             // Mobile joystick controls
             if (mobileControlsEnabled && (joystickInput.x !== 0 || joystickInput.y !== 0)) {
-                moveX += joystickInput.x;
+                moveX -= joystickInput.x; // Reversed left/right direction for mobile
                 moveZ += joystickInput.y; // Note: Y axis is typically inverted for joysticks
             }
             
