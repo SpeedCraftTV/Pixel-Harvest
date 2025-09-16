@@ -208,24 +208,6 @@
           "Use moedas para comprar sementes, equipamentos e desbloquear parcelas"
         ]
       },
-      "managing_inventory": {
-        "title": "Gerenciando seu inventário",
-        "description": "Seu inventário mostra todas suas colheitas, sementes e equipamentos. Desktop: Verifique o painel do inventário à esquerda. Mobile: Toque no botão inventário no menu inferior.",
-        "hints": [
-          "Sementes são necessárias para plantar",
-          "Colheitas podem ser vendidas por moedas",
-          "Equipamentos ajudam a automatizar sua fazenda"
-        ]
-      },
-      "using_marketplace": {
-        "title": "Usando o mercado",
-        "description": "O mercado é onde você pode vender colheitas e comprar novas sementes. Desktop: Clique no painel do mercado ou pressione M. Mobile: Toque no botão mercado. Abra o mercado agora!",
-        "hints": [
-          "Preços mudam baseados em oferta e demanda",
-          "Venda suas colheitas quando os preços estão altos",
-          "Compre diferentes tipos de sementes para variedade"
-        ]
-      },
       "selling_crops": {
         "title": "Vendendo colheitas",
         "description": "Hora de vender suas colheitas ganhas com muito trabalho! No mercado, clique nas colheitas no seu inventário, depois clique \"Vender\". O preço será mostrado em moedas. Venda algumas colheitas agora!",

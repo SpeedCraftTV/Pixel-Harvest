@@ -208,24 +208,6 @@
           "Usa le monete per comprare semi, equipaggiamento e sbloccare parcelle"
         ]
       },
-      "managing_inventory": {
-        "title": "Gestire il tuo inventario",
-        "description": "Il tuo inventario mostra tutti i tuoi raccolti, semi ed equipaggiamento. Desktop: Controlla il pannello inventario a sinistra. Mobile: Tocca il pulsante inventario nel menu in basso.",
-        "hints": [
-          "I semi sono necessari per piantare",
-          "I raccolti possono essere venduti per monete",
-          "L'equipaggiamento aiuta ad automatizzare la tua fattoria"
-        ]
-      },
-      "using_marketplace": {
-        "title": "Usare il mercato",
-        "description": "Il mercato è dove puoi vendere raccolti e comprare nuovi semi. Desktop: Clicca il pannello mercato o premi M. Mobile: Tocca il pulsante mercato. Apri il mercato ora!",
-        "hints": [
-          "I prezzi cambiano basati su domanda e offerta",
-          "Vendi i tuoi raccolti quando i prezzi sono alti",
-          "Compra diversi tipi di semi per varietà"
-        ]
-      },
       "selling_crops": {
         "title": "Vendere raccolti",
         "description": "È ora di vendere i tuoi raccolti duramente guadagnati! Nel mercato, clicca sui raccolti nel tuo inventario, poi clicca \"Vendi\". Il prezzo sarà mostrato in monete. Vendi alcuni raccolti ora!",

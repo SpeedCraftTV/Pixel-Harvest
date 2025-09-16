@@ -83,6 +83,7 @@
         "subtitle": "Wählen Sie Ihre bevorzugte Sprache für das Spiel und Tutorial:",
         "continue": "Weiter mit"
       },
+      "startTutorial": "🚀 Tutorial starten",
       "settings": "⚙️ Einstellungen",
       "skipTutorial": "⏭️ Tutorial überspringen"
     },
@@ -205,24 +206,6 @@
           "Preise schwanken basierend auf Marktbedingungen",
           "Erntegut verkaufen ist der Hauptweg, Münzen zu verdienen",
           "Verwende Münzen, um Samen, Ausrüstung zu kaufen und Felder freizuschalten"
-        ]
-      },
-      "managing_inventory": {
-        "title": "Dein Inventar verwalten",
-        "description": "Dein Inventar zeigt all dein Erntegut, deine Samen und Ausrüstung. Desktop: Überprüfe das Inventar-Panel links. Mobile: Tippe den Inventar-Button im unteren Menü.",
-        "hints": [
-          "Samen werden zum Pflanzen benötigt",
-          "Erntegut kann für Münzen verkauft werden",
-          "Ausrüstung hilft bei der Automatisierung deines Hofs"
-        ]
-      },
-      "using_marketplace": {
-        "title": "Den Marktplatz nutzen",
-        "description": "Der Marktplatz ist, wo du Erntegut verkaufen und neue Samen kaufen kannst. Desktop: Klicke das Marktplatz-Panel oder drücke M. Mobile: Tippe den Marktplatz-Button. Öffne jetzt den Marktplatz!",
-        "hints": [
-          "Preise ändern sich basierend auf Angebot und Nachfrage",
-          "Verkaufe dein Erntegut, wenn die Preise hoch sind",
-          "Kaufe verschiedene Samenarten für Vielfalt"
         ]
       },
       "selling_crops": {
