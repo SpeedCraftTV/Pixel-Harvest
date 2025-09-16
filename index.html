@@ -198,6 +198,9 @@
         <div id="dayNightIndicator" style="display: none;">
             <div id="timeDisplay">Day</div>
             <div id="cameraMode" style="margin-top: 10px; font-size: 14px;">Camera: Character Follow</div>
+            <div id="characterStatus" style="margin-top: 10px; font-size: 12px; color: #FFD700;">
+                Character: Idle
+            </div>
         </div>
         <canvas id="canvas"></canvas>
     </div>
@@ -878,19 +881,38 @@
             if (!window.gameEffects) return;
             
             window.gameEffects.forEach(effect => {
+                const alpha = 1 - (effect.timer / effect.duration);
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                
+                const projected = project3D(effect.x, effect.y, effect.z);
+                
                 if (effect.type === 'harvest') {
-                    const alpha = 1 - (effect.timer / effect.duration);
-                    ctx.save();
-                    ctx.globalAlpha = alpha;
-                    
-                    const projected = project3D(effect.x, effect.y, effect.z);
                     ctx.fillStyle = '#4CAF50';
                     ctx.font = '20px Arial';
                     ctx.textAlign = 'center';
                     ctx.fillText('+1', projected.x, projected.y);
+                } else if (effect.type === 'plant' || effect.type === 'water' || effect.type === 'unlock') {
+                    // Action effects with emoji
+                    ctx.font = '24px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(effect.emoji, projected.x, projected.y);
                     
-                    ctx.restore();
+                    // Add action name below emoji
+                    ctx.font = '12px Arial';
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 1;
+                    let actionName = '';
+                    if (effect.type === 'plant') actionName = 'Planted!';
+                    else if (effect.type === 'water') actionName = 'Watered!';
+                    else if (effect.type === 'unlock') actionName = 'Unlocked!';
+                    
+                    ctx.strokeText(actionName, projected.x, projected.y + 20);
+                    ctx.fillText(actionName, projected.x, projected.y + 20);
                 }
+                
+                ctx.restore();
             });
         }
         
@@ -1265,6 +1287,39 @@
             if (cameraFollowCharacter) {
                 updateCameraFollow();
             }
+            
+            // Update character status display
+            updateCharacterStatusDisplay();
+        }
+        
+        function updateCharacterStatusDisplay() {
+            const statusElement = document.getElementById('characterStatus');
+            let statusText = `Character: ${character.currentAction.charAt(0).toUpperCase() + character.currentAction.slice(1)}`;
+            
+            // Add position info
+            statusText += ` (${character.x.toFixed(1)}, ${character.z.toFixed(1)})`;
+            
+            // Add closest plot info
+            const closestPlot = findClosestPlot();
+            if (closestPlot) {
+                const distance = getDistanceToPlot(closestPlot);
+                if (distance <= 2.5) {
+                    statusText += ` - Near plot (${distance.toFixed(1)}m)`;
+                }
+            }
+            
+            statusElement.textContent = statusText;
+            
+            // Color code based on action
+            if (character.currentAction === 'walking') {
+                statusElement.style.color = '#87CEEB';
+            } else if (character.currentAction === 'planting') {
+                statusElement.style.color = '#32CD32';
+            } else if (character.currentAction === 'watering') {
+                statusElement.style.color = '#4169E1';
+            } else {
+                statusElement.style.color = '#FFD700';
+            }
         }
         
         function updateCameraFollow() {
@@ -1322,6 +1377,68 @@
             const arrowZ = character.z + Math.cos(character.direction) * arrowDistance;
             
             drawCube(arrowX, character.y + character.size + yOffset, arrowZ, arrowSize, '#FFD700');
+            
+            // Draw interaction radius for closest plot
+            const closestPlot = findClosestPlot();
+            if (closestPlot) {
+                const distance = getDistanceToPlot(closestPlot);
+                
+                // Draw interaction radius
+                if (distance <= 2.5) {
+                    // Draw green circle around character to show interaction is possible
+                    ctx.save();
+                    ctx.globalAlpha = 0.3;
+                    const projected = project3D(character.x, character.y + 0.1, character.z);
+                    const radiusScale = 50; // Visual radius on screen
+                    
+                    ctx.beginPath();
+                    ctx.arc(projected.x, projected.y, radiusScale, 0, Math.PI * 2);
+                    ctx.fillStyle = '#4CAF50';
+                    ctx.fill();
+                    ctx.restore();
+                    
+                    // Draw line to closest plot
+                    ctx.save();
+                    ctx.globalAlpha = 0.6;
+                    ctx.strokeStyle = '#4CAF50';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    
+                    const plotProjected = project3D(closestPlot.x, closestPlot.y + 0.5, closestPlot.z);
+                    ctx.beginPath();
+                    ctx.moveTo(projected.x, projected.y);
+                    ctx.lineTo(plotProjected.x, plotProjected.y);
+                    ctx.stroke();
+                    ctx.restore();
+                    
+                    // Show action hint above character
+                    ctx.save();
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.strokeStyle = '#000000';
+                    ctx.font = 'bold 14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.lineWidth = 1;
+                    
+                    let actionText = '';
+                    if (closestPlot.stage === PLANT_STAGES.EMPTY && closestPlot.unlocked) {
+                        actionText = '⚡ SPACE to plant';
+                    } else if (closestPlot.stage === PLANT_STAGES.MATURE) {
+                        actionText = '⚡ SPACE to harvest';
+                    } else if (!closestPlot.unlocked && coins >= closestPlot.unlockCost) {
+                        actionText = `⚡ SPACE to unlock (${closestPlot.unlockCost}💰)`;
+                    } else if (closestPlot.stage !== PLANT_STAGES.EMPTY) {
+                        actionText = '💧 E to water';
+                    }
+                    
+                    if (actionText) {
+                        const textY = projected.y - 60;
+                        ctx.strokeText(actionText, projected.x, textY);
+                        ctx.fillText(actionText, projected.x, textY);
+                    }
+                    
+                    ctx.restore();
+                }
+            }
         }
         
         function performCharacterAction() {
@@ -1334,11 +1451,17 @@
                     plantSeedAtPlot(closestPlot);
                     character.currentAction = 'planting';
                     character.actionTimer = 1000; // 1 second animation
+                    
+                    // Create planting effect
+                    createActionEffect(character.x, character.y + 1, character.z, 'plant', '🌱');
                 } else if (closestPlot.stage === PLANT_STAGES.MATURE) {
                     // Harvest plant
                     harvestPlant(closestPlot);
                     character.currentAction = 'planting'; // Reuse planting animation
                     character.actionTimer = 1000;
+                    
+                    // Create harvest effect
+                    createActionEffect(character.x, character.y + 1, character.z, 'harvest', '✨');
                 } else if (!closestPlot.unlocked && coins >= closestPlot.unlockCost) {
                     // Unlock plot
                     coins -= closestPlot.unlockCost;
@@ -1346,6 +1469,9 @@
                     updateUI();
                     character.currentAction = 'planting';
                     character.actionTimer = 1000;
+                    
+                    // Create unlock effect
+                    createActionEffect(character.x, character.y + 1, character.z, 'unlock', '🔓');
                 }
             }
         }
@@ -1359,8 +1485,27 @@
                     waterPlot(closestPlot);
                     character.currentAction = 'watering';
                     character.actionTimer = 1000; // 1 second animation
+                    
+                    // Create watering effect
+                    createActionEffect(character.x, character.y + 1, character.z, 'water', '💧');
                 }
             }
+        }
+        
+        function createActionEffect(x, y, z, type, emoji) {
+            const effect = {
+                x: x,
+                y: y,
+                z: z,
+                timer: 0,
+                duration: 1500,
+                type: type,
+                emoji: emoji,
+                startY: y
+            };
+            
+            if (!window.gameEffects) window.gameEffects = [];
+            window.gameEffects.push(effect);
         }
         
         function findClosestPlot() {
