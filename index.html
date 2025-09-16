@@ -741,7 +741,7 @@
         /* Mobile Navigation Menu */
         #mobileNavMenu {
             position: fixed;
-            bottom: 70px;
+            bottom: 180px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 300;
@@ -818,6 +818,7 @@
 
         .mobile-panel.active {
             transform: translateY(0);
+            z-index: 400; /* Higher z-index when active */
         }
 
         .mobile-panel-header {
@@ -936,6 +937,17 @@
 
         /* Responsive Typography */
         @media (max-width: 480px) {
+            #mobileNavMenu {
+                bottom: 160px; /* Further adjustment for very small screens */
+                padding: 10px;
+            }
+
+            .mobile-nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
             .mobile-grid {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
                 gap: 10px;
@@ -1066,6 +1078,10 @@
                 height: 120px;
             }
 
+            #mobileNavMenu {
+                bottom: 140px; /* Adjusted for shorter screens */
+            }
+
             .mobile-joystick {
                 width: 100px;
                 height: 100px;
@@ -1085,6 +1101,10 @@
             /* Further reduce panel heights on very short screens */
             #ui, #plantSelector, #inventory, #marketplace, #objectives, #animalsPanel, #questsPanel {
                 max-height: 30vh;
+            }
+
+            .mobile-panel {
+                max-height: 50vh; /* Reduced height for small screens */
             }
         }
 
@@ -3934,17 +3954,29 @@
             
             // Hide loading screen and show UI with translations
             document.getElementById('loading').style.display = 'none';
-            document.getElementById('ui').style.display = 'block';
+            
+            // Check if mobile and show appropriate UI
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                            ('ontouchstart' in window) || 
+                            (navigator.maxTouchPoints > 0) ||
+                            (window.innerWidth <= 768);
+            
+            if (!isMobile) {
+                // Show desktop UI panels only on desktop
+                document.getElementById('ui').style.display = 'block';
+                document.getElementById('plantSelector').style.display = 'block';
+                document.getElementById('inventory').style.display = 'block';
+                document.getElementById('marketplace').style.display = 'block';
+                document.getElementById('objectives').style.display = 'block';
+                document.getElementById('weatherPanel').style.display = 'block';
+                document.getElementById('seasonPanel').style.display = 'block';
+                document.getElementById('animalsPanel').style.display = 'block';
+                document.getElementById('questsPanel').style.display = 'block';
+            }
+            
+            // Always show these elements
             document.getElementById('dayNightIndicator').style.display = 'block';
-            document.getElementById('plantSelector').style.display = 'block';
-            document.getElementById('inventory').style.display = 'block';
-            document.getElementById('marketplace').style.display = 'block';
-            document.getElementById('objectives').style.display = 'block';
             document.getElementById('unifiedMenu').style.display = 'block'; // Show unified menu instead of individual buttons
-            document.getElementById('weatherPanel').style.display = 'block';
-            document.getElementById('seasonPanel').style.display = 'block';
-            document.getElementById('animalsPanel').style.display = 'block';
-            document.getElementById('questsPanel').style.display = 'block';
             
             // Update all UI with current language
             updateAllUI();
@@ -6508,6 +6540,20 @@
                 initDraggableUI();
                 initMobileControls();
                 initMobileInterface();
+                
+                // Force close all mobile panels on mobile devices
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    setTimeout(() => {
+                        closeMobilePanels();
+                        // Also hide any desktop panels that might have appeared
+                        const desktopPanels = ['#ui', '#plantSelector', '#inventory', '#marketplace', '#objectives', '#animalsPanel', '#questsPanel', '#weatherPanel', '#seasonPanel'];
+                        desktopPanels.forEach(selector => {
+                            const panel = document.querySelector(selector);
+                            if (panel) panel.style.display = 'none';
+                        });
+                    }, 200);
+                }
             }, 100); // Small delay to ensure game is initialized
         });
 
@@ -6515,6 +6561,18 @@
         let currentMobilePanel = null;
 
         function initMobileInterface() {
+            // First, ensure all panels are closed and properly hidden
+            closeMobilePanels();
+            
+            // Force hide all mobile panels initially
+            setTimeout(() => {
+                const mobilePanels = document.querySelectorAll('.mobile-panel');
+                mobilePanels.forEach(panel => {
+                    panel.classList.remove('active');
+                    panel.style.transform = 'translateY(100%)';
+                });
+            }, 100);
+            
             // Setup mobile navigation buttons
             const navButtons = document.querySelectorAll('.mobile-nav-btn');
             navButtons.forEach(btn => {
@@ -6552,10 +6610,12 @@
             
             if (!panel) return;
 
-            // Close current panel if different panel is being opened
-            if (currentMobilePanel && currentMobilePanel !== panelId) {
-                document.getElementById(currentMobilePanel).classList.remove('active');
-            }
+            // Close all other panels first
+            document.querySelectorAll('.mobile-panel').forEach(p => {
+                if (p.id !== panelId) {
+                    p.classList.remove('active');
+                }
+            });
 
             // Toggle the requested panel
             if (currentMobilePanel === panelId) {
@@ -6570,7 +6630,8 @@
                 
                 // Add active state to navigation button
                 document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelector(`[data-panel="${panelType}"]`).classList.add('active');
+                const activeButton = document.querySelector(`[data-panel="${panelType}"]`);
+                if (activeButton) activeButton.classList.add('active');
                 
                 // Update panel content
                 updateMobilePanelContent(panelType);
@@ -6583,13 +6644,15 @@
         }
 
         function closeMobilePanels() {
-            if (currentMobilePanel) {
-                document.getElementById(currentMobilePanel).classList.remove('active');
-                currentMobilePanel = null;
-                
-                // Remove active state from all navigation buttons
-                document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
-            }
+            // Close all mobile panels
+            document.querySelectorAll('.mobile-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            currentMobilePanel = null;
+            
+            // Remove active state from all navigation buttons
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
         }
 
         function updateMobilePanels() {
