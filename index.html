@@ -431,9 +431,9 @@
         
         // Control mappings (AZERTY by default)
         let controls = {
-            forward: 'KeyZ',
+            forward: 'KeyS',
             left: 'KeyQ', 
-            backward: 'KeyS',
+            backward: 'KeyZ',
             right: 'KeyD',
             action: 'Space',
             water: 'KeyE',
@@ -923,9 +923,9 @@
             
             switch(preset) {
                 case 'azerty':
-                    controls.forward = 'KeyZ';
+                    controls.forward = 'KeyS';
                     controls.left = 'KeyQ';
-                    controls.backward = 'KeyS';
+                    controls.backward = 'KeyZ';
                     controls.right = 'KeyD';
                     break;
                 case 'qwerty':
@@ -979,9 +979,9 @@
         function resetControls() {
             // Reset to AZERTY default
             controls = {
-                forward: 'KeyZ',
+                forward: 'KeyS',
                 left: 'KeyQ',
-                backward: 'KeyS',
+                backward: 'KeyZ',
                 right: 'KeyD',
                 action: 'Space',
                 water: 'KeyE',
@@ -1119,6 +1119,26 @@
             if (plot.stage !== PLANT_STAGES.EMPTY) {
                 plot.waterLevel = Math.min(1.0, plot.waterLevel + 0.5);
                 plot.lastWatered = Date.now();
+                
+                // Revive withered plants when watered
+                if (plot.stage === PLANT_STAGES.WITHERING && plot.waterLevel > 0.3) {
+                    // Determine what stage the plant should return to based on its growth timer
+                    const plantConfig = PLANT_TYPES[plot.plantType];
+                    const growthProgress = Math.floor(plot.growthTimer / plantConfig.growthTime);
+                    
+                    if (growthProgress >= 2) {
+                        plot.stage = PLANT_STAGES.GROWING2;
+                    } else if (growthProgress >= 1) {
+                        plot.stage = PLANT_STAGES.GROWING1;
+                    } else {
+                        plot.stage = PLANT_STAGES.PLANTED;
+                    }
+                    
+                    // Restore plant color
+                    if (plot.plant) {
+                        plot.plant.color = plot.plant.baseColor || PLANT_TYPES[plot.plantType].color;
+                    }
+                }
                 
                 // Visual feedback for watering
                 createWaterEffect(plot);
@@ -1477,6 +1497,10 @@
                     // Check if plant should wither due to lack of water
                     if (plot.waterLevel <= 0 && plot.stage !== PLANT_STAGES.WITHERING) {
                         plot.stage = PLANT_STAGES.WITHERING;
+                        // Store baseColor if not already stored, then darken
+                        if (!plot.plant.baseColor) {
+                            plot.plant.baseColor = plot.plant.color;
+                        }
                         plot.plant.color = adjustColorBrightness(plot.plant.baseColor, 0.5);
                     }
                 }
