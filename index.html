@@ -153,11 +153,12 @@
         <div id="ui" style="display: none;">
             <div id="score">Score: 0</div>
             <div id="instructions">
-                🌱 Click plots to plant selected seed<br>
+                🌱 Move with WASD or arrow keys<br>
+                ⚡ SPACE to plant/harvest at closest plot<br>
+                💧 E to water plants<br>
+                📹 C to toggle camera mode<br>
                 🌿 Plants grow automatically (3 stages)<br>
-                🌾 Click mature plants to harvest<br>
-                💧 Right-click to water plants<br>
-                🔒 Click locked plots to unlock (costs coins)<br>
+                🔒 Unlock plots by getting close and pressing SPACE<br>
                 🌙 Watch the day/night cycle!<br>
                 🖱️ Drag to rotate camera view<br>
                 🔍 Scroll wheel to zoom in/out
@@ -196,6 +197,7 @@
         </div>
         <div id="dayNightIndicator" style="display: none;">
             <div id="timeDisplay">Day</div>
+            <div id="cameraMode" style="margin-top: 10px; font-size: 14px;">Camera: Character Follow</div>
         </div>
         <canvas id="canvas"></canvas>
     </div>
@@ -215,6 +217,29 @@
         let lastMouseY = 0;
         let hoveredPlot = null;
         let selectedPlantType = 'carrot';
+        let cameraFollowCharacter = true;
+        let freeCameraMode = false;
+        
+        // Character system
+        let character = {
+            x: 0,
+            y: 0,
+            z: 0,
+            size: 1,
+            color: '#4169E1', // Royal blue
+            targetX: 0,
+            targetZ: 0,
+            moving: false,
+            speed: 0.05, // Movement speed
+            animationFrame: 0,
+            currentAction: 'idle', // idle, walking, planting, watering
+            actionTimer: 0,
+            direction: 0, // rotation in radians
+            targetDirection: 0
+        };
+        
+        // Keyboard state
+        let keys = {};
         
         // Game objects
         let plots = [];
@@ -298,15 +323,27 @@
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             
+            // Apply camera offset when following character
+            let offsetX = 0;
+            let offsetZ = 0;
+            if (cameraFollowCharacter) {
+                offsetX = -character.x;
+                offsetZ = -character.z;
+            }
+            
             // Apply camera rotation
             const cosX = Math.cos(cameraAngleX);
             const sinX = Math.sin(cameraAngleX);
             const cosY = Math.cos(cameraAngleY);
             const sinY = Math.sin(cameraAngleY);
             
+            // Apply offset for character following
+            const x1_offset = x + offsetX;
+            const z1_offset = z + offsetZ;
+            
             // Rotate around Y axis then X axis
-            const x1 = x * cosY - z * sinY;
-            const z1 = x * sinY + z * cosY;
+            const x1 = x1_offset * cosY - z1_offset * sinY;
+            const z1 = x1_offset * sinY + z1_offset * cosY;
             const y1 = y * cosX - z1 * sinX;
             let z2 = y * sinX + z1 * cosX + cameraDistance; // Use cameraDistance for zoom
             
@@ -525,8 +562,41 @@
             canvas.addEventListener('contextmenu', onRightClick);
             canvas.addEventListener('wheel', onMouseWheel);
             
+            // Keyboard controls
+            window.addEventListener('keydown', onKeyDown);
+            window.addEventListener('keyup', onKeyUp);
+            
             // Window resize
             window.addEventListener('resize', onWindowResize);
+        }
+        
+        function onKeyDown(event) {
+            keys[event.code] = true;
+            
+            // Toggle camera mode
+            if (event.code === 'KeyC') {
+                freeCameraMode = !freeCameraMode;
+                cameraFollowCharacter = !freeCameraMode;
+                
+                // Update camera mode display
+                document.getElementById('cameraMode').textContent = 
+                    freeCameraMode ? 'Camera: Free Mode' : 'Camera: Character Follow';
+            }
+            
+            // Action keys
+            if (event.code === 'Space') {
+                event.preventDefault();
+                performCharacterAction();
+            }
+            
+            if (event.code === 'KeyE') {
+                event.preventDefault();
+                performWateringAction();
+            }
+        }
+        
+        function onKeyUp(event) {
+            keys[event.code] = false;
         }
         
         function onMouseDown(event) {
@@ -540,7 +610,7 @@
             const mouseX = event.clientX - rect.left;
             const mouseY = event.clientY - rect.top;
             
-            if (mouseDown) {
+            if (mouseDown && freeCameraMode) {
                 const deltaX = event.clientX - lastMouseX;
                 const deltaY = event.clientY - lastMouseY;
                 
@@ -555,23 +625,42 @@
                 
                 // Clear hover state when dragging
                 hoveredPlot = null;
-            } else {
-                // Check for plot hover
-                hoveredPlot = null;
-                plots.forEach(plot => {
-                    const plotProjected = getProjectedCube(plot.x, plot.y + 0.1, plot.z, 2);
-                    const minX = Math.min(...plotProjected.map(p => p.x));
-                    const maxX = Math.max(...plotProjected.map(p => p.x));
-                    const minY = Math.min(...plotProjected.map(p => p.y));
-                    const maxY = Math.max(...plotProjected.map(p => p.y));
-                    
-                    if (mouseX >= minX && mouseX <= maxX && mouseY >= minY && mouseY <= maxY) {
-                        hoveredPlot = plot;
-                    }
-                });
+            } else if (mouseDown && !freeCameraMode) {
+                // In character follow mode, still allow some camera control
+                const deltaX = event.clientX - lastMouseX;
+                const deltaY = event.clientY - lastMouseY;
                 
-                // Update cursor based on hover state
-                canvas.style.cursor = hoveredPlot ? 'pointer' : 'crosshair';
+                cameraAngleY += deltaX * 0.005; // Reduced sensitivity
+                cameraAngleX += deltaY * 0.005;
+                
+                // Limit vertical rotation
+                cameraAngleX = Math.max(-Math.PI / 2, Math.min(Math.PI / 6, cameraAngleX));
+                
+                lastMouseX = event.clientX;
+                lastMouseY = event.clientY;
+            } else {
+                // Check for plot hover only in free camera mode
+                if (freeCameraMode) {
+                    hoveredPlot = null;
+                    plots.forEach(plot => {
+                        const plotProjected = getProjectedCube(plot.x, plot.y + 0.1, plot.z, 2);
+                        const minX = Math.min(...plotProjected.map(p => p.x));
+                        const maxX = Math.max(...plotProjected.map(p => p.x));
+                        const minY = Math.min(...plotProjected.map(p => p.y));
+                        const maxY = Math.max(...plotProjected.map(p => p.y));
+                        
+                        if (mouseX >= minX && mouseX <= maxX && mouseY >= minY && mouseY <= maxY) {
+                            hoveredPlot = plot;
+                        }
+                    });
+                }
+                
+                // Update cursor based on hover state and camera mode
+                if (freeCameraMode) {
+                    canvas.style.cursor = hoveredPlot ? 'pointer' : 'crosshair';
+                } else {
+                    canvas.style.cursor = 'grab';
+                }
             }
         }
         
@@ -598,6 +687,8 @@
         
         function onRightClick(event) {
             event.preventDefault();
+            
+            if (!freeCameraMode) return; // Only allow right-click watering in free camera mode
             
             const rect = canvas.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
@@ -635,7 +726,7 @@
         }
         
         function onMouseClick(event) {
-            if (mouseDown) return; // Ignore clicks during drag
+            if (mouseDown || !freeCameraMode) return; // Ignore clicks during drag or in character mode
             
             const rect = canvas.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
@@ -1042,6 +1133,9 @@
                 }
             });
             
+            // Draw character
+            drawCharacter();
+            
             // Add some decorative elements
             drawDecorations();
             
@@ -1097,9 +1191,206 @@
             }
         }
         
-        function onWindowResize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function updateCharacter(deltaTime) {
+            // Handle keyboard input for movement
+            let moveX = 0;
+            let moveZ = 0;
+            
+            if (keys['KeyW'] || keys['ArrowUp']) moveZ -= 1;
+            if (keys['KeyS'] || keys['ArrowDown']) moveZ += 1;
+            if (keys['KeyA'] || keys['ArrowLeft']) moveX -= 1;
+            if (keys['KeyD'] || keys['ArrowRight']) moveX += 1;
+            
+            // Normalize movement
+            if (moveX !== 0 || moveZ !== 0) {
+                const length = Math.sqrt(moveX * moveX + moveZ * moveZ);
+                moveX /= length;
+                moveZ /= length;
+                
+                // Calculate target direction
+                character.targetDirection = Math.atan2(moveX, moveZ);
+                
+                // Set target position
+                character.targetX = character.x + moveX * character.speed * deltaTime;
+                character.targetZ = character.z + moveZ * character.speed * deltaTime;
+                
+                // Constrain to farm area
+                const maxDistance = 10;
+                character.targetX = Math.max(-maxDistance, Math.min(maxDistance, character.targetX));
+                character.targetZ = Math.max(-maxDistance, Math.min(maxDistance, character.targetZ));
+                
+                character.moving = true;
+                character.currentAction = 'walking';
+            } else {
+                character.moving = false;
+                if (character.currentAction === 'walking') {
+                    character.currentAction = 'idle';
+                }
+            }
+            
+            // Smooth movement
+            if (character.moving) {
+                const lerpFactor = 0.1;
+                character.x += (character.targetX - character.x) * lerpFactor;
+                character.z += (character.targetZ - character.z) * lerpFactor;
+            }
+            
+            // Smooth rotation
+            const angleDiff = character.targetDirection - character.direction;
+            let adjustedAngleDiff = angleDiff;
+            
+            // Handle angle wrapping
+            if (adjustedAngleDiff > Math.PI) {
+                adjustedAngleDiff -= 2 * Math.PI;
+            } else if (adjustedAngleDiff < -Math.PI) {
+                adjustedAngleDiff += 2 * Math.PI;
+            }
+            
+            character.direction += adjustedAngleDiff * 0.1;
+            
+            // Update animation frame
+            if (character.moving) {
+                character.animationFrame += deltaTime * 0.01;
+            }
+            
+            // Update action timer
+            if (character.actionTimer > 0) {
+                character.actionTimer -= deltaTime;
+                if (character.actionTimer <= 0) {
+                    character.currentAction = 'idle';
+                }
+            }
+            
+            // Update camera to follow character
+            if (cameraFollowCharacter) {
+                updateCameraFollow();
+            }
+        }
+        
+        function updateCameraFollow() {
+            // Calculate desired camera position relative to character
+            const followDistance = cameraDistance;
+            const followHeight = 5;
+            
+            // Offset camera position based on character position
+            const targetCameraX = character.x;
+            const targetCameraZ = character.z;
+            
+            // Smoothly move camera towards target
+            // The camera will center on the character but maintain its current angle
+        }
+        
+        function drawCharacter() {
+            // Character body
+            let characterColor = character.color;
+            
+            // Apply action-based color changes
+            if (character.currentAction === 'planting') {
+                characterColor = '#32CD32'; // Green for planting
+            } else if (character.currentAction === 'watering') {
+                characterColor = '#87CEEB'; // Light blue for watering
+            }
+            
+            // Add walking animation bob
+            let yOffset = 0;
+            if (character.moving && character.currentAction === 'walking') {
+                yOffset = Math.sin(character.animationFrame * 5) * 0.1;
+            }
+            
+            // Draw character body
+            drawCube(
+                character.x, 
+                character.y + character.size/2 + yOffset, 
+                character.z, 
+                character.size, 
+                characterColor
+            );
+            
+            // Draw character head
+            drawCube(
+                character.x, 
+                character.y + character.size * 1.3 + yOffset, 
+                character.z, 
+                character.size * 0.6, 
+                '#FDBCB4' // Skin color
+            );
+            
+            // Draw direction indicator (small arrow)
+            const arrowSize = 0.3;
+            const arrowDistance = character.size * 0.8;
+            const arrowX = character.x + Math.sin(character.direction) * arrowDistance;
+            const arrowZ = character.z + Math.cos(character.direction) * arrowDistance;
+            
+            drawCube(arrowX, character.y + character.size + yOffset, arrowZ, arrowSize, '#FFD700');
+        }
+        
+        function performCharacterAction() {
+            // Find the closest plot to the character
+            const closestPlot = findClosestPlot();
+            
+            if (closestPlot && getDistanceToPlot(closestPlot) <= 2.5) {
+                if (closestPlot.stage === PLANT_STAGES.EMPTY && closestPlot.unlocked) {
+                    // Plant seed
+                    plantSeedAtPlot(closestPlot);
+                    character.currentAction = 'planting';
+                    character.actionTimer = 1000; // 1 second animation
+                } else if (closestPlot.stage === PLANT_STAGES.MATURE) {
+                    // Harvest plant
+                    harvestPlant(closestPlot);
+                    character.currentAction = 'planting'; // Reuse planting animation
+                    character.actionTimer = 1000;
+                } else if (!closestPlot.unlocked && coins >= closestPlot.unlockCost) {
+                    // Unlock plot
+                    coins -= closestPlot.unlockCost;
+                    closestPlot.unlocked = true;
+                    updateUI();
+                    character.currentAction = 'planting';
+                    character.actionTimer = 1000;
+                }
+            }
+        }
+        
+        function performWateringAction() {
+            // Find the closest plot to the character
+            const closestPlot = findClosestPlot();
+            
+            if (closestPlot && getDistanceToPlot(closestPlot) <= 2.5) {
+                if (closestPlot.stage !== PLANT_STAGES.EMPTY) {
+                    waterPlot(closestPlot);
+                    character.currentAction = 'watering';
+                    character.actionTimer = 1000; // 1 second animation
+                }
+            }
+        }
+        
+        function findClosestPlot() {
+            let closestPlot = null;
+            let closestDistance = Infinity;
+            
+            plots.forEach(plot => {
+                const distance = getDistanceToPlot(plot);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestPlot = plot;
+                }
+            });
+            
+            return closestPlot;
+        }
+        
+        function getDistanceToPlot(plot) {
+            return Math.sqrt(
+                Math.pow(character.x - plot.x, 2) + 
+                Math.pow(character.z - plot.z, 2)
+            );
+        }
+        
+        function plantSeedAtPlot(plot) {
+            if (seedInventory[selectedPlantType] <= 0) {
+                return; // No seeds available
+            }
+            
+            plantSeed(plot, selectedPlantType);
         }
         
         // Game loop
@@ -1109,6 +1400,9 @@
             
             const deltaTime = currentTime - lastTime;
             lastTime = currentTime;
+            
+            // Update character
+            updateCharacter(deltaTime);
             
             // Update day/night cycle
             updateDayNightCycle();
@@ -1121,6 +1415,11 @@
             
             // Render scene
             render();
+        }
+        
+        function onWindowResize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
         
         // Start the game when page loads
