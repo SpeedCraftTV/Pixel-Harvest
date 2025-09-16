@@ -69,10 +69,23 @@ class TutorialManager {
      * Show welcome screen with tutorial options
      */
     showWelcomeScreen() {
-        this.ui.showWelcomeModal({
-            onStartTutorial: () => this.startTutorial(),
-            onSkipTutorial: () => this.skipTutorial(),
-            onViewSettings: () => this.showTutorialSettings()
+        // First show language selection, then the welcome modal
+        this.showLanguageSelection();
+    }
+
+    /**
+     * Show language selection modal
+     */
+    showLanguageSelection() {
+        this.ui.showLanguageSelectionModal({
+            onLanguageSelected: () => {
+                // After language is selected, show the welcome modal
+                this.ui.showWelcomeModal({
+                    onStartTutorial: () => this.startTutorial(),
+                    onSkipTutorial: () => this.skipTutorial(),
+                    onViewSettings: () => this.showTutorialSettings()
+                });
+            }
         });
     }
 

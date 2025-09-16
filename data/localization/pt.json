@@ -78,6 +78,11 @@
         "💰 Comprar e vender no mercado",
         "🎯 Completar missões e objetivos"
       ],
+      "languageSelection": {
+        "title": "🌍 Escolha seu idioma",
+        "subtitle": "Selecione seu idioma preferido para o jogo e tutorial:",
+        "continue": "Continuar com"
+      },
       "startTutorial": "🚀 Iniciar tutorial",
       "settings": "⚙️ Configurações",
       "skipTutorial": "⏭️ Pular tutorial"

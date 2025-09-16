@@ -78,7 +78,11 @@
         "💰 Am Marktplatz kauft und verkauft",
         "🎯 Quests und Ziele erfüllt"
       ],
-      "startTutorial": "🚀 Tutorial starten",
+      "languageSelection": {
+        "title": "🌍 Wählen Sie Ihre Sprache",
+        "subtitle": "Wählen Sie Ihre bevorzugte Sprache für das Spiel und Tutorial:",
+        "continue": "Weiter mit"
+      },
       "settings": "⚙️ Einstellungen",
       "skipTutorial": "⏭️ Tutorial überspringen"
     },

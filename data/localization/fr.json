@@ -78,6 +78,11 @@
         "💰 Acheter et vendre au marché",
         "🎯 Compléter des quêtes et objectifs"
       ],
+      "languageSelection": {
+        "title": "🌍 Choisissez votre langue",
+        "subtitle": "Sélectionnez votre langue préférée pour le jeu et le tutoriel :",
+        "continue": "Continuer avec"
+      },
       "startTutorial": "🚀 Commencer le tutoriel",
       "settings": "⚙️ Paramètres",
       "skipTutorial": "⏭️ Ignorer le tutoriel"
