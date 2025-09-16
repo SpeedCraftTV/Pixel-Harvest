@@ -312,6 +312,142 @@
             font-size: 18px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
+
+        /* Weather and Season Panels */
+        #weatherPanel {
+            position: absolute;
+            top: 20px;
+            left: 550px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 200px;
+            border: 2px solid #87CEEB;
+        }
+
+        #seasonPanel {
+            position: absolute;
+            top: 20px;
+            left: 770px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 180px;
+            border: 2px solid #32CD32;
+        }
+
+        /* Animals Panel */
+        #animalsPanel {
+            position: absolute;
+            top: 200px;
+            left: 20px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 280px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #FFD700;
+        }
+
+        /* Daily Quests Panel */
+        #questsPanel {
+            position: absolute;
+            top: 200px;
+            right: 20px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 300px;
+            max-height: 350px;
+            overflow-y: auto;
+            border: 2px solid #FF6347;
+        }
+
+        .weather-icon {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .season-icon {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .animal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .animal-btn {
+            background: #FFD700;
+            color: black;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+
+        .animal-btn:hover {
+            background: #FFA500;
+        }
+
+        .animal-btn:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .quest-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            border-left: 4px solid #FF6347;
+        }
+
+        .quest-completed {
+            border-left-color: #4CAF50;
+            opacity: 0.7;
+        }
+
+        .quest-progress {
+            background: rgba(255, 255, 255, 0.2);
+            height: 6px;
+            border-radius: 3px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .quest-progress-bar {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .weather-effect {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+        }
     </style>
 </head>
 <body>
@@ -356,16 +492,16 @@
             
             <div class="market-category">
                 <h3>💰 Sell Produce</h3>
-                <button class="market-btn" onclick="sellAll('carrot')">Sell Carrots (1💰)</button><br>
-                <button class="market-btn" onclick="sellAll('tomato')">Sell Tomatoes (3💰)</button><br>
-                <button class="market-btn" onclick="sellAll('rare')">Sell Rare (10💰)</button>
+                <button class="market-btn" onclick="sellAll('carrot')" id="sellCarrotBtn">Sell Carrots (1💰)</button><br>
+                <button class="market-btn" onclick="sellAll('tomato')" id="sellTomatoBtn">Sell Tomatoes (3💰)</button><br>
+                <button class="market-btn" onclick="sellAll('rare')" id="sellRareBtn">Sell Rare (10💰)</button>
             </div>
             
             <div class="market-category">
                 <h3>🌱 Seeds</h3>
-                <button class="market-btn" onclick="buySeeds('carrot', 1)">Buy Carrot Seeds (1💰)</button><br>
-                <button class="market-btn" onclick="buySeeds('tomato', 2)">Buy Tomato Seeds (2💰)</button><br>
-                <button class="market-btn" onclick="buySeeds('rare', 5)">Buy Rare Seeds (5💰)</button>
+                <button class="market-btn" onclick="buySeeds('carrot', 1)" id="buyCarrotSeedsBtn">Buy Carrot Seeds (1💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('tomato', 2)" id="buyTomatoSeedsBtn">Buy Tomato Seeds (2💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('rare', 5)" id="buyRareSeedsBtn">Buy Rare Seeds (5💰)</button>
             </div>
             
             <div class="market-category">
@@ -391,6 +527,71 @@
             <div id="cameraMode" style="margin-top: 10px; font-size: 14px;">Camera: Character Follow</div>
             <div id="characterStatus" style="margin-top: 10px; font-size: 12px; color: #FFD700;">
                 Character: Idle
+            </div>
+        </div>
+        
+        <!-- Weather Panel -->
+        <div id="weatherPanel" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">🌤️ Weather</div>
+            <div class="weather-icon" id="weatherIcon">☀️</div>
+            <div id="weatherName" style="text-align: center; margin-bottom: 5px;">Sunny</div>
+            <div id="weatherEffect" style="font-size: 12px; text-align: center; opacity: 0.8;">Plants grow normally</div>
+        </div>
+
+        <!-- Season Panel -->
+        <div id="seasonPanel" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">🍂 Season</div>
+            <div class="season-icon" id="seasonIcon">🌸</div>
+            <div id="seasonName" style="text-align: center; margin-bottom: 5px;">Spring</div>
+            <div id="seasonDay" style="font-size: 12px; text-align: center; opacity: 0.8;">Day 1 of 20</div>
+        </div>
+
+        <!-- Animals Panel -->
+        <div id="animalsPanel" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">🐄 Farm Animals</div>
+            
+            <div class="animal-item">
+                <div>
+                    <div>🐔 Chickens: <span id="chickenCount">0</span></div>
+                    <div style="font-size: 11px; opacity: 0.8;">Produce: <span id="eggCount">0</span> 🥚</div>
+                </div>
+                <div>
+                    <button class="animal-btn" onclick="buyAnimal('chicken', 30)" id="buyChickenBtn">Buy (30💰)</button>
+                    <button class="animal-btn" onclick="collectResource('eggs')" id="collectEggsBtn">Collect</button>
+                </div>
+            </div>
+
+            <div class="animal-item">
+                <div>
+                    <div>🐄 Cows: <span id="cowCount">0</span></div>
+                    <div style="font-size: 11px; opacity: 0.8;">Produce: <span id="milkCount">0</span> 🥛</div>
+                </div>
+                <div>
+                    <button class="animal-btn" onclick="buyAnimal('cow', 100)" id="buyCowBtn">Buy (100💰)</button>
+                    <button class="animal-btn" onclick="collectResource('milk')" id="collectMilkBtn">Collect</button>
+                </div>
+            </div>
+
+            <div class="animal-item">
+                <div>
+                    <div>🐷 Pigs: <span id="pigCount">0</span></div>
+                    <div style="font-size: 11px; opacity: 0.8;">Produce: <span id="truffleCount">0</span> 🍄</div>
+                </div>
+                <div>
+                    <button class="animal-btn" onclick="buyAnimal('pig', 150)" id="buyPigBtn">Buy (150💰)</button>
+                    <button class="animal-btn" onclick="collectResource('truffles')" id="collectTrufflesBtn">Collect</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Quests Panel -->
+        <div id="questsPanel" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">📋 Daily Quests</div>
+            <div id="questList">
+                <!-- Quests will be populated dynamically -->
+            </div>
+            <div style="margin-top: 15px; text-align: center; font-size: 12px; opacity: 0.8;">
+                <button class="market-btn" onclick="resetDailyQuests()" style="font-size: 11px; padding: 5px 10px;">🔄 New Quests (50💰)</button>
             </div>
         </div>
         <button id="settingsButton" style="display: none;">⚙️ Controls</button>
@@ -458,6 +659,166 @@
         let coins = 50; // Balanced starting amount
         let dayNightCycle = 0;
         let dayNightCycleCount = 0;
+        
+        // Weather System
+        let currentWeather = {
+            type: 'sunny',
+            name: 'Sunny',
+            icon: '☀️',
+            effect: 'Plants grow normally',
+            growthMultiplier: 1.0,
+            waterDecayMultiplier: 1.0,
+            duration: 0,
+            maxDuration: 30000 // 30 seconds per weather
+        };
+        
+        const WEATHER_TYPES = {
+            sunny: {
+                name: 'Sunny',
+                icon: '☀️',
+                effect: 'Plants grow faster',
+                growthMultiplier: 1.2,
+                waterDecayMultiplier: 1.2,
+                bgColor: { r: 135, g: 206, b: 235 },
+                probability: 0.3
+            },
+            cloudy: {
+                name: 'Cloudy',
+                icon: '☁️',
+                effect: 'Normal growth, less water loss',
+                growthMultiplier: 1.0,
+                waterDecayMultiplier: 0.7,
+                bgColor: { r: 105, g: 105, b: 105 },
+                probability: 0.25
+            },
+            rainy: {
+                name: 'Rainy',
+                icon: '🌧️',
+                effect: 'Slower growth, plants auto-watered',
+                growthMultiplier: 0.8,
+                waterDecayMultiplier: -0.5, // Negative means plants gain water
+                bgColor: { r: 70, g: 130, b: 180 },
+                probability: 0.25
+            },
+            stormy: {
+                name: 'Stormy',
+                icon: '⛈️',
+                effect: 'Much slower growth, auto-watered',
+                growthMultiplier: 0.5,
+                waterDecayMultiplier: -0.8,
+                bgColor: { r: 47, g: 79, b: 79 },
+                probability: 0.2
+            }
+        };
+        
+        // Season System  
+        let currentSeason = {
+            type: 'spring',
+            name: 'Spring',
+            icon: '🌸',
+            day: 1,
+            maxDays: 20,
+            availableCrops: ['carrot', 'tomato'],
+            growthBonus: { carrot: 1.2, tomato: 1.0, rare: 0.8 }
+        };
+        
+        const SEASON_TYPES = {
+            spring: {
+                name: 'Spring',
+                icon: '🌸',
+                availableCrops: ['carrot', 'tomato'],
+                growthBonus: { carrot: 1.2, tomato: 1.0, rare: 0.8 },
+                bgTint: { r: 1.1, g: 1.0, b: 1.0 }
+            },
+            summer: {
+                name: 'Summer',
+                icon: '☀️',
+                availableCrops: ['tomato', 'rare'],
+                growthBonus: { carrot: 0.8, tomato: 1.3, rare: 1.1 },
+                bgTint: { r: 1.2, g: 1.1, b: 0.9 }
+            },
+            autumn: {
+                name: 'Autumn',
+                icon: '🍂',
+                availableCrops: ['carrot', 'rare'],
+                growthBonus: { carrot: 1.1, tomato: 0.8, rare: 1.2 },
+                bgTint: { r: 1.1, g: 0.9, b: 0.8 }
+            },
+            winter: {
+                name: 'Winter',
+                icon: '❄️',
+                availableCrops: ['rare'],
+                growthBonus: { carrot: 0.6, tomato: 0.6, rare: 1.0 },
+                bgTint: { r: 0.9, g: 0.9, b: 1.1 }
+            }
+        };
+        
+        // Animals System
+        let animals = {
+            chicken: { count: 0, eggs: 0, lastProduction: Date.now(), productionRate: 8000 }, // 8 seconds
+            cow: { count: 0, milk: 0, lastProduction: Date.now(), productionRate: 15000 }, // 15 seconds  
+            pig: { count: 0, truffles: 0, lastProduction: Date.now(), productionRate: 20000 } // 20 seconds
+        };
+        
+        const ANIMAL_COSTS = {
+            chicken: 30,
+            cow: 100,
+            pig: 150
+        };
+        
+        const ANIMAL_PRODUCTS = {
+            chicken: { name: 'eggs', emoji: '🥚', value: 2 },
+            cow: { name: 'milk', emoji: '🥛', value: 5 },
+            pig: { name: 'truffles', emoji: '🍄', value: 8 }
+        };
+        
+        // Daily Quests System
+        let dailyQuests = [];
+        let questProgress = {};
+        let lastQuestReset = Date.now();
+        
+        const QUEST_TYPES = [
+            {
+                id: 'harvest_plants',
+                name: 'Harvest {target} plants',
+                description: 'Harvest any type of plant',
+                target: [5, 10, 15],
+                reward: [15, 25, 40],
+                type: 'harvest'
+            },
+            {
+                id: 'plant_seeds',
+                name: 'Plant {target} seeds',
+                description: 'Plant any type of seed',
+                target: [3, 8, 12],
+                reward: [10, 20, 35],
+                type: 'plant'
+            },
+            {
+                id: 'earn_coins',
+                name: 'Earn {target} coins',
+                description: 'Earn coins by selling items',
+                target: [25, 50, 100],
+                reward: [20, 35, 60],
+                type: 'coins'
+            },
+            {
+                id: 'collect_animal_products',
+                name: 'Collect {target} animal products',
+                description: 'Collect eggs, milk, or truffles',
+                target: [2, 5, 8],
+                reward: [15, 30, 50],
+                type: 'collect'
+            },
+            {
+                id: 'water_plants',
+                name: 'Water {target} plants',
+                description: 'Water growing plants',
+                target: [5, 10, 15],
+                reward: [10, 18, 30],
+                type: 'water'
+            }
+        ];
         
         // Audio system
         let audioContext;
@@ -822,7 +1183,14 @@
                 dayNightCycle: dayNightCycle,
                 dayNightCycleCount: dayNightCycleCount,
                 cameraFollowX: cameraFollowX,
-                cameraFollowZ: cameraFollowZ
+                cameraFollowZ: cameraFollowZ,
+                // New save data
+                currentWeather: currentWeather,
+                currentSeason: currentSeason,
+                animals: animals,
+                dailyQuests: dailyQuests,
+                questProgress: questProgress,
+                lastQuestReset: lastQuestReset
             };
             
             try {
@@ -859,6 +1227,38 @@
                 dayNightCycleCount = gameState.dayNightCycleCount || 0;
                 cameraFollowX = gameState.cameraFollowX || 0;
                 cameraFollowZ = gameState.cameraFollowZ || 0;
+                
+                // Restore new features with defaults for compatibility
+                currentWeather = gameState.currentWeather || {
+                    type: 'sunny',
+                    name: 'Sunny',
+                    icon: '☀️',
+                    effect: 'Plants grow normally',
+                    growthMultiplier: 1.0,
+                    waterDecayMultiplier: 1.0,
+                    duration: 0,
+                    maxDuration: 30000
+                };
+                
+                currentSeason = gameState.currentSeason || {
+                    type: 'spring',
+                    name: 'Spring',
+                    icon: '🌸',
+                    day: 1,
+                    maxDays: 20,
+                    availableCrops: ['carrot', 'tomato'],
+                    growthBonus: { carrot: 1.2, tomato: 1.0, rare: 0.8 }
+                };
+                
+                animals = gameState.animals || {
+                    chicken: { count: 0, eggs: 0, lastProduction: Date.now(), productionRate: 8000 },
+                    cow: { count: 0, milk: 0, lastProduction: Date.now(), productionRate: 15000 },
+                    pig: { count: 0, truffles: 0, lastProduction: Date.now(), productionRate: 20000 }
+                };
+                
+                dailyQuests = gameState.dailyQuests || [];
+                questProgress = gameState.questProgress || {};
+                lastQuestReset = gameState.lastQuestReset || Date.now();
                 
                 // Restore sprinklers
                 activeSprinklers = gameState.activeSprinklers || [];
@@ -941,17 +1341,367 @@
                 plotsUnlocked: 9
             };
             
+            // Reset new systems
+            currentWeather = {
+                type: 'sunny',
+                name: 'Sunny',
+                icon: '☀️',
+                effect: 'Plants grow normally',
+                growthMultiplier: 1.0,
+                waterDecayMultiplier: 1.0,
+                duration: 0,
+                maxDuration: 30000
+            };
+            
+            currentSeason = {
+                type: 'spring',
+                name: 'Spring',
+                icon: '🌸',
+                day: 1,
+                maxDays: 20,
+                availableCrops: ['carrot', 'tomato'],
+                growthBonus: { carrot: 1.2, tomato: 1.0, rare: 0.8 }
+            };
+            
+            animals = {
+                chicken: { count: 0, eggs: 0, lastProduction: Date.now(), productionRate: 8000 },
+                cow: { count: 0, milk: 0, lastProduction: Date.now(), productionRate: 15000 },
+                pig: { count: 0, truffles: 0, lastProduction: Date.now(), productionRate: 20000 }
+            };
+            
+            dailyQuests = [];
+            questProgress = {};
+            lastQuestReset = Date.now();
+            
+            // Generate initial quests
+            generateDailyQuests();
+            
             // Recreate plots
             createPlots();
             
             // Update UI
             updateUI();
             updateObjectives();
+            updateWeatherUI();
+            updateSeasonUI();
+            updateAnimalsUI();
+            updateQuestsUI();
             
             // Clear any effects
             if (window.gameEffects) window.gameEffects = [];
             
             console.log('New game started');
+        }
+
+        // Weather System Functions
+        function updateWeather(deltaTime) {
+            currentWeather.duration += deltaTime;
+            
+            // Check if weather should change
+            if (currentWeather.duration >= currentWeather.maxDuration) {
+                changeWeather();
+            }
+            
+            // Apply weather effects to background
+            updateBackgroundForWeather();
+        }
+        
+        function changeWeather() {
+            const weatherTypes = Object.keys(WEATHER_TYPES);
+            const probabilities = weatherTypes.map(type => WEATHER_TYPES[type].probability);
+            
+            // Weighted random selection
+            let random = Math.random();
+            let selectedWeather = 'sunny';
+            
+            for (let i = 0; i < weatherTypes.length; i++) {
+                random -= probabilities[i];
+                if (random <= 0) {
+                    selectedWeather = weatherTypes[i];
+                    break;
+                }
+            }
+            
+            const weatherConfig = WEATHER_TYPES[selectedWeather];
+            currentWeather = {
+                type: selectedWeather,
+                name: weatherConfig.name,
+                icon: weatherConfig.icon,
+                effect: weatherConfig.effect,
+                growthMultiplier: weatherConfig.growthMultiplier,
+                waterDecayMultiplier: weatherConfig.waterDecayMultiplier,
+                duration: 0,
+                maxDuration: 30000 + Math.random() * 20000 // 30-50 seconds
+            };
+            
+            updateWeatherUI();
+            saveGame();
+        }
+        
+        function updateWeatherUI() {
+            document.getElementById('weatherIcon').textContent = currentWeather.icon;
+            document.getElementById('weatherName').textContent = currentWeather.name;
+            document.getElementById('weatherEffect').textContent = currentWeather.effect;
+        }
+        
+        function updateBackgroundForWeather() {
+            const weatherConfig = WEATHER_TYPES[currentWeather.type];
+            const dayProgress = (Math.sin(dayNightCycle) + 1) / 2;
+            
+            // Blend day/night with weather colors
+            const dayColor = weatherConfig.bgColor;
+            const nightColor = { r: 25, g: 25, b: 112 };
+            
+            const r = Math.floor(dayColor.r + (nightColor.r - dayColor.r) * (1 - dayProgress));
+            const g = Math.floor(dayColor.g + (nightColor.g - dayColor.g) * (1 - dayProgress));
+            const b = Math.floor(dayColor.b + (nightColor.b - dayColor.b) * (1 - dayProgress));
+            
+            document.body.style.background = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Season System Functions
+        let lastDayState = false; // Track day state for season progression
+        
+        function updateSeason(deltaTime) {
+            // Each day/night cycle advances the season by 1 day
+            const dayProgress = (Math.sin(dayNightCycle) + 1) / 2;
+            const isDay = dayProgress > 0.5;
+            
+            // Check for season day advancement
+            if (lastDayState !== isDay && isDay) {
+                advanceSeasonDay();
+            }
+            lastDayState = isDay;
+        }
+        
+        function advanceSeasonDay() {
+            currentSeason.day++;
+            
+            if (currentSeason.day > currentSeason.maxDays) {
+                changeSeason();
+            }
+            
+            updateSeasonUI();
+            saveGame();
+        }
+        
+        function changeSeason() {
+            const seasons = ['spring', 'summer', 'autumn', 'winter'];
+            const currentIndex = seasons.indexOf(currentSeason.type);
+            const nextIndex = (currentIndex + 1) % seasons.length;
+            const nextSeasonType = seasons[nextIndex];
+            
+            const seasonConfig = SEASON_TYPES[nextSeasonType];
+            currentSeason = {
+                type: nextSeasonType,
+                name: seasonConfig.name,
+                icon: seasonConfig.icon,
+                day: 1,
+                maxDays: 20,
+                availableCrops: seasonConfig.availableCrops,
+                growthBonus: seasonConfig.growthBonus
+            };
+            
+            updateSeasonUI();
+            updateUI(); // Update plant buttons based on season
+            
+            // Show season change notification
+            showInstruction(`🍂 Season changed to ${currentSeason.name}! Available crops updated.`, 3000);
+            saveGame();
+        }
+        
+        function updateSeasonUI() {
+            document.getElementById('seasonIcon').textContent = currentSeason.icon;
+            document.getElementById('seasonName').textContent = currentSeason.name;
+            document.getElementById('seasonDay').textContent = `Day ${currentSeason.day} of ${currentSeason.maxDays}`;
+        }
+
+        // Animals System Functions
+        function updateAnimals(deltaTime) {
+            const currentTime = Date.now();
+            
+            Object.keys(animals).forEach(animalType => {
+                const animal = animals[animalType];
+                if (animal.count > 0) {
+                    // Check if it's time to produce
+                    if (currentTime - animal.lastProduction >= animal.productionRate) {
+                        const productName = ANIMAL_PRODUCTS[animalType].name;
+                        animal[productName] += animal.count; // Each animal produces 1 item
+                        animal.lastProduction = currentTime;
+                        updateAnimalsUI();
+                        saveGame();
+                    }
+                }
+            });
+        }
+        
+        function buyAnimal(animalType, cost) {
+            if (coins >= cost) {
+                coins -= cost;
+                animals[animalType].count++;
+                objectives.equipmentBought++; // Count animals as equipment
+                
+                updateUI();
+                updateAnimalsUI();
+                updateObjectives();
+                saveGame();
+                
+                showInstruction(`🐄 ${animalType.charAt(0).toUpperCase() + animalType.slice(1)} purchased! It will produce resources automatically.`, 2000);
+            }
+        }
+        
+        function collectResource(resourceType) {
+            let collected = 0;
+            let totalValue = 0;
+            
+            Object.keys(animals).forEach(animalType => {
+                const productInfo = ANIMAL_PRODUCTS[animalType];
+                if (productInfo.name === resourceType) {
+                    const amount = animals[animalType][resourceType];
+                    if (amount > 0) {
+                        collected += amount;
+                        totalValue += amount * productInfo.value;
+                        animals[animalType][resourceType] = 0;
+                        
+                        // Track quest progress
+                        updateQuestProgress('collect', amount);
+                    }
+                }
+            });
+            
+            if (collected > 0) {
+                coins += totalValue;
+                objectives.coinsEarned += totalValue;
+                
+                updateUI();
+                updateAnimalsUI();
+                updateObjectives();
+                updateQuestsUI();
+                saveGame();
+                
+                showInstruction(`📦 Collected ${collected} ${resourceType} for ${totalValue} coins!`, 2000);
+            }
+        }
+        
+        function updateAnimalsUI() {
+            // Update animal counts
+            document.getElementById('chickenCount').textContent = animals.chicken.count;
+            document.getElementById('cowCount').textContent = animals.cow.count;
+            document.getElementById('pigCount').textContent = animals.pig.count;
+            
+            // Update resource counts
+            document.getElementById('eggCount').textContent = animals.chicken.eggs;
+            document.getElementById('milkCount').textContent = animals.cow.milk;
+            document.getElementById('truffleCount').textContent = animals.pig.truffles;
+            
+            // Update button states
+            document.getElementById('buyChickenBtn').disabled = coins < ANIMAL_COSTS.chicken;
+            document.getElementById('buyCowBtn').disabled = coins < ANIMAL_COSTS.cow;
+            document.getElementById('buyPigBtn').disabled = coins < ANIMAL_COSTS.pig;
+            
+            document.getElementById('collectEggsBtn').disabled = animals.chicken.eggs === 0;
+            document.getElementById('collectMilkBtn').disabled = animals.cow.milk === 0;
+            document.getElementById('collectTrufflesBtn').disabled = animals.pig.truffles === 0;
+        }
+
+        // Daily Quests System Functions  
+        function generateDailyQuests() {
+            dailyQuests = [];
+            questProgress = {};
+            
+            // Generate 3 random quests
+            const availableQuests = [...QUEST_TYPES];
+            for (let i = 0; i < 3; i++) {
+                if (availableQuests.length === 0) break;
+                
+                const randomIndex = Math.floor(Math.random() * availableQuests.length);
+                const questTemplate = availableQuests.splice(randomIndex, 1)[0];
+                
+                // Random difficulty (0, 1, or 2)
+                const difficulty = Math.floor(Math.random() * 3);
+                const quest = {
+                    id: questTemplate.id + '_' + Date.now() + '_' + i,
+                    name: questTemplate.name.replace('{target}', questTemplate.target[difficulty]),
+                    description: questTemplate.description,
+                    type: questTemplate.type,
+                    target: questTemplate.target[difficulty],
+                    reward: questTemplate.reward[difficulty],
+                    progress: 0,
+                    completed: false
+                };
+                
+                dailyQuests.push(quest);
+                questProgress[quest.id] = 0;
+            }
+            
+            updateQuestsUI();
+            saveGame();
+        }
+        
+        function updateQuestProgress(type, amount = 1) {
+            let questsCompleted = false;
+            
+            dailyQuests.forEach(quest => {
+                if (!quest.completed && quest.type === type) {
+                    quest.progress = Math.min(quest.target, quest.progress + amount);
+                    questProgress[quest.id] = quest.progress;
+                    
+                    if (quest.progress >= quest.target && !quest.completed) {
+                        quest.completed = true;
+                        coins += quest.reward;
+                        objectives.coinsEarned += quest.reward;
+                        questsCompleted = true;
+                        
+                        showInstruction(`✅ Quest completed! Earned ${quest.reward} coins.`, 2000);
+                    }
+                }
+            });
+            
+            if (questsCompleted) {
+                updateUI();
+                updateObjectives();
+            }
+            
+            updateQuestsUI();
+            saveGame();
+        }
+        
+        function resetDailyQuests() {
+            if (coins >= 50) {
+                coins -= 50;
+                generateDailyQuests();
+                updateUI();
+                showInstruction('🔄 New daily quests generated!', 2000);
+            }
+        }
+        
+        function updateQuestsUI() {
+            const questList = document.getElementById('questList');
+            questList.innerHTML = '';
+            
+            dailyQuests.forEach(quest => {
+                const questDiv = document.createElement('div');
+                questDiv.className = `quest-item ${quest.completed ? 'quest-completed' : ''}`;
+                
+                const progressPercent = (quest.progress / quest.target) * 100;
+                
+                questDiv.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">
+                        ${quest.completed ? '✅' : '📋'} ${quest.name}
+                    </div>
+                    <div style="font-size: 11px; opacity: 0.8; margin-bottom: 5px;">
+                        ${quest.description}
+                    </div>
+                    <div class="quest-progress">
+                        <div class="quest-progress-bar" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div style="font-size: 11px; margin-top: 5px;">
+                        Progress: ${quest.progress}/${quest.target} | Reward: ${quest.reward}💰
+                    </div>
+                `;
+                
+                questList.appendChild(questDiv);
+            });
         }
         
         function init() {
@@ -980,6 +1730,11 @@
                 // Initialize camera for loaded game
                 cameraAngleX = -0.3; // Look down slightly
                 cameraAngleY = 0;
+                
+                // Generate quests if none exist or it's been too long
+                if (dailyQuests.length === 0 || Date.now() - lastQuestReset > 86400000) {
+                    generateDailyQuests();
+                }
             }
             
             // Add event listeners
@@ -987,6 +1742,17 @@
             
             // Initialize UI
             setupUI();
+            
+            // Initialize new systems UI
+            updateWeatherUI();
+            updateSeasonUI();
+            updateAnimalsUI();
+            updateQuestsUI();
+            
+            // Generate initial daily quests if needed
+            if (dailyQuests.length === 0) {
+                generateDailyQuests();
+            }
             
             // Update instructions with current controls
             updateInstructions();
@@ -1004,6 +1770,10 @@
             document.getElementById('objectives').style.display = 'block';
             document.getElementById('settingsButton').style.display = 'block';
             document.getElementById('newGameButton').style.display = 'block';
+            document.getElementById('weatherPanel').style.display = 'block';
+            document.getElementById('seasonPanel').style.display = 'block';
+            document.getElementById('animalsPanel').style.display = 'block';
+            document.getElementById('questsPanel').style.display = 'block';
             
             // Start game loop
             animate();
@@ -1591,6 +2361,9 @@
                 plot.waterLevel = Math.min(1.0, plot.waterLevel + 0.5);
                 plot.lastWatered = Date.now();
                 
+                // Update quest progress
+                updateQuestProgress('water');
+                
                 // Play water sound
                 playActionSound('water');
                 
@@ -1616,6 +2389,7 @@
                 
                 // Visual feedback for watering
                 createWaterEffect(plot);
+                updateQuestsUI();
                 saveGame(); // Auto-save after watering
             }
         }
@@ -1722,6 +2496,12 @@
                 return; // No seeds available
             }
             
+            // Check if plant type is available in current season
+            if (!currentSeason.availableCrops.includes(plantType)) {
+                showInstruction(`❄️ ${PLANT_TYPES[plantType].name} is not available in ${currentSeason.name}!`, 2000);
+                return;
+            }
+            
             const plantConfig = PLANT_TYPES[plantType];
             seedInventory[plantType]--;
             objectives.seedsPlanted++;
@@ -1737,11 +2517,15 @@
                 baseColor: plantConfig.color
             };
             
+            // Update quest progress
+            updateQuestProgress('plant');
+            
             // Play plant sound
             playActionSound('plant');
             
             updateUI();
             updateObjectives();
+            updateQuestsUI();
             saveGame(); // Auto-save after planting
         }
         
@@ -1773,14 +2557,18 @@
             // Add to inventory
             inventory[plantType]++;
             
-            // Add score
-            score += plantConfig.value;
+            // Add score (dynamic based on weather/season)
+            const dynamicValue = getDynamicPrice(plantType, 'sell');
+            score += dynamicValue;
             
             // Update objectives
             if (plantType === 'carrot') {
                 objectives.carrotsHarvested++;
             }
             objectives.plantsHarvested++;
+            
+            // Update quest progress
+            updateQuestProgress('harvest');
             
             // Reset plot
             plot.stage = PLANT_STAGES.EMPTY;
@@ -1797,6 +2585,7 @@
             
             updateUI();
             updateObjectives();
+            updateQuestsUI();
             saveGame(); // Auto-save after harvesting
         }
         
@@ -1886,16 +2675,23 @@
             document.getElementById('fertilizerCount').textContent = `🌿 Fertilizer: ${equipment.fertilizer}`;
             document.getElementById('greenhouseCount').textContent = `🏠 Greenhouses: ${equipment.greenhouse}`;
             
-            // Update plant buttons availability
+            // Update plant buttons availability based on season and seeds
             document.querySelectorAll('.plant-btn').forEach(btn => {
                 const plantType = btn.dataset.plant;
                 const hasSeeds = seedInventory[plantType] > 0;
-                btn.disabled = !hasSeeds;
-                btn.style.opacity = hasSeeds ? '1' : '0.5';
+                const inSeason = currentSeason.availableCrops.includes(plantType);
+                const available = hasSeeds && inSeason;
                 
-                // Update button text with seed count
+                btn.disabled = !available;
+                btn.style.opacity = available ? '1' : '0.5';
+                
+                // Update button text with seed count and season availability
                 const plantConfig = PLANT_TYPES[plantType];
-                btn.textContent = `${plantConfig.emoji} ${plantConfig.name} (${seedInventory[plantType]})`;
+                let buttonText = `${plantConfig.emoji} ${plantConfig.name} (${seedInventory[plantType]})`;
+                if (!inSeason) {
+                    buttonText += ` ❄️`;
+                }
+                btn.textContent = buttonText;
             });
             
             // Update equipment buttons availability
@@ -1915,6 +2711,12 @@
                 greenhouseBtn.disabled = coins < 300;
                 greenhouseBtn.style.opacity = coins >= 300 ? '1' : '0.5';
             }
+            
+            // Update marketplace with dynamic prices
+            updateMarketplaceUI();
+            
+            // Update new panels
+            updateAnimalsUI();
         }
         
         function updateObjectives() {
@@ -1968,30 +2770,90 @@
             }
         }
         
-        // Marketplace functions
+        // Marketplace functions with dynamic pricing
+        function getDynamicPrice(plantType, action = 'sell') {
+            const basePrice = PLANT_TYPES[plantType].value;
+            let priceMultiplier = 1.0;
+            
+            // Weather effects on prices
+            if (currentWeather.type === 'rainy' || currentWeather.type === 'stormy') {
+                // High demand during bad weather
+                priceMultiplier *= 1.3;
+            } else if (currentWeather.type === 'sunny') {
+                // Normal demand during good weather
+                priceMultiplier *= 1.1;
+            }
+            
+            // Season effects on prices
+            if (currentSeason.availableCrops.includes(plantType)) {
+                // In-season crops have lower prices (more supply)
+                priceMultiplier *= 0.9;
+            } else {
+                // Out-of-season crops have higher prices (less supply)
+                priceMultiplier *= 1.4;
+            }
+            
+            // Different multiplier for seed purchases vs selling
+            if (action === 'buy') {
+                priceMultiplier *= 1.2; // Seeds cost more than selling price
+            }
+            
+            return Math.ceil(basePrice * priceMultiplier);
+        }
+        
         function sellAll(plantType) {
             const count = inventory[plantType];
             if (count <= 0) return;
             
-            const plantConfig = PLANT_TYPES[plantType];
-            const earnings = count * plantConfig.value;
+            const price = getDynamicPrice(plantType, 'sell');
+            const earnings = count * price;
             
             inventory[plantType] = 0;
             coins += earnings;
             objectives.coinsEarned += earnings;
             
+            // Update quest progress
+            updateQuestProgress('coins', earnings);
+            
             updateUI();
             updateObjectives();
+            updateMarketplaceUI();
             saveGame(); // Auto-save after selling
         }
         
-        function buySeeds(plantType, cost) {
-            if (coins >= cost) {
-                coins -= cost;
+        function buySeeds(plantType, baseCost) {
+            const dynamicCost = getDynamicPrice(plantType, 'buy');
+            if (coins >= dynamicCost) {
+                coins -= dynamicCost;
                 seedInventory[plantType] += 5; // Buy 5 seeds at a time
                 updateUI();
+                updateMarketplaceUI();
                 saveGame(); // Auto-save after buying seeds
             }
+        }
+        
+        function updateMarketplaceUI() {
+            // Update sell buttons with dynamic prices
+            ['carrot', 'tomato', 'rare'].forEach(plantType => {
+                const price = getDynamicPrice(plantType, 'sell');
+                const plantConfig = PLANT_TYPES[plantType];
+                const sellBtn = document.getElementById(`sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}Btn`);
+                if (sellBtn) {
+                    sellBtn.textContent = `Sell ${plantConfig.name}s (${price}💰)`;
+                }
+            });
+            
+            // Update seed purchase buttons with dynamic prices
+            ['carrot', 'tomato', 'rare'].forEach(plantType => {
+                const price = getDynamicPrice(plantType, 'buy');
+                const plantConfig = PLANT_TYPES[plantType];
+                const buyBtn = document.getElementById(`buy${plantType.charAt(0).toUpperCase() + plantType.slice(1)}SeedsBtn`);
+                if (buyBtn) {
+                    buyBtn.textContent = `Buy ${plantConfig.name} Seeds (${price}💰)`;
+                    buyBtn.disabled = coins < price;
+                    buyBtn.style.opacity = coins >= price ? '1' : '0.5';
+                }
+            });
         }
         
         function buyItem(itemType, cost) {
@@ -2106,15 +2968,29 @@
             
             plots.forEach(plot => {
                 if (plot.stage !== PLANT_STAGES.EMPTY && plot.stage !== PLANT_STAGES.MATURE) {
-                    // Water decay - simple time-based model
+                    // Water decay/gain based on weather
                     const deltaTimeSeconds = deltaTime / 1000;
-                    plot.waterLevel = Math.max(0, plot.waterLevel - waterDecayRate * deltaTimeSeconds);
+                    let waterChange = currentWeather.waterDecayMultiplier * waterDecayRate * deltaTimeSeconds;
+                    
+                    // If weather has negative water decay (rain), plants gain water
+                    if (currentWeather.waterDecayMultiplier < 0) {
+                        plot.waterLevel = Math.min(1.0, plot.waterLevel - waterChange);
+                    } else {
+                        plot.waterLevel = Math.max(0, plot.waterLevel - waterChange);
+                    }
                     
                     // Get plant configuration
                     const plantConfig = PLANT_TYPES[plot.plantType];
                     
                     // Calculate growth speed based on conditions
                     let growthMultiplier = 1;
+                    
+                    // Weather effects
+                    growthMultiplier *= currentWeather.growthMultiplier;
+                    
+                    // Season effects
+                    const seasonBonus = currentSeason.growthBonus[plot.plantType] || 1.0;
+                    growthMultiplier *= seasonBonus;
                     
                     // Equipment bonuses
                     if (equipment.fertilizer > 0) {
@@ -2676,7 +3552,12 @@
             // Update day/night cycle
             updateDayNightCycle();
             
-            // Update plant growth
+            // Update new systems
+            updateWeather(deltaTime);
+            updateSeason(deltaTime);
+            updateAnimals(deltaTime);
+            
+            // Update plant growth with new weather/season effects
             updatePlantGrowth(deltaTime);
             
             // Update visual effects
