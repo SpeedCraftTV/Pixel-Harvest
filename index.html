@@ -157,6 +157,7 @@
                 🌿 Plants grow automatically (3 stages)<br>
                 🌾 Click mature plants to harvest<br>
                 💧 Right-click to water plants<br>
+                🔒 Click locked plots to unlock (costs coins)<br>
                 🌙 Watch the day/night cycle!<br>
                 🖱️ Drag to rotate camera view<br>
                 🔍 Scroll wheel to zoom in/out
@@ -478,10 +479,11 @@
         }
         
         function createPlots() {
-            // Create a 3x3 grid of farming plots
+            // Create a 5x5 grid of farming plots (some locked initially)
             plots = [];
-            for (let x = -4; x <= 4; x += 4) {
-                for (let z = -4; z <= 4; z += 4) {
+            for (let x = -8; x <= 8; x += 4) {
+                for (let z = -8; z <= 8; z += 4) {
+                    const distanceFromCenter = Math.sqrt(x*x + z*z);
                     const plot = {
                         x: x,
                         y: 0,
@@ -492,7 +494,8 @@
                         growthTimer: 0,
                         waterLevel: 1.0,
                         lastWatered: Date.now(),
-                        unlocked: true // All plots start unlocked for now
+                        unlocked: distanceFromCenter <= 6, // Inner 3x3 grid unlocked initially
+                        unlockCost: Math.floor(distanceFromCenter * 2)
                     };
                     plots.push(plot);
                 }
@@ -655,11 +658,29 @@
         }
         
         function handlePlotClick(plot) {
+            if (!plot.unlocked) {
+                // Try to unlock the plot
+                if (coins >= plot.unlockCost) {
+                    coins -= plot.unlockCost;
+                    plot.unlocked = true;
+                    updateUI();
+                    
+                    // Create unlock effect
+                    createUnlockEffect(plot);
+                }
+                return;
+            }
+            
             if (plot.stage === PLANT_STAGES.EMPTY) {
                 plantSeed(plot, selectedPlantType);
             } else if (plot.stage === PLANT_STAGES.MATURE) {
                 harvestPlant(plot);
             }
+        }
+        
+        function createUnlockEffect(plot) {
+            // Visual feedback for unlocking a plot
+            // This could be enhanced with particle effects
         }
         
         function plantSeed(plot, plantType) {
@@ -727,7 +748,7 @@
             plot.growthTimer = 0;
             plot.waterLevel = 1.0;
             
-            // Create harvest effect
+            // Create harvest effect with animation
             createHarvestEffect(plot);
             
             updateUI();
@@ -735,8 +756,51 @@
         }
         
         function createHarvestEffect(plot) {
-            // Simple visual feedback (could be enhanced with particle effects)
-            // For now, this is a placeholder for the effect
+            // Create floating score animation
+            const effect = {
+                x: plot.x,
+                y: plot.y + 2,
+                z: plot.z,
+                timer: 0,
+                duration: 2000,
+                type: 'harvest'
+            };
+            
+            // Add to effects array (we'll create this)
+            if (!window.gameEffects) window.gameEffects = [];
+            window.gameEffects.push(effect);
+        }
+        
+        function updateEffects(deltaTime) {
+            if (!window.gameEffects) return;
+            
+            // Update and remove expired effects
+            window.gameEffects = window.gameEffects.filter(effect => {
+                effect.timer += deltaTime;
+                effect.y += deltaTime * 0.001; // Float upward
+                
+                return effect.timer < effect.duration;
+            });
+        }
+        
+        function renderEffects() {
+            if (!window.gameEffects) return;
+            
+            window.gameEffects.forEach(effect => {
+                if (effect.type === 'harvest') {
+                    const alpha = 1 - (effect.timer / effect.duration);
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    
+                    const projected = project3D(effect.x, effect.y, effect.z);
+                    ctx.fillStyle = '#4CAF50';
+                    ctx.font = '20px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('+1', projected.x, projected.y);
+                    
+                    ctx.restore();
+                }
+            });
         }
         
         function updateScore() {
@@ -907,11 +971,24 @@
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw ground
-            drawPlane(0, 0, 0, 15, 15, colors.ground);
+            // Draw ground (larger now)
+            drawPlane(0, 0, 0, 25, 25, colors.ground);
             
             // Draw plots and plants
             plots.forEach(plot => {
+                if (!plot.unlocked) {
+                    // Draw locked plot with different color
+                    drawCube(plot.x, plot.y + 0.1, plot.z, 2, '#555555');
+                    
+                    // Draw unlock cost indicator
+                    const projected = project3D(plot.x, plot.y + 1, plot.z);
+                    ctx.fillStyle = 'white';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`${plot.unlockCost}💰`, projected.x, projected.y);
+                    return;
+                }
+                
                 // Determine if plot should be highlighted
                 const isHovered = hoveredPlot === plot;
                 let plotColor = colors.plot;
@@ -940,6 +1017,13 @@
                     if (plot.stage === PLANT_STAGES.MATURE && plot.plant.glow) {
                         const glowIntensity = 0.5 + 0.5 * Math.sin(Date.now() * 0.005);
                         plantColor = adjustColorBrightness(plot.plant.color, 1 + glowIntensity * 0.3);
+                        
+                        // Draw glow effect around mature plants
+                        const glowSize = plot.plant.size * 1.3;
+                        ctx.save();
+                        ctx.globalAlpha = 0.3;
+                        drawCube(plot.x, plot.y + 0.2 + plot.plant.size/2, plot.z, glowSize, '#FFFF00', false);
+                        ctx.restore();
                     }
                     
                     if (isHovered) {
@@ -950,10 +1034,67 @@
                     
                     // Draw water level indicator for watered plants
                     if (plot.waterLevel > 0.8 && plot.stage !== PLANT_STAGES.EMPTY) {
+                        ctx.save();
+                        ctx.globalAlpha = 0.4;
                         drawCube(plot.x, plot.y + 0.15, plot.z, 2.2, colors.water, false);
+                        ctx.restore();
                     }
                 }
             });
+            
+            // Add some decorative elements
+            drawDecorations();
+            
+            // Render visual effects
+            renderEffects();
+        }
+        
+        function drawDecorations() {
+            // Add trees around the farm
+            const trees = [
+                { x: -12, y: 0, z: -12 },
+                { x: 12, y: 0, z: -12 },
+                { x: -12, y: 0, z: 12 },
+                { x: 12, y: 0, z: 12 }
+            ];
+            
+            trees.forEach(tree => {
+                // Tree trunk
+                drawCube(tree.x, tree.y + 0.5, tree.z, 1, '#8B4513');
+                // Tree leaves
+                drawCube(tree.x, tree.y + 1.5, tree.z, 2.5, '#228B22');
+            });
+            
+            // Add rocks
+            const rocks = [
+                { x: -10, y: 0, z: 0 },
+                { x: 10, y: 0, z: 0 },
+                { x: 0, y: 0, z: -10 },
+                { x: 0, y: 0, z: 10 }
+            ];
+            
+            rocks.forEach(rock => {
+                drawCube(rock.x, rock.y + 0.3, rock.z, 1.5, '#696969');
+            });
+            
+            // Draw fences around the unlocked farm area
+            const unlockedPlots = plots.filter(p => p.unlocked);
+            if (unlockedPlots.length > 0) {
+                const minX = Math.min(...unlockedPlots.map(p => p.x)) - 2;
+                const maxX = Math.max(...unlockedPlots.map(p => p.x)) + 2;
+                const minZ = Math.min(...unlockedPlots.map(p => p.z)) - 2;
+                const maxZ = Math.max(...unlockedPlots.map(p => p.z)) + 2;
+                
+                // Draw fence posts
+                for (let x = minX; x <= maxX; x += 4) {
+                    drawCube(x, 0.4, minZ, 0.3, '#8B4513'); // North fence
+                    drawCube(x, 0.4, maxZ, 0.3, '#8B4513'); // South fence
+                }
+                for (let z = minZ; z <= maxZ; z += 4) {
+                    drawCube(minX, 0.4, z, 0.3, '#8B4513'); // West fence
+                    drawCube(maxX, 0.4, z, 0.3, '#8B4513'); // East fence
+                }
+            }
         }
         
         function onWindowResize() {
@@ -974,6 +1115,9 @@
             
             // Update plant growth
             updatePlantGrowth(deltaTime);
+            
+            // Update visual effects
+            updateEffects(deltaTime);
             
             // Render scene
             render();
