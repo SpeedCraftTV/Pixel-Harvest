@@ -40,6 +40,87 @@
             opacity: 0.9;
             max-width: 300px;
         }
+
+        #inventory {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 200px;
+        }
+
+        #plantSelector {
+            position: absolute;
+            top: 20px;
+            left: 350px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .plant-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 2px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .plant-btn:hover {
+            background: #45a049;
+        }
+
+        .plant-btn.selected {
+            background: #2196F3;
+        }
+
+        #marketplace {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 200px;
+        }
+
+        .market-btn {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 2px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .market-btn:hover {
+            background: #e68900;
+        }
+
+        #objectives {
+            position: absolute;
+            top: 120px;
+            right: 20px;
+            z-index: 100;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 250px;
+        }
         
         #canvas {
             display: block;
@@ -72,13 +153,46 @@
         <div id="ui" style="display: none;">
             <div id="score">Score: 0</div>
             <div id="instructions">
-                🌱 Click brown plots to plant seeds<br>
+                🌱 Click plots to plant selected seed<br>
                 🌿 Plants grow automatically (3 stages)<br>
                 🌾 Click mature plants to harvest<br>
+                💧 Right-click to water plants<br>
+                🔒 Click locked plots to unlock (costs coins)<br>
                 🌙 Watch the day/night cycle!<br>
                 🖱️ Drag to rotate camera view<br>
                 🔍 Scroll wheel to zoom in/out
             </div>
+        </div>
+        <div id="plantSelector" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px;">🌱 Plant Types:</div>
+            <button class="plant-btn selected" data-plant="carrot">🥕 Carrot (Fast)</button><br>
+            <button class="plant-btn" data-plant="tomato">🍅 Tomato (Normal)</button><br>
+            <button class="plant-btn" data-plant="rare">✨ Rare Plant (Slow)</button>
+            <div style="font-size: 12px; margin-top: 10px; opacity: 0.8;">
+                💰 Coins: <span id="coins">10</span>
+            </div>
+        </div>
+        <div id="inventory" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px;">📦 Inventory:</div>
+            <div id="carrotCount">🥕 Carrots: 0</div>
+            <div id="tomatoCount">🍅 Tomatoes: 0</div>
+            <div id="rareCount">✨ Rare Plants: 0</div>
+        </div>
+        <div id="marketplace" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px;">🏪 Marketplace:</div>
+            <button class="market-btn" onclick="sellAll('carrot')">Sell Carrots (1💰)</button><br>
+            <button class="market-btn" onclick="sellAll('tomato')">Sell Tomatoes (3💰)</button><br>
+            <button class="market-btn" onclick="sellAll('rare')">Sell Rare (10💰)</button><br>
+            <hr style="margin: 10px 0;">
+            <button class="market-btn" onclick="buySeeds('carrot', 1)">Buy Carrot Seeds (1💰)</button><br>
+            <button class="market-btn" onclick="buySeeds('tomato', 2)">Buy Tomato Seeds (2💰)</button><br>
+            <button class="market-btn" onclick="buySeeds('rare', 5)">Buy Rare Seeds (5💰)</button>
+        </div>
+        <div id="objectives" style="display: none;">
+            <div style="font-weight: bold; margin-bottom: 10px;">🎯 Objectives:</div>
+            <div id="objective1" class="objective">🥕 Harvest 5 carrots (0/5)</div>
+            <div id="objective2" class="objective">🌙 Survive 2 day/night cycles (0/2)</div>
+            <div id="objective3" class="objective">💰 Earn 20 coins (0/20)</div>
         </div>
         <div id="dayNightIndicator" style="display: none;">
             <div id="timeDisplay">Day</div>
@@ -90,17 +204,69 @@
         // Game state
         let canvas, ctx;
         let score = 0;
+        let coins = 10;
         let dayNightCycle = 0;
+        let dayNightCycleCount = 0;
         let cameraAngleX = 0;
         let cameraAngleY = 0;
-        let cameraDistance = 10; // Camera distance for zoom
+        let cameraDistance = 10;
         let mouseDown = false;
         let lastMouseX = 0;
         let lastMouseY = 0;
-        let hoveredPlot = null; // Track which plot is being hovered
+        let hoveredPlot = null;
+        let selectedPlantType = 'carrot';
         
         // Game objects
         let plots = [];
+        let inventory = {
+            carrot: 0,
+            tomato: 0,
+            rare: 0
+        };
+        let seedInventory = {
+            carrot: 5,
+            tomato: 2,
+            rare: 1
+        };
+        let objectives = {
+            carrotsHarvested: 0,
+            dayNightCycles: 0,
+            coinsEarned: 0
+        };
+        
+        // Plant types configuration
+        const PLANT_TYPES = {
+            carrot: {
+                name: 'Carrot',
+                emoji: '🥕',
+                growthTime: 2000, // 2 seconds per stage
+                value: 1,
+                seedCost: 1,
+                color: '#FFA500',
+                waterNeed: 0.3,
+                dayPreference: true
+            },
+            tomato: {
+                name: 'Tomato',
+                emoji: '🍅',
+                growthTime: 4000, // 4 seconds per stage
+                value: 3,
+                seedCost: 2,
+                color: '#FF6347',
+                waterNeed: 0.5,
+                dayPreference: false
+            },
+            rare: {
+                name: 'Rare Plant',
+                emoji: '✨',
+                growthTime: 8000, // 8 seconds per stage
+                value: 10,
+                seedCost: 5,
+                color: '#9370DB',
+                waterNeed: 0.8,
+                dayPreference: false
+            }
+        };
         
         // Colors
         const colors = {
@@ -110,8 +276,10 @@
             plantStage1: '#90EE90',
             plantStage2: '#32CD32',
             plantStage3: '#006400',
-            plotHover: '#CD853F', // Sandy brown for hover effect
-            plantHover: '#228B22'  // Forest green for plant hover
+            plotHover: '#CD853F',
+            plantHover: '#228B22',
+            water: '#87CEEB',
+            dryPlot: '#8B7355'
         };
         
         // Plant growth stages
@@ -120,7 +288,8 @@
             PLANTED: 1,
             GROWING1: 2,
             GROWING2: 3,
-            MATURE: 4
+            MATURE: 4,
+            WITHERING: 5
         };
         
         // 3D projection and rendering functions
@@ -293,31 +462,57 @@
             // Add event listeners
             addEventListeners();
             
+            // Initialize UI
+            setupUI();
+            
             // Hide loading screen
             document.getElementById('loading').style.display = 'none';
             document.getElementById('ui').style.display = 'block';
             document.getElementById('dayNightIndicator').style.display = 'block';
+            document.getElementById('plantSelector').style.display = 'block';
+            document.getElementById('inventory').style.display = 'block';
+            document.getElementById('marketplace').style.display = 'block';
+            document.getElementById('objectives').style.display = 'block';
             
             // Start game loop
             animate();
         }
         
         function createPlots() {
-            // Create a 3x3 grid of farming plots
+            // Create a 5x5 grid of farming plots (some locked initially)
             plots = [];
-            for (let x = -4; x <= 4; x += 4) {
-                for (let z = -4; z <= 4; z += 4) {
+            for (let x = -8; x <= 8; x += 4) {
+                for (let z = -8; z <= 8; z += 4) {
+                    const distanceFromCenter = Math.sqrt(x*x + z*z);
                     const plot = {
                         x: x,
                         y: 0,
                         z: z,
                         stage: PLANT_STAGES.EMPTY,
                         plant: null,
-                        growthTimer: 0
+                        plantType: null,
+                        growthTimer: 0,
+                        waterLevel: 1.0,
+                        lastWatered: Date.now(),
+                        unlocked: distanceFromCenter <= 6, // Inner 3x3 grid unlocked initially
+                        unlockCost: Math.floor(distanceFromCenter * 2)
                     };
                     plots.push(plot);
                 }
             }
+        }
+        
+        function setupUI() {
+            // Plant selector buttons
+            document.querySelectorAll('.plant-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.plant-btn').forEach(b => b.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    selectedPlantType = e.target.dataset.plant;
+                });
+            });
+            
+            updateUI();
         }
         
         function addEventListeners() {
@@ -327,13 +522,11 @@
             canvas.addEventListener('mouseup', onMouseUp);
             canvas.addEventListener('mouseleave', onMouseLeave);
             canvas.addEventListener('click', onMouseClick);
-            canvas.addEventListener('wheel', onMouseWheel); // Add zoom support
+            canvas.addEventListener('contextmenu', onRightClick);
+            canvas.addEventListener('wheel', onMouseWheel);
             
             // Window resize
             window.addEventListener('resize', onWindowResize);
-            
-            // Prevent context menu
-            canvas.addEventListener('contextmenu', e => e.preventDefault());
         }
         
         function onMouseDown(event) {
@@ -403,6 +596,44 @@
             cameraDistance = Math.max(3, Math.min(20, cameraDistance)); // Min: 3, Max: 20
         }
         
+        function onRightClick(event) {
+            event.preventDefault();
+            
+            const rect = canvas.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const clickY = event.clientY - rect.top;
+            
+            // Check for plot clicks for watering
+            plots.forEach(plot => {
+                const plotProjected = getProjectedCube(plot.x, plot.y + 0.1, plot.z, 2);
+                
+                const minX = Math.min(...plotProjected.map(p => p.x));
+                const maxX = Math.max(...plotProjected.map(p => p.x));
+                const minY = Math.min(...plotProjected.map(p => p.y));
+                const maxY = Math.max(...plotProjected.map(p => p.y));
+                
+                if (clickX >= minX && clickX <= maxX && clickY >= minY && clickY <= maxY) {
+                    waterPlot(plot);
+                }
+            });
+        }
+        
+        function waterPlot(plot) {
+            if (plot.stage !== PLANT_STAGES.EMPTY) {
+                plot.waterLevel = Math.min(1.0, plot.waterLevel + 0.5);
+                plot.lastWatered = Date.now();
+                
+                // Visual feedback for watering
+                createWaterEffect(plot);
+            }
+        }
+        
+        function createWaterEffect(plot) {
+            // Simple visual effect for watering (could be enhanced with particles)
+            const originalColor = plot.plant ? plot.plant.color : colors.plot;
+            // This effect would be more visible with actual particle system
+        }
+        
         function onMouseClick(event) {
             if (mouseDown) return; // Ignore clicks during drag
             
@@ -427,59 +658,237 @@
         }
         
         function handlePlotClick(plot) {
+            if (!plot.unlocked) {
+                // Try to unlock the plot
+                if (coins >= plot.unlockCost) {
+                    coins -= plot.unlockCost;
+                    plot.unlocked = true;
+                    updateUI();
+                    
+                    // Create unlock effect
+                    createUnlockEffect(plot);
+                }
+                return;
+            }
+            
             if (plot.stage === PLANT_STAGES.EMPTY) {
-                plantSeed(plot);
+                plantSeed(plot, selectedPlantType);
             } else if (plot.stage === PLANT_STAGES.MATURE) {
                 harvestPlant(plot);
             }
         }
         
-        function plantSeed(plot) {
+        function createUnlockEffect(plot) {
+            // Visual feedback for unlocking a plot
+            // This could be enhanced with particle effects
+        }
+        
+        function plantSeed(plot, plantType) {
+            if (seedInventory[plantType] <= 0) {
+                return; // No seeds available
+            }
+            
+            const plantConfig = PLANT_TYPES[plantType];
+            seedInventory[plantType]--;
+            
             plot.stage = PLANT_STAGES.PLANTED;
+            plot.plantType = plantType;
             plot.growthTimer = 0;
+            plot.waterLevel = 1.0;
+            plot.lastWatered = Date.now();
             plot.plant = {
                 size: 0.3,
-                color: colors.seed
+                color: plantConfig.color,
+                baseColor: plantConfig.color
             };
+            
+            updateUI();
         }
         
         function growPlant(plot) {
+            const plantConfig = PLANT_TYPES[plot.plantType];
+            
             if (plot.stage === PLANT_STAGES.PLANTED) {
                 plot.stage = PLANT_STAGES.GROWING1;
                 plot.plant.size = 0.6;
-                plot.plant.color = colors.plantStage1;
                 plot.growthTimer = 0;
             } else if (plot.stage === PLANT_STAGES.GROWING1) {
                 plot.stage = PLANT_STAGES.GROWING2;
                 plot.plant.size = 0.9;
-                plot.plant.color = colors.plantStage2;
                 plot.growthTimer = 0;
             } else if (plot.stage === PLANT_STAGES.GROWING2) {
                 plot.stage = PLANT_STAGES.MATURE;
                 plot.plant.size = 1.2;
-                plot.plant.color = colors.plantStage3;
+                // Add glow effect for mature plants
+                plot.plant.glow = true;
             }
         }
         
         function harvestPlant(plot) {
+            if (plot.stage !== PLANT_STAGES.MATURE) return;
+            
+            const plantType = plot.plantType;
+            const plantConfig = PLANT_TYPES[plantType];
+            
+            // Add to inventory
+            inventory[plantType]++;
+            
+            // Add score
+            score += plantConfig.value;
+            
+            // Update objectives
+            if (plantType === 'carrot') {
+                objectives.carrotsHarvested++;
+            }
+            
+            // Reset plot
             plot.stage = PLANT_STAGES.EMPTY;
             plot.plant = null;
+            plot.plantType = null;
             plot.growthTimer = 0;
+            plot.waterLevel = 1.0;
             
-            // Increase score
-            score++;
-            updateScore();
+            // Create harvest effect with animation
+            createHarvestEffect(plot);
+            
+            updateUI();
+            updateObjectives();
+        }
+        
+        function createHarvestEffect(plot) {
+            // Create floating score animation
+            const effect = {
+                x: plot.x,
+                y: plot.y + 2,
+                z: plot.z,
+                timer: 0,
+                duration: 2000,
+                type: 'harvest'
+            };
+            
+            // Add to effects array (we'll create this)
+            if (!window.gameEffects) window.gameEffects = [];
+            window.gameEffects.push(effect);
+        }
+        
+        function updateEffects(deltaTime) {
+            if (!window.gameEffects) return;
+            
+            // Update and remove expired effects
+            window.gameEffects = window.gameEffects.filter(effect => {
+                effect.timer += deltaTime;
+                effect.y += deltaTime * 0.001; // Float upward
+                
+                return effect.timer < effect.duration;
+            });
+        }
+        
+        function renderEffects() {
+            if (!window.gameEffects) return;
+            
+            window.gameEffects.forEach(effect => {
+                if (effect.type === 'harvest') {
+                    const alpha = 1 - (effect.timer / effect.duration);
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    
+                    const projected = project3D(effect.x, effect.y, effect.z);
+                    ctx.fillStyle = '#4CAF50';
+                    ctx.font = '20px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('+1', projected.x, projected.y);
+                    
+                    ctx.restore();
+                }
+            });
         }
         
         function updateScore() {
             document.getElementById('score').textContent = `Score: ${score}`;
         }
         
+        function updateUI() {
+            // Update score and coins
+            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('coins').textContent = coins;
+            
+            // Update inventory
+            document.getElementById('carrotCount').textContent = `🥕 Carrots: ${inventory.carrot}`;
+            document.getElementById('tomatoCount').textContent = `🍅 Tomatoes: ${inventory.tomato}`;
+            document.getElementById('rareCount').textContent = `✨ Rare Plants: ${inventory.rare}`;
+            
+            // Update plant buttons availability
+            document.querySelectorAll('.plant-btn').forEach(btn => {
+                const plantType = btn.dataset.plant;
+                const hasSeeds = seedInventory[plantType] > 0;
+                btn.disabled = !hasSeeds;
+                btn.style.opacity = hasSeeds ? '1' : '0.5';
+                
+                // Update button text with seed count
+                const plantConfig = PLANT_TYPES[plantType];
+                btn.textContent = `${plantConfig.emoji} ${plantConfig.name} (${seedInventory[plantType]})`;
+            });
+        }
+        
+        function updateObjectives() {
+            // Update objective displays
+            document.getElementById('objective1').textContent = 
+                `🥕 Harvest 5 carrots (${Math.min(objectives.carrotsHarvested, 5)}/5)`;
+            document.getElementById('objective2').textContent = 
+                `🌙 Survive 2 day/night cycles (${Math.min(objectives.dayNightCycles, 2)}/2)`;
+            document.getElementById('objective3').textContent = 
+                `💰 Earn 20 coins (${Math.min(coins, 20)}/20)`;
+                
+            // Check for completed objectives
+            if (objectives.carrotsHarvested >= 5) {
+                document.getElementById('objective1').style.color = '#4CAF50';
+            }
+            if (objectives.dayNightCycles >= 2) {
+                document.getElementById('objective2').style.color = '#4CAF50';
+            }
+            if (coins >= 20) {
+                document.getElementById('objective3').style.color = '#4CAF50';
+            }
+        }
+        
+        // Marketplace functions
+        function sellAll(plantType) {
+            const count = inventory[plantType];
+            if (count <= 0) return;
+            
+            const plantConfig = PLANT_TYPES[plantType];
+            const earnings = count * plantConfig.value;
+            
+            inventory[plantType] = 0;
+            coins += earnings;
+            objectives.coinsEarned += earnings;
+            
+            updateUI();
+            updateObjectives();
+        }
+        
+        function buySeeds(plantType, cost) {
+            if (coins >= cost) {
+                coins -= cost;
+                seedInventory[plantType] += 5; // Buy 5 seeds at a time
+                updateUI();
+            }
+        }
+        
         function updateDayNightCycle() {
+            const oldProgress = (Math.sin(dayNightCycle) + 1) / 2;
             dayNightCycle += 0.01;
+            const newProgress = (Math.sin(dayNightCycle) + 1) / 2;
+            
+            // Check for day/night cycle completion
+            if (oldProgress > 0.5 && newProgress <= 0.5) {
+                dayNightCycleCount++;
+                objectives.dayNightCycles = dayNightCycleCount;
+                updateObjectives();
+            }
             
             // Calculate day/night progression
-            const dayProgress = (Math.sin(dayNightCycle) + 1) / 2;
+            const dayProgress = newProgress;
             const isDay = dayProgress > 0.5;
             
             // Update time display
@@ -497,13 +906,62 @@
         }
         
         function updatePlantGrowth(deltaTime) {
+            const currentTime = Date.now();
+            const dayProgress = (Math.sin(dayNightCycle) + 1) / 2;
+            const isDay = dayProgress > 0.5;
+            
             plots.forEach(plot => {
                 if (plot.stage !== PLANT_STAGES.EMPTY && plot.stage !== PLANT_STAGES.MATURE) {
-                    plot.growthTimer += deltaTime;
+                    // Update water level (plants lose water over time)
+                    const timeSinceWatered = currentTime - plot.lastWatered;
+                    const waterDecay = timeSinceWatered / 10000; // Lose water over 10 seconds
+                    plot.waterLevel = Math.max(0, plot.waterLevel - waterDecay * deltaTime / 1000);
                     
-                    // Plants grow every 3 seconds
-                    if (plot.growthTimer >= 3000) {
+                    // Get plant configuration
+                    const plantConfig = PLANT_TYPES[plot.plantType];
+                    
+                    // Calculate growth speed based on conditions
+                    let growthMultiplier = 1;
+                    
+                    // Day/night preference
+                    if (plantConfig.dayPreference === isDay) {
+                        growthMultiplier *= 1.5;
+                    } else {
+                        growthMultiplier *= 0.7;
+                    }
+                    
+                    // Water level affects growth
+                    if (plot.waterLevel > plantConfig.waterNeed) {
+                        growthMultiplier *= 1.2;
+                    } else if (plot.waterLevel < plantConfig.waterNeed * 0.5) {
+                        growthMultiplier *= 0.5;
+                    }
+                    
+                    // Check for proximity bonus (plants grow faster near other plants)
+                    const nearbyPlants = plots.filter(otherPlot => {
+                        if (otherPlot === plot || otherPlot.stage === PLANT_STAGES.EMPTY) return false;
+                        const distance = Math.sqrt(
+                            Math.pow(plot.x - otherPlot.x, 2) + Math.pow(plot.z - otherPlot.z, 2)
+                        );
+                        return distance <= 4.5; // Adjacent plots
+                    });
+                    
+                    if (nearbyPlants.length > 0) {
+                        growthMultiplier *= (1 + nearbyPlants.length * 0.1);
+                    }
+                    
+                    // Apply growth
+                    plot.growthTimer += deltaTime * growthMultiplier;
+                    
+                    // Check if plant should grow
+                    if (plot.growthTimer >= plantConfig.growthTime) {
                         growPlant(plot);
+                    }
+                    
+                    // Check if plant should wither due to lack of water
+                    if (plot.waterLevel <= 0 && plot.stage !== PLANT_STAGES.WITHERING) {
+                        plot.stage = PLANT_STAGES.WITHERING;
+                        plot.plant.color = adjustColorBrightness(plot.plant.baseColor, 0.5);
                     }
                 }
             });
@@ -513,14 +971,36 @@
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw ground
-            drawPlane(0, 0, 0, 15, 15, colors.ground);
+            // Draw ground (larger now)
+            drawPlane(0, 0, 0, 25, 25, colors.ground);
             
             // Draw plots and plants
             plots.forEach(plot => {
+                if (!plot.unlocked) {
+                    // Draw locked plot with different color
+                    drawCube(plot.x, plot.y + 0.1, plot.z, 2, '#555555');
+                    
+                    // Draw unlock cost indicator
+                    const projected = project3D(plot.x, plot.y + 1, plot.z);
+                    ctx.fillStyle = 'white';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`${plot.unlockCost}💰`, projected.x, projected.y);
+                    return;
+                }
+                
                 // Determine if plot should be highlighted
                 const isHovered = hoveredPlot === plot;
                 let plotColor = colors.plot;
+                
+                // Show different colors based on water level
+                if (plot.stage !== PLANT_STAGES.EMPTY) {
+                    if (plot.waterLevel < 0.3) {
+                        plotColor = colors.dryPlot;
+                    } else if (plot.waterLevel > 0.8) {
+                        plotColor = adjustColorBrightness(colors.plot, 1.2);
+                    }
+                }
                 
                 if (isHovered) {
                     plotColor = colors.plotHover;
@@ -532,13 +1012,89 @@
                 // Draw plant if exists
                 if (plot.plant) {
                     let plantColor = plot.plant.color;
-                    if (isHovered) {
-                        // Brighten the plant color when hovered
-                        plantColor = adjustColorBrightness(plot.plant.color, 1.3);
+                    
+                    // Add glow effect for mature plants
+                    if (plot.stage === PLANT_STAGES.MATURE && plot.plant.glow) {
+                        const glowIntensity = 0.5 + 0.5 * Math.sin(Date.now() * 0.005);
+                        plantColor = adjustColorBrightness(plot.plant.color, 1 + glowIntensity * 0.3);
+                        
+                        // Draw glow effect around mature plants
+                        const glowSize = plot.plant.size * 1.3;
+                        ctx.save();
+                        ctx.globalAlpha = 0.3;
+                        drawCube(plot.x, plot.y + 0.2 + plot.plant.size/2, plot.z, glowSize, '#FFFF00', false);
+                        ctx.restore();
                     }
+                    
+                    if (isHovered) {
+                        plantColor = adjustColorBrightness(plantColor, 1.3);
+                    }
+                    
                     drawCube(plot.x, plot.y + 0.2 + plot.plant.size/2, plot.z, plot.plant.size, plantColor);
+                    
+                    // Draw water level indicator for watered plants
+                    if (plot.waterLevel > 0.8 && plot.stage !== PLANT_STAGES.EMPTY) {
+                        ctx.save();
+                        ctx.globalAlpha = 0.4;
+                        drawCube(plot.x, plot.y + 0.15, plot.z, 2.2, colors.water, false);
+                        ctx.restore();
+                    }
                 }
             });
+            
+            // Add some decorative elements
+            drawDecorations();
+            
+            // Render visual effects
+            renderEffects();
+        }
+        
+        function drawDecorations() {
+            // Add trees around the farm
+            const trees = [
+                { x: -12, y: 0, z: -12 },
+                { x: 12, y: 0, z: -12 },
+                { x: -12, y: 0, z: 12 },
+                { x: 12, y: 0, z: 12 }
+            ];
+            
+            trees.forEach(tree => {
+                // Tree trunk
+                drawCube(tree.x, tree.y + 0.5, tree.z, 1, '#8B4513');
+                // Tree leaves
+                drawCube(tree.x, tree.y + 1.5, tree.z, 2.5, '#228B22');
+            });
+            
+            // Add rocks
+            const rocks = [
+                { x: -10, y: 0, z: 0 },
+                { x: 10, y: 0, z: 0 },
+                { x: 0, y: 0, z: -10 },
+                { x: 0, y: 0, z: 10 }
+            ];
+            
+            rocks.forEach(rock => {
+                drawCube(rock.x, rock.y + 0.3, rock.z, 1.5, '#696969');
+            });
+            
+            // Draw fences around the unlocked farm area
+            const unlockedPlots = plots.filter(p => p.unlocked);
+            if (unlockedPlots.length > 0) {
+                const minX = Math.min(...unlockedPlots.map(p => p.x)) - 2;
+                const maxX = Math.max(...unlockedPlots.map(p => p.x)) + 2;
+                const minZ = Math.min(...unlockedPlots.map(p => p.z)) - 2;
+                const maxZ = Math.max(...unlockedPlots.map(p => p.z)) + 2;
+                
+                // Draw fence posts
+                for (let x = minX; x <= maxX; x += 4) {
+                    drawCube(x, 0.4, minZ, 0.3, '#8B4513'); // North fence
+                    drawCube(x, 0.4, maxZ, 0.3, '#8B4513'); // South fence
+                }
+                for (let z = minZ; z <= maxZ; z += 4) {
+                    drawCube(minX, 0.4, z, 0.3, '#8B4513'); // West fence
+                    drawCube(maxX, 0.4, z, 0.3, '#8B4513'); // East fence
+                }
+            }
         }
         
         function onWindowResize() {
@@ -559,6 +1115,9 @@
             
             // Update plant growth
             updatePlantGrowth(deltaTime);
+            
+            // Update visual effects
+            updateEffects(deltaTime);
             
             // Render scene
             render();
