@@ -106,26 +106,67 @@ const TutorialLocalization = {
             steps: {
                 welcome: {
                     title: 'Welcome to Pixel-Harvest!',
-                    description: 'Welcome to your new farm! You\'re about to learn how to grow crops, manage animals, and build a thriving agricultural business.',
+                    description: 'Welcome to your new farm! You\'re about to learn how to grow crops, manage animals, and build a thriving agricultural business. This tutorial will guide you through all the essential game mechanics step by step.',
                     hints: [
                         'You can skip any step by clicking "Skip Step"',
                         'Use keyboard arrows to navigate between steps',
                         'Press ESC to exit the tutorial at any time'
                     ]
                 },
-                movement: {
+                character_movement: {
                     title: 'Moving Your Character',
-                    description: 'Let\'s start by learning how to move around your farm!',
-                    desktop: 'Desktop: Use ZQSD keys or arrow keys to move',
-                    mobile: 'Mobile: Use the virtual joystick in the bottom-left corner',
-                    instruction: 'Try moving your character around now. Notice how the camera follows you!',
+                    description: 'Let\'s start by learning how to move around your farm! Desktop: Use ZQSD keys or arrow keys to move. Mobile: Use the virtual joystick in the bottom-left corner. Try moving your character around now. Notice how the camera follows you!',
                     hints: [
                         'The character position is shown in the top-right corner',
                         'You can drag the mouse to rotate the camera view',
                         'Scroll wheel zooms in and out'
                     ]
+                },
+                planting_basics: {
+                    title: 'Planting Your First Crop',
+                    description: 'Now let\'s plant your first seeds! Desktop: Get close to a plot and press SPACE to plant. Mobile: Get close to a plot and tap the green plant button.',
+                    hints: [
+                        'You need to be close to a plot to plant',
+                        'Each plant type has different growth times',
+                        'Make sure you have seeds in your inventory'
+                    ]
+                },
+                watering_plants: {
+                    title: 'Watering Your Plants',
+                    description: 'Plants need water to grow! Desktop: Press E near plants to water them. Mobile: Tap the blue water button near plants.',
+                    hints: [
+                        'Watered plants grow faster',
+                        'Rain will automatically water your plants',
+                        'You can see if plants need water by their appearance'
+                    ]
+                },
+                harvesting_crops: {
+                    title: 'Harvesting Your Crops',
+                    description: 'When plants are fully grown, you can harvest them! Desktop: Press SPACE near mature plants. Mobile: Tap the green button near mature plants.',
+                    hints: [
+                        'Mature plants have a golden glow',
+                        'Harvested crops go to your inventory',
+                        'You can sell crops at the marketplace'
+                    ]
+                },
+                managing_inventory: {
+                    title: 'Managing Your Inventory',
+                    description: 'Your inventory shows all your crops, seeds, and equipment. Desktop: Check the inventory panel on the left. Mobile: Tap the inventory button in the bottom menu.',
+                    hints: [
+                        'Seeds are needed for planting',
+                        'Crops can be sold for coins',
+                        'Equipment helps automate your farm'
+                    ]
+                },
+                using_marketplace: {
+                    title: 'Using the Marketplace',
+                    description: 'The marketplace is where you buy seeds and sell crops! Desktop: Check the marketplace panel on the right. Mobile: Tap the market button in the bottom menu.',
+                    hints: [
+                        'Sell crops to earn coins',
+                        'Buy seeds to plant more crops',
+                        'Prices change based on supply and demand'
+                    ]
                 }
-                // ... more step translations would go here
             },
 
             // Common game terms
@@ -218,6 +259,73 @@ const TutorialLocalization = {
                 cancel: '❌ Annuler'
             },
 
+            // Step-specific content
+            steps: {
+                welcome: {
+                    title: 'Bienvenue dans Pixel-Harvest !',
+                    description: 'Bienvenue dans votre nouvelle ferme ! Vous allez apprendre à cultiver des récoltes, gérer des animaux et construire une entreprise agricole prospère. Ce tutoriel vous guidera à travers toutes les mécaniques essentielles du jeu étape par étape.',
+                    hints: [
+                        'Vous pouvez passer n\'importe quelle étape en cliquant sur "Passer l\'étape"',
+                        'Utilisez les flèches du clavier pour naviguer entre les étapes',
+                        'Appuyez sur ESC pour quitter le tutoriel à tout moment'
+                    ]
+                },
+                character_movement: {
+                    title: 'Déplacer votre personnage',
+                    description: 'Commençons par apprendre à vous déplacer dans votre ferme ! Bureau : Utilisez les touches ZQSD ou les flèches pour vous déplacer. Mobile : Utilisez le joystick virtuel dans le coin inférieur gauche. Essayez de déplacer votre personnage maintenant. Remarquez comme la caméra vous suit !',
+                    hints: [
+                        'La position du personnage est affichée dans le coin supérieur droit',
+                        'Vous pouvez faire glisser la souris pour faire pivoter la vue de la caméra',
+                        'La molette de la souris permet de zoomer'
+                    ]
+                },
+                planting_basics: {
+                    title: 'Planter votre première récolte',
+                    description: 'Maintenant plantons vos premières graines ! Bureau : Approchez-vous d\'une parcelle et appuyez sur ESPACE pour planter. Mobile : Approchez-vous d\'une parcelle et appuyez sur le bouton vert de plantation.',
+                    hints: [
+                        'Vous devez être proche d\'une parcelle pour planter',
+                        'Chaque type de plante a des temps de croissance différents',
+                        'Assurez-vous d\'avoir des graines dans votre inventaire'
+                    ]
+                },
+                watering_plants: {
+                    title: 'Arroser vos plantes',
+                    description: 'Les plantes ont besoin d\'eau pour pousser ! Bureau : Appuyez sur E près des plantes pour les arroser. Mobile : Appuyez sur le bouton bleu d\'arrosage près des plantes.',
+                    hints: [
+                        'Les plantes arrosées poussent plus vite',
+                        'La pluie arrosera automatiquement vos plantes',
+                        'Vous pouvez voir si les plantes ont besoin d\'eau par leur apparence'
+                    ]
+                },
+                harvesting_crops: {
+                    title: 'Récolter vos cultures',
+                    description: 'Quand les plantes sont complètement développées, vous pouvez les récolter ! Bureau : Appuyez sur ESPACE près des plantes matures. Mobile : Appuyez sur le bouton vert près des plantes matures.',
+                    hints: [
+                        'Les plantes matures ont une lueur dorée',
+                        'Les récoltes vont dans votre inventaire',
+                        'Vous pouvez vendre les récoltes au marché'
+                    ]
+                },
+                managing_inventory: {
+                    title: 'Gérer votre inventaire',
+                    description: 'Votre inventaire montre toutes vos récoltes, graines et équipements. Bureau : Vérifiez le panneau d\'inventaire à gauche. Mobile : Appuyez sur le bouton d\'inventaire dans le menu du bas.',
+                    hints: [
+                        'Les graines sont nécessaires pour planter',
+                        'Les récoltes peuvent être vendues contre des pièces',
+                        'L\'équipement aide à automatiser votre ferme'
+                    ]
+                },
+                using_marketplace: {
+                    title: 'Utiliser le marché',
+                    description: 'Le marché est l\'endroit où vous achetez des graines et vendez des récoltes ! Bureau : Vérifiez le panneau du marché à droite. Mobile : Appuyez sur le bouton marché dans le menu du bas.',
+                    hints: [
+                        'Vendez les récoltes pour gagner des pièces',
+                        'Achetez des graines pour planter plus de récoltes',
+                        'Les prix changent selon l\'offre et la demande'
+                    ]
+                }
+            },
+
             // Common game terms
             terms: {
                 coins: 'Pièces',
@@ -306,6 +414,73 @@ const TutorialLocalization = {
                 pauseGame: 'Pausar juego durante el tutorial',
                 saveSettings: '💾 Guardar configuración',
                 cancel: '❌ Cancelar'
+            },
+
+            // Step-specific content
+            steps: {
+                welcome: {
+                    title: '¡Bienvenido a Pixel-Harvest!',
+                    description: '¡Bienvenido a tu nueva granja! Vas a aprender cómo cultivar cosechas, manejar animales y construir un próspero negocio agrícola. Este tutorial te guiará paso a paso por todas las mecánicas esenciales del juego.',
+                    hints: [
+                        'Puedes saltar cualquier paso haciendo clic en "Saltar paso"',
+                        'Usa las flechas del teclado para navegar entre pasos',
+                        'Presiona ESC para salir del tutorial en cualquier momento'
+                    ]
+                },
+                character_movement: {
+                    title: 'Mover tu personaje',
+                    description: '¡Empecemos aprendiendo cómo moverte por tu granja! Escritorio: Usa las teclas ZQSD o las flechas para moverte. Móvil: Usa el joystick virtual en la esquina inferior izquierda. ¡Prueba a mover tu personaje ahora. Observa cómo la cámara te sigue!',
+                    hints: [
+                        'La posición del personaje se muestra en la esquina superior derecha',
+                        'Puedes arrastrar el ratón para rotar la vista de la cámara',
+                        'La rueda del ratón permite hacer zoom'
+                    ]
+                },
+                planting_basics: {
+                    title: 'Plantar tu primera cosecha',
+                    description: '¡Ahora plantemos tus primeras semillas! Escritorio: Acércate a una parcela y presiona ESPACIO para plantar. Móvil: Acércate a una parcela y toca el botón verde de plantar.',
+                    hints: [
+                        'Necesitas estar cerca de una parcela para plantar',
+                        'Cada tipo de planta tiene diferentes tiempos de crecimiento',
+                        'Asegúrate de tener semillas en tu inventario'
+                    ]
+                },
+                watering_plants: {
+                    title: 'Regar tus plantas',
+                    description: '¡Las plantas necesitan agua para crecer! Escritorio: Presiona E cerca de las plantas para regarlas. Móvil: Toca el botón azul de regar cerca de las plantas.',
+                    hints: [
+                        'Las plantas regadas crecen más rápido',
+                        'La lluvia regará automáticamente tus plantas',
+                        'Puedes ver si las plantas necesitan agua por su apariencia'
+                    ]
+                },
+                harvesting_crops: {
+                    title: 'Cosechar tus cultivos',
+                    description: '¡Cuando las plantas están completamente desarrolladas, puedes cosecharlas! Escritorio: Presiona ESPACIO cerca de plantas maduras. Móvil: Toca el botón verde cerca de plantas maduras.',
+                    hints: [
+                        'Las plantas maduras tienen un brillo dorado',
+                        'Los cultivos cosechados van a tu inventario',
+                        'Puedes vender cultivos en el mercado'
+                    ]
+                },
+                managing_inventory: {
+                    title: 'Gestionar tu inventario',
+                    description: 'Tu inventario muestra todos tus cultivos, semillas y equipamiento. Escritorio: Revisa el panel de inventario a la izquierda. Móvil: Toca el botón de inventario en el menú inferior.',
+                    hints: [
+                        'Las semillas son necesarias para plantar',
+                        'Los cultivos se pueden vender por monedas',
+                        'El equipamiento ayuda a automatizar tu granja'
+                    ]
+                },
+                using_marketplace: {
+                    title: 'Usar el mercado',
+                    description: '¡El mercado es donde compras semillas y vendes cultivos! Escritorio: Revisa el panel del mercado a la derecha. Móvil: Toca el botón de mercado en el menú inferior.',
+                    hints: [
+                        'Vende cultivos para ganar monedas',
+                        'Compra semillas para plantar más cultivos',
+                        'Los precios cambian según la oferta y demanda'
+                    ]
+                }
             },
 
             // Common game terms
