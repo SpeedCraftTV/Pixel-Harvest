@@ -66,6 +66,11 @@
             max-width: 180px;
         }
 
+        /* Mobile Coins Display - hidden by default */
+        #mobileCoinsDisplay {
+            display: none;
+        }
+
         .plant-btn {
             background: #4CAF50;
             color: white;
@@ -964,6 +969,12 @@
                 gap: 10px;
             }
 
+            #mobileCoinsDisplay {
+                bottom: 240px;
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+
             .mobile-nav-btn {
                 width: 46px;
                 height: 46px;
@@ -1051,6 +1062,10 @@
 
             #mobileNavMenu {
                 display: flex;
+            }
+
+            #mobileCoinsDisplay {
+                display: block;
             }
 
             /* Hide desktop panels on mobile */
@@ -1164,6 +1179,10 @@
 
             #mobileNavMenu {
                 bottom: 150px;
+            }
+
+            #mobileCoinsDisplay {
+                bottom: 230px;
             }
 
             .mobile-joystick {
@@ -1457,6 +1476,25 @@
             </div>
         </div>
         
+        <!-- Mobile Coins Display -->
+        <div id="mobileCoinsDisplay" style="
+            position: fixed;
+            bottom: 260px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        ">
+            💰 <span id="mobileMainCoins">50</span>
+        </div>
+
         <!-- Mobile Navigation Menu -->
         <div id="mobileNavMenu">
             <button class="mobile-nav-btn" id="mobileInventoryBtn" data-panel="inventory">
@@ -1492,6 +1530,9 @@
                 <button class="mobile-panel-close">×</button>
             </div>
             <div class="mobile-panel-content" id="mobileInventoryContent">
+                <div style="margin-bottom: 15px; text-align: center; color: #FFD700;">
+                    💰 Coins: <span id="mobileInventoryCoins">50</span>
+                </div>
                 <!-- Inventory content will be dynamically populated -->
             </div>
         </div>
@@ -1517,6 +1558,9 @@
                 <button class="mobile-panel-close">×</button>
             </div>
             <div class="mobile-panel-content" id="mobileMarketContent">
+                <div style="margin-bottom: 15px; text-align: center; color: #FFD700;">
+                    💰 Coins: <span id="mobileMarketCoins">50</span>
+                </div>
                 <!-- Market content will be dynamically populated -->
             </div>
         </div>
@@ -6864,9 +6908,18 @@
             // Update badges
             updateMobileBadges();
             
-            // Update coins display
+            // Update coins display in all mobile elements
             const mobileCoins = document.getElementById('mobileCoins');
             if (mobileCoins) mobileCoins.textContent = coins;
+            
+            const mobileMainCoins = document.getElementById('mobileMainCoins');
+            if (mobileMainCoins) mobileMainCoins.textContent = coins;
+            
+            const mobileInventoryCoins = document.getElementById('mobileInventoryCoins');
+            if (mobileInventoryCoins) mobileInventoryCoins.textContent = coins;
+            
+            const mobileMarketCoins = document.getElementById('mobileMarketCoins');
+            if (mobileMarketCoins) mobileMarketCoins.textContent = coins;
             
             // Update active panel content if open
             if (currentMobilePanel) {
