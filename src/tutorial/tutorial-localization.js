@@ -24,6 +24,21 @@ const TutorialLocalization = {
             name: 'Español',
             flag: '🇪🇸',
             code: 'es'
+        },
+        de: {
+            name: 'Deutsch',
+            flag: '🇩🇪',
+            code: 'de'
+        },
+        it: {
+            name: 'Italiano',
+            flag: '🇮🇹',
+            code: 'it'
+        },
+        pt: {
+            name: 'Português',
+            flag: '🇵🇹',
+            code: 'pt'
         }
     },
 

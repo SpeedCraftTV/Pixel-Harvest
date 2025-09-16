@@ -13,6 +13,9 @@ REQUIRED_FILES=(
     "data/localization/en.json"
     "data/localization/fr.json" 
     "data/localization/es.json"
+    "data/localization/de.json"
+    "data/localization/it.json"
+    "data/localization/pt.json"
     "src/internationalization.js"
     "src/tutorial/tutorial-localization.js"
     "src/tutorial/tutorial-validator.js"
@@ -31,7 +34,7 @@ echo ""
 echo "📊 Validating JSON files..."
 
 # Validate JSON syntax
-for lang in en fr es; do
+for lang in en fr es de it pt; do
     if python3 -m json.tool "data/localization/${lang}.json" > /dev/null 2>&1; then
         echo "✅ ${lang}.json has valid JSON syntax"
     else
@@ -61,7 +64,7 @@ with open('data/localization/en.json', 'r') as f:
     print(count_keys(data))
 ")
 
-for lang in fr es; do
+for lang in fr es de it pt; do
     LANG_KEYS=$(python3 -c "
 import json
 import sys
@@ -87,7 +90,7 @@ echo ""
 echo "🎓 Checking tutorial steps..."
 
 # Check tutorial steps in each language
-for lang in en fr es; do
+for lang in en fr es de it pt; do
     TUTORIAL_STEPS=$(python3 -c "
 import json
 with open('data/localization/${lang}.json', 'r') as f:
@@ -101,7 +104,7 @@ done
 echo ""
 echo "🌐 Checking language metadata..."
 
-for lang in en fr es; do
+for lang in en fr es de it pt; do
     METADATA=$(python3 -c "
 import json
 with open('data/localization/${lang}.json', 'r') as f:
@@ -123,7 +126,7 @@ python3 -c "
 import json
 import sys
 
-languages = ['en', 'fr', 'es']
+languages = ['en', 'fr', 'es', 'de', 'it', 'pt']
 report = {}
 
 # Load all language data
