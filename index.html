@@ -271,6 +271,24 @@
             background: #45a049;
         }
         
+        #newGameButton {
+            position: absolute;
+            top: 20px;
+            right: 400px;
+            z-index: 100;
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #newGameButton:hover {
+            background: #da190b;
+        }
+        
         #canvas {
             display: block;
             border: none;
@@ -376,6 +394,7 @@
             </div>
         </div>
         <button id="settingsButton" style="display: none;">⚙️ Controls</button>
+        <button id="newGameButton" style="display: none;">🔄 New Game</button>
         
         <!-- Settings Menu -->
         <div id="settingsMenu">
@@ -464,6 +483,14 @@
         let cameraFollowCharacter = true;
         let freeCameraMode = false;
         
+        // Camera follow system for smooth character tracking
+        let cameraFollowX = 0;
+        let cameraFollowZ = 0;
+        const cameraFollowLerp = 0.1;
+        
+        // Water decay system  
+        const waterDecayRate = 0.02; // per second
+        
         // Character system
         let character = {
             x: 0,
@@ -487,9 +514,9 @@
         
         // Control mappings (AZERTY by default)
         let controls = {
-            forward: 'KeyS',
+            forward: 'KeyZ',
             left: 'KeyQ', 
-            backward: 'KeyZ',
+            backward: 'KeyS',
             right: 'KeyD',
             action: 'Space',
             water: 'KeyE',
@@ -598,8 +625,8 @@
             let offsetX = 0;
             let offsetZ = 0;
             if (cameraFollowCharacter) {
-                offsetX = -character.x;
-                offsetZ = -character.z;
+                offsetX = -cameraFollowX;
+                offsetZ = -cameraFollowZ;
             }
             
             // Apply camera rotation
@@ -752,6 +779,21 @@
             return inside;
         }
         
+        function plotContainsScreenPoint(x, y, plot) {
+            // Get projected cube for the plot
+            const projected = getProjectedCube(plot.x, plot.y + 0.1, plot.z, 2);
+            
+            // Create quad from top face (indices [3,2,6,7] for getProjectedCube)
+            const topQuad = [
+                projected[3], // top-front-left
+                projected[2], // top-front-right  
+                projected[6], // top-back-right
+                projected[7]  // top-back-left
+            ];
+            
+            return isPointInProjectedQuad({x: x, y: y}, topQuad);
+        }
+        
         function init() {
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
@@ -773,6 +815,14 @@
             // Create farming plots
             createPlots();
             
+            // Try to load saved game
+            const gameLoaded = loadGame();
+            if (!gameLoaded) {
+                // Initialize camera follow position if no save loaded
+                cameraFollowX = character.x;
+                cameraFollowZ = character.z;
+            }
+            
             // Add event listeners
             addEventListeners();
             
@@ -781,6 +831,9 @@
             
             // Update instructions with current controls
             updateInstructions();
+            
+            // Start auto-save timer (every 10 seconds)
+            setInterval(saveGame, 10000);
             
             // Hide loading screen
             document.getElementById('loading').style.display = 'none';
@@ -791,6 +844,7 @@
             document.getElementById('marketplace').style.display = 'block';
             document.getElementById('objectives').style.display = 'block';
             document.getElementById('settingsButton').style.display = 'block';
+            document.getElementById('newGameButton').style.display = 'block';
             
             // Start game loop
             animate();
@@ -1028,6 +1082,9 @@
             // Settings button
             document.getElementById('settingsButton').addEventListener('click', openSettings);
             
+            // New Game button
+            document.getElementById('newGameButton').addEventListener('click', newGame);
+            
             updateUI();
         }
         
@@ -1187,9 +1244,9 @@
             
             switch(preset) {
                 case 'azerty':
-                    controls.forward = 'KeyS';
+                    controls.forward = 'KeyZ';
                     controls.left = 'KeyQ';
-                    controls.backward = 'KeyZ';
+                    controls.backward = 'KeyS';
                     controls.right = 'KeyD';
                     break;
                 case 'qwerty':
@@ -1243,9 +1300,9 @@
         function resetControls() {
             // Reset to AZERTY default
             controls = {
-                forward: 'KeyS',
+                forward: 'KeyZ',
                 left: 'KeyQ',
-                backward: 'KeyZ',
+                backward: 'KeyS',
                 right: 'KeyD',
                 action: 'Space',
                 water: 'KeyE',
@@ -1262,6 +1319,165 @@
                 } catch (e) {
                     console.log('Failed to load saved controls, using defaults');
                 }
+            }
+        }
+        
+        // Game persistence system
+        function saveGame() {
+            try {
+                const gameState = {
+                    score: score,
+                    coins: coins,
+                    inventory: inventory,
+                    seedInventory: seedInventory,
+                    equipment: equipment,
+                    plots: plots.map(plot => ({
+                        x: plot.x,
+                        y: plot.y,
+                        z: plot.z,
+                        stage: plot.stage,
+                        plantType: plot.plantType,
+                        growthTimer: plot.growthTimer,
+                        waterLevel: plot.waterLevel,
+                        lastWatered: plot.lastWatered,
+                        unlocked: plot.unlocked
+                    })),
+                    activeSprinklers: activeSprinklers,
+                    objectives: objectives,
+                    dayNightCycle: dayNightCycle,
+                    dayNightCycleCount: dayNightCycleCount,
+                    character: {
+                        x: character.x,
+                        y: character.y,
+                        z: character.z
+                    }
+                };
+                
+                localStorage.setItem('pixelHarvestSave', JSON.stringify(gameState));
+            } catch (e) {
+                console.log('Failed to save game:', e);
+            }
+        }
+        
+        function loadGame() {
+            try {
+                const saved = localStorage.getItem('pixelHarvestSave');
+                if (!saved) return false;
+                
+                const gameState = JSON.parse(saved);
+                
+                // Restore game state
+                score = gameState.score || 0;
+                coins = gameState.coins || 50;
+                inventory = gameState.inventory || { carrot: 0, tomato: 0, rare: 0 };
+                seedInventory = gameState.seedInventory || { carrot: 5, tomato: 2, rare: 1 };
+                equipment = gameState.equipment || { sprinkler: 0, fertilizer: 0, greenhouse: 0 };
+                objectives = gameState.objectives || {
+                    carrotsHarvested: 0,
+                    dayNightCycles: 0,
+                    coinsEarned: 0,
+                    plantsHarvested: 0,
+                    equipmentBought: 0,
+                    seedsPlanted: 0,
+                    plotsUnlocked: 9
+                };
+                dayNightCycle = gameState.dayNightCycle || 0;
+                dayNightCycleCount = gameState.dayNightCycleCount || 0;
+                
+                // Restore character position
+                if (gameState.character) {
+                    character.x = gameState.character.x || 0;
+                    character.y = gameState.character.y || 0;
+                    character.z = gameState.character.z || 0;
+                    cameraFollowX = character.x;
+                    cameraFollowZ = character.z;
+                }
+                
+                // Restore sprinklers
+                activeSprinklers = gameState.activeSprinklers || [];
+                
+                // Restore plots
+                if (gameState.plots && Array.isArray(gameState.plots)) {
+                    gameState.plots.forEach((savedPlot, index) => {
+                        if (plots[index]) {
+                            plots[index].stage = savedPlot.stage || PLANT_STAGES.EMPTY;
+                            plots[index].plantType = savedPlot.plantType || null;
+                            plots[index].growthTimer = savedPlot.growthTimer || 0;
+                            plots[index].waterLevel = savedPlot.waterLevel || 1.0;
+                            plots[index].lastWatered = savedPlot.lastWatered || Date.now();
+                            plots[index].unlocked = savedPlot.unlocked !== undefined ? savedPlot.unlocked : plots[index].unlocked;
+                            
+                            // Restore plant object if needed
+                            if (plots[index].stage > PLANT_STAGES.EMPTY && plots[index].plantType) {
+                                const plantConfig = PLANT_TYPES[plots[index].plantType];
+                                let plantSize = 0.3;
+                                
+                                if (plots[index].stage === PLANT_STAGES.GROWING1) plantSize = 0.6;
+                                else if (plots[index].stage === PLANT_STAGES.GROWING2) plantSize = 0.9;
+                                else if (plots[index].stage === PLANT_STAGES.MATURE) plantSize = 1.2;
+                                
+                                plots[index].plant = {
+                                    size: plantSize,
+                                    color: plantConfig.color,
+                                    baseColor: plantConfig.color,
+                                    glow: plots[index].stage === PLANT_STAGES.MATURE
+                                };
+                            } else {
+                                plots[index].plant = null;
+                            }
+                        }
+                    });
+                }
+                
+                return true;
+            } catch (e) {
+                console.log('Failed to load game:', e);
+                return false;
+            }
+        }
+        
+        function newGame() {
+            if (confirm('Are you sure you want to start a new game? This will erase your current progress.')) {
+                // Clear save data (but keep controls)
+                localStorage.removeItem('pixelHarvestSave');
+                
+                // Reset all game state
+                score = 0;
+                coins = 50;
+                inventory = { carrot: 0, tomato: 0, rare: 0 };
+                seedInventory = { carrot: 5, tomato: 2, rare: 1 };
+                equipment = { sprinkler: 0, fertilizer: 0, greenhouse: 0 };
+                objectives = {
+                    carrotsHarvested: 0,
+                    dayNightCycles: 0,
+                    coinsEarned: 0,
+                    plantsHarvested: 0,
+                    equipmentBought: 0,
+                    seedsPlanted: 0,
+                    plotsUnlocked: 9
+                };
+                dayNightCycle = 0;
+                dayNightCycleCount = 0;
+                activeSprinklers = [];
+                
+                // Reset character
+                character.x = 0;
+                character.y = 0;
+                character.z = 0;
+                cameraFollowX = 0;
+                cameraFollowZ = 0;
+                
+                // Reset plots
+                createPlots();
+                
+                // Clear effects
+                window.gameEffects = [];
+                
+                // Update UI
+                updateUI();
+                updateObjectives();
+                
+                showInstruction('New game started! Good luck farming!', 2000);
             }
         }
         
@@ -1313,13 +1529,7 @@
                 if (freeCameraMode) {
                     hoveredPlot = null;
                     plots.forEach(plot => {
-                        const plotProjected = getProjectedCube(plot.x, plot.y + 0.1, plot.z, 2);
-                        const minX = Math.min(...plotProjected.map(p => p.x));
-                        const maxX = Math.max(...plotProjected.map(p => p.x));
-                        const minY = Math.min(...plotProjected.map(p => p.y));
-                        const maxY = Math.max(...plotProjected.map(p => p.y));
-                        
-                        if (mouseX >= minX && mouseX <= maxX && mouseY >= minY && mouseY <= maxY) {
+                        if (plotContainsScreenPoint(mouseX, mouseY, plot)) {
                             hoveredPlot = plot;
                         }
                     });
@@ -1366,14 +1576,7 @@
             
             // Check for plot clicks for watering
             plots.forEach(plot => {
-                const plotProjected = getProjectedCube(plot.x, plot.y + 0.1, plot.z, 2);
-                
-                const minX = Math.min(...plotProjected.map(p => p.x));
-                const maxX = Math.max(...plotProjected.map(p => p.x));
-                const minY = Math.min(...plotProjected.map(p => p.y));
-                const maxY = Math.max(...plotProjected.map(p => p.y));
-                
-                if (clickX >= minX && clickX <= maxX && clickY >= minY && clickY <= maxY) {
+                if (plotContainsScreenPoint(clickX, clickY, plot)) {
                     waterPlot(plot);
                 }
             });
@@ -1409,13 +1612,26 @@
                 
                 // Visual feedback for watering
                 createWaterEffect(plot);
+                
+                // Auto-save after watering
+                saveGame();
             }
         }
         
         function createWaterEffect(plot) {
-            // Simple visual effect for watering (could be enhanced with particles)
-            const originalColor = plot.plant ? plot.plant.color : colors.plot;
-            // This effect would be more visible with actual particle system
+            const effect = {
+                x: plot.x,
+                y: plot.y + 1,
+                z: plot.z,
+                timer: 0,
+                duration: 1500,
+                type: 'water',
+                emoji: '💧',
+                startY: plot.y + 1
+            };
+            
+            if (!window.gameEffects) window.gameEffects = [];
+            window.gameEffects.push(effect);
         }
         
         function onMouseClick(event) {
@@ -1427,15 +1643,7 @@
             
             // Check for plot clicks without drawing
             plots.forEach(plot => {
-                const plotProjected = getProjectedCube(plot.x, plot.y + 0.1, plot.z, 2);
-                
-                // Create a simple bounding rectangle for click detection
-                const minX = Math.min(...plotProjected.map(p => p.x));
-                const maxX = Math.max(...plotProjected.map(p => p.x));
-                const minY = Math.min(...plotProjected.map(p => p.y));
-                const maxY = Math.max(...plotProjected.map(p => p.y));
-                
-                if (clickX >= minX && clickX <= maxX && clickY >= minY && clickY <= maxY) {
+                if (plotContainsScreenPoint(clickX, clickY, plot)) {
                     handlePlotClick(plot);
                 }
             });
@@ -1451,7 +1659,8 @@
                         x: plot.x,
                         y: plot.y + 1,
                         z: plot.z,
-                        range: 6 // Affects plots within 6 units
+                        range: 6, // Affects plots within 6 units
+                        lastSprinkleTime: 0 // Initialize sprinkle timing
                     });
                     
                     equipment.sprinkler--; // Remove from inventory
@@ -1460,6 +1669,9 @@
                     
                     showInstruction('Auto Sprinkler placed! It will water nearby plants automatically.', 2000);
                     updateUI();
+                    
+                    // Auto-save after placing sprinkler
+                    saveGame();
                 }
                 return;
             }
@@ -1469,10 +1681,19 @@
                 if (coins >= plot.unlockCost) {
                     coins -= plot.unlockCost;
                     plot.unlocked = true;
+                    objectives.plotsUnlocked++;
+                    
+                    // Play unlock sound
+                    playActionSound('unlock');
+                    
                     updateUI();
+                    updateObjectives();
                     
                     // Create unlock effect
                     createUnlockEffect(plot);
+                    
+                    // Auto-save after unlocking
+                    saveGame();
                 }
                 return;
             }
@@ -1485,8 +1706,19 @@
         }
         
         function createUnlockEffect(plot) {
-            // Visual feedback for unlocking a plot
-            // This could be enhanced with particle effects
+            const effect = {
+                x: plot.x,
+                y: plot.y + 1,
+                z: plot.z,
+                timer: 0,
+                duration: 1500,
+                type: 'unlock',
+                emoji: '🔓',
+                startY: plot.y + 1
+            };
+            
+            if (!window.gameEffects) window.gameEffects = [];
+            window.gameEffects.push(effect);
         }
         
         function plantSeed(plot, plantType) {
@@ -1514,6 +1746,9 @@
             
             updateUI();
             updateObjectives();
+            
+            // Auto-save after planting
+            saveGame();
         }
         
         function growPlant(plot) {
@@ -1568,6 +1803,9 @@
             
             updateUI();
             updateObjectives();
+            
+            // Auto-save after harvesting
+            saveGame();
         }
         
         function createHarvestEffect(plot) {
@@ -1694,20 +1932,20 @@
             document.getElementById('objective2').textContent = 
                 `🌙 Survive 2 day/night cycles (${Math.min(objectives.dayNightCycles, 2)}/2)`;
             document.getElementById('objective3').textContent = 
-                `💰 Earn 20 coins (${Math.min(coins, 20)}/20)`;
+                `💰 Earn 20 coins (${Math.min(objectives.coinsEarned, 20)}/20)`;
             document.getElementById('objective4').textContent = 
                 `🌾 Harvest 25 total plants (${Math.min(objectives.plantsHarvested, 25)}/25)`;
             document.getElementById('objective5').textContent = 
                 `🔧 Buy any equipment (${Math.min(objectives.equipmentBought, 1)}/1)`;
             document.getElementById('objective6').textContent = 
-                `💰 Earn 500 coins (${Math.min(coins, 500)}/500)`;
+                `💰 Earn 500 coins (${Math.min(objectives.coinsEarned, 500)}/500)`;
             document.getElementById('objective7').textContent = 
                 `🌱 Plant 50 seeds (${Math.min(objectives.seedsPlanted, 50)}/50)`;
             document.getElementById('objective8').textContent = 
                 `🏆 Unlock all plots (${Math.min(objectives.plotsUnlocked, 25)}/25)`;
                 
             // Check for completed objectives and show new ones
-            if (objectives.carrotsHarvested >= 5 && objectives.dayNightCycles >= 2 && coins >= 20) {
+            if (objectives.carrotsHarvested >= 5 && objectives.dayNightCycles >= 2 && objectives.coinsEarned >= 20) {
                 document.getElementById('objective1').style.color = '#4CAF50';
                 document.getElementById('objective2').style.color = '#4CAF50';
                 document.getElementById('objective3').style.color = '#4CAF50';
@@ -1727,7 +1965,7 @@
                 document.getElementById('objective8').style.display = 'block';
             }
             
-            if (coins >= 500) {
+            if (objectives.coinsEarned >= 500) {
                 document.getElementById('objective6').style.color = '#4CAF50';
             }
             if (objectives.seedsPlanted >= 50) {
@@ -1759,6 +1997,9 @@
                 coins -= cost;
                 seedInventory[plantType] += 5; // Buy 5 seeds at a time
                 updateUI();
+                
+                // Auto-save after buying seeds
+                saveGame();
             }
         }
         
@@ -1784,6 +2025,9 @@
                 
                 updateUI();
                 updateObjectives();
+                
+                // Auto-save after buying equipment
+                saveGame();
             }
         }
         
@@ -1845,18 +2089,19 @@
             const dayProgress = (Math.sin(dayNightCycle) + 1) / 2;
             const isDay = dayProgress > 0.5;
             
-            // Auto-sprinkler functionality
+            // Auto-sprinkler functionality - deterministic timing
             activeSprinklers.forEach(sprinkler => {
-                plots.forEach(plot => {
-                    if (plot.stage !== PLANT_STAGES.EMPTY) {
-                        const distance = Math.sqrt(
-                            Math.pow(plot.x - sprinkler.x, 2) + 
-                            Math.pow(plot.z - sprinkler.z, 2)
-                        );
-                        
-                        if (distance <= sprinkler.range && plot.waterLevel < 0.8) {
-                            // Auto-water every 5 seconds if water level is low
-                            if (currentTime % 5000 < 100) { // Check every 5 seconds
+                // Check if 5 seconds have passed since last sprinkle
+                if (currentTime - sprinkler.lastSprinkleTime >= 5000) {
+                    plots.forEach(plot => {
+                        if (plot.stage !== PLANT_STAGES.EMPTY) {
+                            const distance = Math.sqrt(
+                                Math.pow(plot.x - sprinkler.x, 2) + 
+                                Math.pow(plot.z - sprinkler.z, 2)
+                            );
+                            
+                            if (distance <= sprinkler.range && plot.waterLevel < 0.8) {
+                                // Auto-water the plot
                                 plot.waterLevel = Math.min(1.0, plot.waterLevel + 0.3);
                                 plot.lastWatered = currentTime;
                                 
@@ -1864,16 +2109,19 @@
                                 createWaterEffect(plot);
                             }
                         }
-                    }
-                });
+                    });
+                    
+                    // Update sprinkler timer
+                    sprinkler.lastSprinkleTime = currentTime;
+                }
             });
             
             plots.forEach(plot => {
                 if (plot.stage !== PLANT_STAGES.EMPTY && plot.stage !== PLANT_STAGES.MATURE) {
-                    // Update water level (plants lose water over time)
-                    const timeSinceWatered = currentTime - plot.lastWatered;
-                    const waterDecay = timeSinceWatered / 10000; // Lose water over 10 seconds
-                    plot.waterLevel = Math.max(0, plot.waterLevel - waterDecay * deltaTime / 1000);
+                    // Update water level with controlled decay
+                    if (plot.plantType) { // Only decay water if there's a plant
+                        plot.waterLevel = Math.max(0, plot.waterLevel - waterDecayRate * deltaTime / 1000);
+                    }
                     
                     // Get plant configuration
                     const plantConfig = PLANT_TYPES[plot.plantType];
@@ -2036,8 +2284,8 @@
                 // Draw sprinkler head
                 drawCube(sprinkler.x, sprinkler.y + 0.5, sprinkler.z, 0.6, '#87CEEB');
                 
-                // Draw water effect if it's working
-                if (Date.now() % 5000 < 1000) { // Show water effect for 1 second every 5 seconds
+                // Draw water effect if sprinkler just watered (visible for 1s after sprinkle)
+                if ((Date.now() - sprinkler.lastSprinkleTime) < 1000) {
                     ctx.save();
                     ctx.globalAlpha = 0.3;
                     
@@ -2212,16 +2460,9 @@
         }
         
         function updateCameraFollow() {
-            // Calculate desired camera position relative to character
-            const followDistance = cameraDistance;
-            const followHeight = 5;
-            
-            // Offset camera position based on character position
-            const targetCameraX = character.x;
-            const targetCameraZ = character.z;
-            
-            // Smoothly move camera towards target
-            // The camera will center on the character but maintain its current angle
+            // Smoothly interpolate camera follow position towards character position
+            cameraFollowX += (character.x - cameraFollowX) * cameraFollowLerp;
+            cameraFollowZ += (character.z - cameraFollowZ) * cameraFollowLerp;
         }
         
         function drawCharacter() {
