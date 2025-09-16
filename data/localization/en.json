@@ -78,6 +78,11 @@
         "💰 Buy and sell in the marketplace",
         "🎯 Complete quests and objectives"
       ],
+      "languageSelection": {
+        "title": "🌍 Choose Your Language",
+        "subtitle": "Select your preferred language for the game and tutorial:",
+        "continue": "Continue with"
+      },
       "startTutorial": "🚀 Start Tutorial",
       "settings": "⚙️ Settings",
       "skipTutorial": "⏭️ Skip Tutorial"

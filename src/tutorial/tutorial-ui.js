@@ -913,27 +913,172 @@ class TutorialUI {
     }
 
     /**
+     * Show language selection modal
+     * @param {Object} callbacks - Callback functions
+     */
+    showLanguageSelectionModal(callbacks) {
+        // Get available languages from i18n system or fallback
+        const languages = [
+            { code: 'en', name: 'English', flag: '🇺🇸' },
+            { code: 'fr', name: 'Français', flag: '🇫🇷' },
+            { code: 'es', name: 'Español', flag: '🇪🇸' },
+            { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+            { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+            { code: 'pt', name: 'Português', flag: '🇵🇹' }
+        ];
+
+        // Get current language
+        const currentLang = window.i18n ? window.i18n.getCurrentLanguage()?.code || 'en' : 'en';
+        
+        // Create language selection content
+        const languageButtons = languages.map(lang => `
+            <button class="tutorial-language-btn ${lang.code === currentLang ? 'selected' : ''}" 
+                    data-lang="${lang.code}"
+                    style="
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        width: 100%;
+                        margin: 5px 0;
+                        padding: 12px 20px;
+                        background: ${lang.code === currentLang ? '#4CAF50' : 'rgba(255,255,255,0.1)'};
+                        border: 2px solid ${lang.code === currentLang ? '#4CAF50' : 'rgba(255,255,255,0.2)'};
+                        border-radius: 8px;
+                        color: white;
+                        font-size: 16px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    ">
+                <span style="font-size: 24px;">${lang.flag}</span>
+                <span style="flex: 1; text-align: left;">${lang.name}</span>
+                ${lang.code === currentLang ? '<span style="color: #FFD700;">✓</span>' : ''}
+            </button>
+        `).join('');
+
+        const modal = this.createModal({
+            title: window.i18n ? window.i18n.t('tutorial.welcome.languageSelection.title') : '🌍 Choose Your Language',
+            icon: '🌍',
+            content: `
+                <p style="margin-bottom: 20px; text-align: center;">
+                    ${window.i18n ? window.i18n.t('tutorial.welcome.languageSelection.subtitle') : 'Select your preferred language for the game and tutorial:'}
+                </p>
+                <div style="max-width: 300px; margin: 0 auto;">
+                    ${languageButtons}
+                </div>
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); text-align: center;">
+                    <small style="color: rgba(255,255,255,0.7);">
+                        ${window.i18n ? window.i18n.t('tutorial.welcome.languageSelection.continue') : 'Continue with'} 
+                        <span id="selectedLanguageName" style="color: #4CAF50; font-weight: bold;">
+                            ${languages.find(l => l.code === currentLang)?.name || 'English'}
+                        </span>
+                    </small>
+                </div>
+            `,
+            buttons: [
+                {
+                    text: '✅ Continue',
+                    className: 'tutorial-btn-primary',
+                    onClick: () => {
+                        this.closeModal();
+                        callbacks.onLanguageSelected();
+                    }
+                }
+            ]
+        });
+
+        // Add language selection functionality
+        modal.querySelectorAll('.tutorial-language-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const langCode = btn.dataset.lang;
+                const langName = languages.find(l => l.code === langCode)?.name;
+                
+                // Remove selection from all buttons
+                modal.querySelectorAll('.tutorial-language-btn').forEach(b => {
+                    b.classList.remove('selected');
+                    b.style.background = 'rgba(255,255,255,0.1)';
+                    b.style.borderColor = 'rgba(255,255,255,0.2)';
+                    b.querySelector('span:last-child')?.remove();
+                });
+                
+                // Add selection to clicked button
+                btn.classList.add('selected');
+                btn.style.background = '#4CAF50';
+                btn.style.borderColor = '#4CAF50';
+                btn.innerHTML += '<span style="color: #FFD700;">✓</span>';
+                
+                // Update selected language display
+                const selectedNameSpan = modal.querySelector('#selectedLanguageName');
+                if (selectedNameSpan) {
+                    selectedNameSpan.textContent = langName;
+                }
+                
+                // Change language in the system
+                if (window.i18n && window.i18n.setLanguage) {
+                    try {
+                        await window.i18n.setLanguage(langCode);
+                        console.log(`Language changed to: ${langCode}`);
+                    } catch (error) {
+                        console.error('Failed to change language:', error);
+                    }
+                }
+                
+                // Update tutorial localization
+                if (window.TutorialLocalization && window.TutorialLocalization.setLanguage) {
+                    window.TutorialLocalization.setLanguage(langCode);
+                }
+                
+                // Update modal content with new language
+                setTimeout(() => {
+                    const title = modal.querySelector('.tutorial-modal-title');
+                    const subtitle = modal.querySelector('p');
+                    const continueText = modal.querySelector('#selectedLanguageName').parentNode;
+                    
+                    if (title && window.i18n) {
+                        title.textContent = window.i18n.t('tutorial.welcome.languageSelection.title');
+                    }
+                    if (subtitle && window.i18n) {
+                        subtitle.textContent = window.i18n.t('tutorial.welcome.languageSelection.subtitle');
+                    }
+                    if (continueText && window.i18n) {
+                        continueText.innerHTML = `
+                            ${window.i18n.t('tutorial.welcome.languageSelection.continue')} 
+                            <span id="selectedLanguageName" style="color: #4CAF50; font-weight: bold;">
+                                ${langName}
+                            </span>
+                        `;
+                    }
+                }, 100);
+            });
+        });
+
+        return modal;
+    }
+
+    /**
      * Show welcome modal
      * @param {Object} callbacks - Callback functions
      */
     showWelcomeModal(callbacks) {
+        // Get translations - fallback to English if i18n not available
+        const t = (key, fallback) => window.i18n ? window.i18n.t(key) : fallback;
+        
         const modal = this.createModal({
-            title: '🌱 Welcome to Pixel-Harvest!',
+            title: t('tutorial.welcome.title', '🌱 Welcome to Pixel-Harvest!'),
             icon: '🎮',
             content: `
-                <p>Ready to start your farming adventure? This interactive tutorial will teach you everything you need to know!</p>
-                <p>You'll learn how to:</p>
+                <p>${t('tutorial.welcome.description', 'Ready to start your farming adventure? This interactive tutorial will teach you everything you need to know!')}</p>
+                <p>${t('tutorial.welcome.learnAbout', "You'll learn how to:")}</p>
                 <ul style="text-align: left; margin: 15px 0;">
-                    <li>🌱 Plant and harvest crops</li>
-                    <li>💧 Water your plants</li>
-                    <li>🐄 Manage farm animals</li>
-                    <li>💰 Buy and sell in the marketplace</li>
-                    <li>🎯 Complete quests and objectives</li>
+                    <li>🌱 ${t('tutorial.welcome.features.0', 'Plant and harvest crops')}</li>
+                    <li>💧 ${t('tutorial.welcome.features.1', 'Water your plants')}</li>
+                    <li>🐄 ${t('tutorial.welcome.features.2', 'Manage farm animals')}</li>
+                    <li>💰 ${t('tutorial.welcome.features.3', 'Buy and sell in the marketplace')}</li>
+                    <li>🎯 ${t('tutorial.welcome.features.4', 'Complete quests and objectives')}</li>
                 </ul>
             `,
             buttons: [
                 {
-                    text: '🚀 Start Tutorial',
+                    text: t('tutorial.welcome.startTutorial', '🚀 Start Tutorial'),
                     className: 'tutorial-btn-primary',
                     onClick: () => {
                         this.closeModal();
@@ -941,7 +1086,7 @@ class TutorialUI {
                     }
                 },
                 {
-                    text: '⚙️ Settings',
+                    text: t('tutorial.welcome.settings', '⚙️ Settings'),
                     className: 'tutorial-btn-secondary',
                     onClick: () => {
                         this.closeModal();
@@ -949,7 +1094,7 @@ class TutorialUI {
                     }
                 },
                 {
-                    text: '⏭️ Skip Tutorial',
+                    text: t('tutorial.welcome.skipTutorial', '⏭️ Skip Tutorial'),
                     className: 'tutorial-btn-secondary',
                     onClick: () => {
                         this.closeModal();
