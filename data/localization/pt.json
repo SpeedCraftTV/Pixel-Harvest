@@ -1,0 +1,461 @@
+{
+  "meta": {
+    "language": "pt",
+    "name": "Português",
+    "flag": "🇵🇹",
+    "code": "pt",
+    "completion": 100,
+    "contributors": ["Pixel-Harvest Team"],
+    "lastUpdated": "2024-12-19"
+  },
+  "ui": {
+    "common": {
+      "ok": "OK",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "close": "Fechar",
+      "back": "Voltar",
+      "next": "Próximo",
+      "previous": "Anterior",
+      "skip": "Pular",
+      "continue": "Continuar",
+      "loading": "Carregando...",
+      "error": "Erro",
+      "success": "Sucesso",
+      "warning": "Aviso",
+      "info": "Informação"
+    },
+    "game": {
+      "score": "Pontuação",
+      "coins": "Moedas",
+      "level": "Nível",
+      "experience": "Experiência",
+      "inventory": "Inventário",
+      "marketplace": "Mercado",
+      "objectives": "Objetivos",
+      "settings": "Configurações"
+    },
+    "menu": {
+      "main": "Menu Principal",
+      "tutorial": "Tutorial",
+      "controls": "Controles",
+      "uiMode": "Modo Interface",
+      "newGame": "Novo Jogo",
+      "language": "Idioma"
+    },
+    "instructions": {
+      "desktop": "🌱 Mova-se com WASD ou setas<br>⚡ ESPAÇO para plantar/colher na parcela mais próxima<br>💧 E para regar plantas<br>📹 C para alternar modo da câmera<br>🌿 Plantas crescem automaticamente (3 estágios)<br>🔒 Desbloqueie parcelas aproximando-se e pressionando ESPAÇO<br>🌙 Observe o ciclo dia/noite!<br>🖱️ Arraste para girar a vista da câmera<br>🔍 Roda do mouse para zoom",
+      "mobile": "🕹️ Use o joystick virtual para mover<br>🌱 Toque no botão verde para plantar/colher<br>💧 Toque no botão azul para regar<br>📹 Use os controles da câmera para mudar a vista<br>📋 Acesse painéis via menu inferior<br>👆 Toque e arraste para girar a câmera<br>🤏 Belisque para zoom"
+    }
+  },
+  "tutorial": {
+    "ui": {
+      "welcome": "Bem-vindo",
+      "next": "Próximo →",
+      "previous": "← Anterior",
+      "skip": "Pular etapa",
+      "close": "Pular tutorial",
+      "settings": "Configurações do tutorial",
+      "complete": "Completar tutorial",
+      "restart": "Reiniciar tutorial",
+      "startPlaying": "🌟 Começar a jogar!",
+      "stepOf": "Etapa {current} de {total}",
+      "hints": "Dicas",
+      "tutorialComplete": "Tutorial completo!",
+      "congratulations": "Parabéns!",
+      "progress": "Progresso",
+      "menu": "Menu"
+    },
+    "welcome": {
+      "title": "🌱 Bem-vindo ao Pixel-Harvest!",
+      "subtitle": "Pronto para começar sua aventura agrícola?",
+      "description": "Este tutorial interativo vai te ensinar tudo que você precisa saber!",
+      "learnAbout": "Você aprenderá como:",
+      "features": [
+        "🌱 Plantar e colher culturas",
+        "💧 Regar suas plantas",
+        "🐄 Gerenciar animais da fazenda",
+        "💰 Comprar e vender no mercado",
+        "🎯 Completar missões e objetivos"
+      ],
+      "startTutorial": "🚀 Iniciar tutorial",
+      "settings": "⚙️ Configurações",
+      "skipTutorial": "⏭️ Pular tutorial"
+    },
+    "completion": {
+      "title": "🎉 Tutorial completo!",
+      "subtitle": "Parabéns! Você completou o tutorial do Pixel-Harvest!",
+      "rewardsTitle": "🎁 Recompensas do tutorial:",
+      "rewards": [
+        "💰 100 Moedas",
+        "🥕 10 Sementes de cenoura",
+        "🍅 5 Sementes de tomate",
+        "⭐ 50 Pontos de experiência"
+      ],
+      "encouragement": "Agora você está pronto para construir seu império agrícola! Boa sorte!",
+      "startPlaying": "🌟 Começar a jogar!",
+      "restartTutorial": "🔄 Reiniciar tutorial"
+    },
+    "skipConfirmation": {
+      "title": "⏭️ Pular tutorial?",
+      "message": "Tem certeza de que quer pular o tutorial?",
+      "note": "Você sempre pode reiniciá-lo do menu do jogo.",
+      "confirmSkip": "✅ Sim, pular tutorial",
+      "continueTutorial": "❌ Continuar tutorial"
+    },
+    "settings": {
+      "title": "⚙️ Configurações do tutorial",
+      "autoAdvance": "Avançar etapas automaticamente (quando possível)",
+      "showHints": "Mostrar dicas úteis",
+      "highlightElements": "Destacar elementos interativos",
+      "pauseGame": "Pausar jogo durante tutorial",
+      "saveSettings": "💾 Salvar configurações",
+      "cancel": "❌ Cancelar"
+    },
+    "steps": {
+      "welcome": {
+        "title": "Bem-vindo ao Pixel-Harvest!",
+        "description": "Bem-vindo à sua nova fazenda! Você está prestes a aprender como cultivar plantas, gerenciar animais e construir um próspero negócio agrícola. Este tutorial vai te guiar através de todas as mecânicas essenciais do jogo passo a passo.",
+        "hints": [
+          "Você pode pular qualquer etapa clicando em \"Pular etapa\"",
+          "Use as setas do teclado para navegar entre etapas",
+          "Pressione ESC para sair do tutorial a qualquer momento"
+        ]
+      },
+      "character_movement": {
+        "title": "Movendo seu personagem",
+        "description": "Vamos começar aprendendo como se mover pela sua fazenda! Desktop: Use as teclas WASD ou setas para mover. Mobile: Use o joystick virtual no canto inferior esquerdo. Tente mover seu personagem agora. Note como a câmera te segue!",
+        "hints": [
+          "A posição do personagem é mostrada no canto superior direito",
+          "Você pode arrastar o mouse para girar a vista da câmera",
+          "A roda do mouse faz zoom in e out"
+        ]
+      },
+      "camera_controls": {
+        "title": "Controles da câmera",
+        "description": "Você pode controlar a câmera para ter a melhor vista da sua fazenda. Desktop: Pressione C para alternar modo da câmera, arraste o mouse para girar, role para zoom. Mobile: Use o botão da câmera, arraste para girar, belisque para zoom. Tente alternar o modo da câmera agora!",
+        "hints": [
+          "O modo Seguir Personagem mantém a câmera centrada no seu personagem",
+          "O modo Câmera Livre permite olhar ao redor independentemente",
+          "Você pode dar zoom in para ver detalhes ou zoom out para uma vista mais ampla"
+        ]
+      },
+      "farm_plots": {
+        "title": "Entendendo parcelas da fazenda",
+        "description": "Sua fazenda é dividida em parcelas onde você pode cultivar plantas. Algumas parcelas já estão desbloqueadas, enquanto outras precisam ser compradas. Mova-se perto de uma parcela para ver se pode interagir com ela. Parcelas desbloqueadas têm cor de terra marrom. Aproxime-se de uma parcela vazia para continuar!",
+        "hints": [
+          "Parcelas marrons estão prontas para plantio",
+          "Parcelas cinzas precisam ser desbloqueadas com moedas",
+          "Um círculo verde aparece ao redor do seu personagem quando você pode interagir"
+        ]
+      },
+      "planting_seeds": {
+        "title": "Plantando sementes",
+        "description": "Hora de cultivar suas primeiras plantas! Você começa com algumas sementes grátis no seu inventário. Desktop: Fique perto de uma parcela marrom e pressione ESPAÇO para plantar. Mobile: Fique perto de uma parcela e toque no botão verde plantar. Plante uma semente agora!",
+        "hints": [
+          "Você só pode plantar em parcelas marrons (desbloqueadas)",
+          "Sementes são automaticamente usadas do seu inventário",
+          "Plantas diferentes têm tempos de crescimento diferentes"
+        ]
+      },
+      "plant_growth": {
+        "title": "Observando crescimento das plantas",
+        "description": "Plantas crescem automaticamente ao longo do tempo através de 3 estágios: broto, crescendo e maduro. Você pode acelerar o crescimento regando-as! Observe sua planta plantada enquanto cresce. Plantas maduras têm um brilho dourado.",
+        "hints": [
+          "Brotos são pequenos rebentos verdes",
+          "Plantas crescendo são maiores e mais detalhadas",
+          "Plantas maduras brilham dourado e estão prontas para colheita"
+        ]
+      },
+      "watering_plants": {
+        "title": "Regando plantas",
+        "description": "Regar suas plantas as faz crescer mais rápido! Desktop: Fique perto de uma planta e pressione E para regar. Mobile: Use o botão azul regar. Regue sua planta agora e observe como cresce mais rápido!",
+        "hints": [
+          "Plantas regadas crescem cerca de duas vezes mais rápido",
+          "Você pode regar cada planta uma vez por estágio de crescimento",
+          "Regar não custa recursos - é grátis!"
+        ]
+      },
+      "harvesting": {
+        "title": "Colhendo plantas",
+        "description": "Quando as plantas estão totalmente crescidas, você pode colhê-las! Desktop: Pressione ESPAÇO perto de plantas maduras. Mobile: Toque no botão verde perto de plantas maduras.",
+        "hints": [
+          "Plantas maduras têm um brilho dourado",
+          "As colheitas vão para seu inventário",
+          "Você pode vender colheitas no mercado"
+        ]
+      },
+      "inventory_management": {
+        "title": "Gerenciando seu inventário",
+        "description": "Ótimo! Você colheu sua primeira cultura. Verifique seu inventário para ver o que coletou. O inventário mostra todos os seus itens organizados por categorias.",
+        "hints": [
+          "Inventário é dividido em categorias: colheitas, equipamentos e produtos animais",
+          "Números mostram quantos de cada item você tem",
+          "Itens são automaticamente organizados por tipo"
+        ]
+      },
+      "marketplace_intro": {
+        "title": "O mercado",
+        "description": "O mercado é onde você compra sementes e equipamentos, e vende suas colheitas por moedas. Preços mudam diariamente baseados em oferta e demanda. Use-o sabiamente!",
+        "hints": [
+          "Preços flutuam baseados nas condições do mercado",
+          "Vender colheitas é a principal forma de ganhar moedas",
+          "Use moedas para comprar sementes, equipamentos e desbloquear parcelas"
+        ]
+      },
+      "managing_inventory": {
+        "title": "Gerenciando seu inventário",
+        "description": "Seu inventário mostra todas suas colheitas, sementes e equipamentos. Desktop: Verifique o painel do inventário à esquerda. Mobile: Toque no botão inventário no menu inferior.",
+        "hints": [
+          "Sementes são necessárias para plantar",
+          "Colheitas podem ser vendidas por moedas",
+          "Equipamentos ajudam a automatizar sua fazenda"
+        ]
+      },
+      "using_marketplace": {
+        "title": "Usando o mercado",
+        "description": "O mercado é onde você pode vender colheitas e comprar novas sementes. Desktop: Clique no painel do mercado ou pressione M. Mobile: Toque no botão mercado. Abra o mercado agora!",
+        "hints": [
+          "Preços mudam baseados em oferta e demanda",
+          "Venda suas colheitas quando os preços estão altos",
+          "Compre diferentes tipos de sementes para variedade"
+        ]
+      },
+      "selling_crops": {
+        "title": "Vendendo colheitas",
+        "description": "Hora de vender suas colheitas ganhas com muito trabalho! No mercado, clique nas colheitas no seu inventário, depois clique \"Vender\". O preço será mostrado em moedas. Venda algumas colheitas agora!",
+        "hints": [
+          "Verifique os preços antes de vender",
+          "Você pode escolher quanto vender",
+          "Moedas serão adicionadas ao seu saldo"
+        ]
+      },
+      "buying_seeds": {
+        "title": "Comprando novas sementes",
+        "description": "Com suas moedas, você pode comprar novos tipos de sementes! No mercado, navegue pelas sementes disponíveis e clique \"Comprar\". Plantas diferentes têm custos e retornos diferentes. Compre algumas sementes novas!",
+        "hints": [
+          "Sementes mais caras geralmente dão retornos maiores",
+          "Diversifique suas plantas para renda estável",
+          "Algumas sementes só podem crescer em certas estações"
+        ]
+      },
+      "changing_plant_types": {
+        "title": "Cultivando diferentes tipos de plantas",
+        "description": "Agora você tem diferentes tipos de sementes! Ao plantar, o primeiro tipo de semente disponível do seu inventário é automaticamente usado. Plante tipos diferentes em parcelas diferentes. Experimente com plantas diferentes!",
+        "hints": [
+          "Plantas diferentes têm tempos de crescimento diferentes",
+          "Algumas plantas são mais lucrativas que outras",
+          "Diversificação ajuda no gerenciamento de risco"
+        ]
+      },
+      "unlocking_plots": {
+        "title": "Desbloqueando novas parcelas",
+        "description": "Expanda sua fazenda desbloqueando novas parcelas! Vá perto de uma parcela cinza (bloqueada) e pressione ESPAÇO para comprar. Custa moedas, mas te dá mais espaço para cultivar. Desbloqueie uma nova parcela!",
+        "hints": [
+          "Custos de parcelas aumentam com a distância do centro",
+          "Mais parcelas significam mais retornos potenciais",
+          "Planeje o layout das suas parcelas para eficiência"
+        ]
+      },
+      "objectives_system": {
+        "title": "Entendendo objetivos e missões",
+        "description": "O jogo tem um sistema de objetivos que te dá tarefas para completar! Desktop: Verifique o painel de objetivos à direita. Mobile: Toque no botão objetivos. Objetivos dão recompensas quando completados. Verifique seus objetivos atuais!",
+        "hints": [
+          "Objetivos guiam seu progresso",
+          "Objetivos completados dão moedas e experiência",
+          "Novos objetivos são desbloqueados conforme você progride"
+        ]
+      },
+      "day_night_cycle": {
+        "title": "Ciclo dia/noite",
+        "description": "O jogo tem um ciclo dia/noite que afeta o gameplay! Observe como a iluminação e atmosfera mudam. Plantas crescem tanto de dia quanto de noite, mas a experiência visual muda. Observe o céu para mudanças!",
+        "hints": [
+          "O ciclo progride automaticamente",
+          "Hora do dia afeta a atmosfera do jogo",
+          "Atualizações futuras podem adicionar recursos baseados em tempo"
+        ]
+      },
+      "weather_system": {
+        "title": "Entendendo o sistema climático",
+        "description": "O jogo inclui um sistema climático que pode afetar suas plantas! Condições climáticas diferentes podem influenciar o crescimento das plantas. Preste atenção às mudanças climáticas e adapte sua estratégia adequadamente.",
+        "hints": [
+          "Chuva pode acelerar o crescimento das plantas",
+          "Plantas diferentes reagem diferentemente ao clima",
+          "Clima é parte da estratégia do jogo"
+        ]
+      },
+      "seasons_system": {
+        "title": "Sistema de estações",
+        "description": "O jogo tem um sistema de estações! Estações diferentes podem ter diferentes tipos de plantas e condições de crescimento. Planeje seu plantio de acordo com a estação atual para retornos ótimos.",
+        "hints": [
+          "Estações mudam automaticamente",
+          "Algumas plantas são específicas de estação",
+          "Planeje com antecedência para mudanças de estação"
+        ]
+      },
+      "animals_intro": {
+        "title": "Introdução aos animais",
+        "description": "Além de plantas, você também pode ter animais na sua fazenda! Animais podem produzir recursos como leite, ovos ou lã. Eles requerem cuidado e comida, mas fornecem renda passiva.",
+        "hints": [
+          "Animais requerem cuidado regular",
+          "Eles produzem recursos valiosos",
+          "Animais diferentes têm requisitos diferentes"
+        ]
+      },
+      "daily_quests": {
+        "title": "Missões diárias",
+        "description": "O jogo oferece missões diárias para recompensas extras! Estas se renovam todo dia e oferecem novos desafios. Missões diárias são uma ótima forma de ganhar moedas e experiência extras.",
+        "hints": [
+          "Missões diárias se renovam à meia-noite",
+          "Elas oferecem recompensas bônus",
+          "Tente completar todas as missões diárias"
+        ]
+      },
+      "equipment_intro": {
+        "title": "Equipamentos e ferramentas",
+        "description": "Conforme você progride, pode desbloquear equipamentos que melhoram sua eficiência! Ferramentas podem automatizar tarefas, aumentar sua velocidade ou fornecer melhores retornos. Invista em equipamentos para sucesso a longo prazo.",
+        "hints": [
+          "Equipamentos podem ser comprados ou desbloqueados",
+          "Ferramentas diferentes têm benefícios diferentes",
+          "Equipamentos melhoram sua eficiência geral"
+        ]
+      },
+      "game_menu": {
+        "title": "Explorando o menu do jogo",
+        "description": "O menu do jogo fornece acesso a várias funcionalidades! Você pode mudar configurações, verificar progresso do tutorial, mudar idioma e mais. Desktop: Pressione ESC ou clique no menu. Mobile: Toque no botão menu.",
+        "hints": [
+          "O menu pausa o jogo",
+          "Você pode ajustar configurações aqui",
+          "Opções de idioma estão disponíveis"
+        ]
+      },
+      "mobile_controls": {
+        "title": "Dominando controles mobile",
+        "description": "Se você está jogando num dispositivo mobile, há controles touch especiais! O joystick virtual, botões de ação e gestos touch tornam fácil jogar em tablets e telefones. Explore todos os controles touch!",
+        "hints": [
+          "O joystick está no canto inferior esquerdo",
+          "Botões de ação estão no canto inferior direito",
+          "Gestos de beliscar controlam zoom"
+        ]
+      },
+      "tutorial_complete": {
+        "title": "Tutorial completo!",
+        "description": "Parabéns! Você dominou todas as mecânicas básicas do Pixel-Harvest! Agora você sabe como plantar, colher, negociar e expandir sua fazenda. Sua aventura agrícola apenas começou!",
+        "hints": [
+          "Lembre-se: você pode reiniciar este tutorial a qualquer momento do menu do jogo",
+          "Experimente com plantas e estratégias diferentes",
+          "Divirta-se e aproveite sua aventura agrícola!"
+        ]
+      }
+    }
+  },
+  "game": {
+    "plants": {
+      "carrot": "Cenoura",
+      "tomato": "Tomate",
+      "wheat": "Trigo",
+      "corn": "Milho",
+      "potato": "Batata",
+      "lettuce": "Alface",
+      "cabbage": "Repolho",
+      "onion": "Cebola",
+      "apple": "Maçã",
+      "pumpkin": "Abóbora",
+      "watermelon": "Melancia",
+      "rare": "Planta rara"
+    },
+    "animals": {
+      "cow": "Vaca",
+      "chicken": "Galinha",
+      "sheep": "Ovelha",
+      "pig": "Porco",
+      "goat": "Cabra",
+      "duck": "Pato"
+    },
+    "equipment": {
+      "shovel": "Pá",
+      "watering_can": "Regador",
+      "plow": "Arado",
+      "harvester": "Colheitadeira",
+      "tractor": "Trator",
+      "irrigation": "Irrigação",
+      "sprinkler": "Aspersor automático",
+      "fertilizer": "Fertilizante",
+      "greenhouse": "Mini estufa"
+    },
+    "weather": {
+      "sunny": "Ensolarado",
+      "rainy": "Chuvoso",
+      "cloudy": "Nublado",
+      "stormy": "Tempestuoso",
+      "foggy": "Nebuloso",
+      "snowy": "Nevando"
+    },
+    "seasons": {
+      "spring": "Primavera",
+      "summer": "Verão",
+      "autumn": "Outono",
+      "winter": "Inverno"
+    },
+    "objectives": {
+      "plant_crops": "Plante {count} culturas",
+      "harvest_crops": "Colha {count} {crop}",
+      "earn_coins": "Ganhe {amount} moedas",
+      "plant_seeds": "Plante {count} sementes",
+      "unlock_plots": "Desbloqueie {count} parcelas",
+      "buy_equipment": "Compre equipamento",
+      "complete_daily": "Complete missão diária",
+      "survive_cycles": "Sobreviva a {count} ciclos dia/noite",
+      "total_plants": "Colha {count} plantas no total"
+    },
+    "marketplace": {
+      "sell": "Vender",
+      "buy": "Comprar",
+      "seeds": "Sementes",
+      "equipment": "Equipamento",
+      "animalProducts": "Produtos animais"
+    }
+  },
+  "messages": {
+    "errors": {
+      "save_failed": "Falha ao salvar",
+      "load_failed": "Falha ao carregar",
+      "network_error": "Erro de rede",
+      "invalid_action": "Ação inválida",
+      "insufficient_funds": "Fundos insuficientes",
+      "plot_occupied": "Parcela ocupada",
+      "no_seeds": "Nenhuma semente disponível",
+      "notEnoughCoins": "Moedas insuficientes!",
+      "notEnoughSeeds": "Sementes insuficientes!",
+      "plotNotUnlocked": "Parcela não desbloqueada!",
+      "invalidAction": "Ação inválida!",
+      "saveError": "Falha ao salvar progresso do jogo"
+    },
+    "success": {
+      "game_saved": "Jogo salvo",
+      "crop_planted": "Cultura plantada",
+      "crop_harvested": "Cultura colhida",
+      "item_purchased": "Item comprado",
+      "plot_unlocked": "Parcela desbloqueada",
+      "objective_completed": "Objetivo completado",
+      "planted": "{plant} plantado!",
+      "harvested": "{plant} colhido!",
+      "watered": "Plantas regadas!",
+      "sold": "{item} vendido!",
+      "bought": "{item} comprado!",
+      "unlocked": "Parcela desbloqueada!",
+      "gameSaved": "Progresso do jogo salvo!"
+    },
+    "info": {
+      "season_changed": "Estação mudou para {season}",
+      "weather_changed": "Clima mudou para {weather}",
+      "level_up": "Subiu de nível! Novo nível: {level}",
+      "daily_quest_available": "Nova missão diária disponível",
+      "tutorial_available": "Tutorial disponível",
+      "dayStart": "Um novo dia começa!",
+      "nightStart": "A noite cai sobre a fazenda...",
+      "seasonChange": "Estação mudou para {season}!",
+      "weatherChange": "Clima mudou para {weather}!"
+    }
+  }
+}

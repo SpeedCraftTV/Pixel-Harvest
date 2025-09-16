@@ -6,7 +6,7 @@
 class TutorialLocalizationValidator {
     constructor() {
         this.baseLanguage = 'en';
-        this.supportedLanguages = ['en', 'fr', 'es'];
+        this.supportedLanguages = ['en', 'fr', 'es', 'de', 'it', 'pt'];
         this.validationResults = new Map();
     }
 

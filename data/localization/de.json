@@ -1,0 +1,461 @@
+{
+  "meta": {
+    "language": "de",
+    "name": "Deutsch",
+    "flag": "🇩🇪",
+    "code": "de",
+    "completion": 100,
+    "contributors": ["Pixel-Harvest Team"],
+    "lastUpdated": "2024-12-19"
+  },
+  "ui": {
+    "common": {
+      "ok": "OK",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "close": "Schließen",
+      "back": "Zurück",
+      "next": "Weiter",
+      "previous": "Zurück",
+      "skip": "Überspringen",
+      "continue": "Fortfahren",
+      "loading": "Laden...",
+      "error": "Fehler",
+      "success": "Erfolg",
+      "warning": "Warnung",
+      "info": "Information"
+    },
+    "game": {
+      "score": "Punkte",
+      "coins": "Münzen",
+      "level": "Level",
+      "experience": "Erfahrung",
+      "inventory": "Inventar",
+      "marketplace": "Marktplatz",
+      "objectives": "Ziele",
+      "settings": "Einstellungen"
+    },
+    "menu": {
+      "main": "Hauptmenü",
+      "tutorial": "Tutorial",
+      "controls": "Steuerung",
+      "uiMode": "UI-Modus",
+      "newGame": "Neues Spiel",
+      "language": "Sprache"
+    },
+    "instructions": {
+      "desktop": "🌱 Bewege dich mit WASD oder Pfeiltasten<br>⚡ LEERTASTE zum Pflanzen/Ernten am nächsten Feld<br>💧 E zum Gießen der Pflanzen<br>📹 C zum Umschalten des Kameramodus<br>🌿 Pflanzen wachsen automatisch (3 Stufen)<br>🔒 Felder freischalten durch Annähern und LEERTASTE drücken<br>🌙 Beobachte den Tag/Nacht-Zyklus!<br>🖱️ Ziehen zum Drehen der Kameraansicht<br>🔍 Mausrad zum Zoomen",
+      "mobile": "🕹️ Verwende den virtuellen Joystick zum Bewegen<br>🌱 Tippe den grünen Button zum Pflanzen/Ernten<br>💧 Tippe den blauen Button zum Gießen<br>📹 Verwende die Kamera-Steuerung zum Ansicht ändern<br>📋 Zugriff auf Panels über das untere Menü<br>👆 Berühren und ziehen zum Kamera drehen<br>🤏 Kneifen zum Zoomen"
+    }
+  },
+  "tutorial": {
+    "ui": {
+      "welcome": "Willkommen",
+      "next": "Weiter →",
+      "previous": "← Zurück",
+      "skip": "Schritt überspringen",
+      "close": "Tutorial überspringen",
+      "settings": "Tutorial-Einstellungen",
+      "complete": "Tutorial beenden",
+      "restart": "Tutorial neu starten",
+      "startPlaying": "🌟 Spielen beginnen!",
+      "stepOf": "Schritt {current} von {total}",
+      "hints": "Hinweise",
+      "tutorialComplete": "Tutorial abgeschlossen!",
+      "congratulations": "Herzlichen Glückwunsch!",
+      "progress": "Fortschritt",
+      "menu": "Menü"
+    },
+    "welcome": {
+      "title": "🌱 Willkommen bei Pixel-Harvest!",
+      "subtitle": "Bereit, dein Landwirtschaftsabenteuer zu beginnen?",
+      "description": "Dieses interaktive Tutorial lehrt dir alles, was du wissen musst!",
+      "learnAbout": "Du lernst, wie man:",
+      "features": [
+        "🌱 Pflanzen anbaut und erntet",
+        "💧 Deine Pflanzen gießt",
+        "🐄 Hoftiere verwaltet",
+        "💰 Am Marktplatz kauft und verkauft",
+        "🎯 Quests und Ziele erfüllt"
+      ],
+      "startTutorial": "🚀 Tutorial starten",
+      "settings": "⚙️ Einstellungen",
+      "skipTutorial": "⏭️ Tutorial überspringen"
+    },
+    "completion": {
+      "title": "🎉 Tutorial abgeschlossen!",
+      "subtitle": "Herzlichen Glückwunsch! Du hast das Pixel-Harvest Tutorial abgeschlossen!",
+      "rewardsTitle": "🎁 Tutorial-Belohnungen:",
+      "rewards": [
+        "💰 100 Münzen",
+        "🥕 10 Karottensamen",
+        "🍅 5 Tomatensamen",
+        "⭐ 50 Erfahrungspunkte"
+      ],
+      "encouragement": "Jetzt bist du bereit, dein Landwirtschaftsimperium aufzubauen! Viel Glück!",
+      "startPlaying": "🌟 Spielen beginnen!",
+      "restartTutorial": "🔄 Tutorial neu starten"
+    },
+    "skipConfirmation": {
+      "title": "⏭️ Tutorial überspringen?",
+      "message": "Bist du sicher, dass du das Tutorial überspringen möchtest?",
+      "note": "Du kannst es jederzeit später über das Spielmenü neu starten.",
+      "confirmSkip": "✅ Ja, Tutorial überspringen",
+      "continueTutorial": "❌ Tutorial fortsetzen"
+    },
+    "settings": {
+      "title": "⚙️ Tutorial-Einstellungen",
+      "autoAdvance": "Schritte automatisch fortsetzen (wenn möglich)",
+      "showHints": "Hilfreiche Hinweise anzeigen",
+      "highlightElements": "Interaktive Elemente hervorheben",
+      "pauseGame": "Spiel während Tutorial pausieren",
+      "saveSettings": "💾 Einstellungen speichern",
+      "cancel": "❌ Abbrechen"
+    },
+    "steps": {
+      "welcome": {
+        "title": "Willkommen bei Pixel-Harvest!",
+        "description": "Willkommen auf deinem neuen Hof! Du wirst lernen, wie man Pflanzen anbaut, Tiere verwaltet und ein florierendes Landwirtschaftsunternehmen aufbaut. Dieses Tutorial führt dich Schritt für Schritt durch alle wichtigen Spielmechaniken.",
+        "hints": [
+          "Du kannst jeden Schritt überspringen, indem du auf \"Schritt überspringen\" klickst",
+          "Verwende die Pfeiltasten zur Navigation zwischen den Schritten",
+          "Drücke ESC, um das Tutorial jederzeit zu verlassen"
+        ]
+      },
+      "character_movement": {
+        "title": "Deinen Charakter bewegen",
+        "description": "Lass uns damit beginnen zu lernen, wie du dich auf deinem Hof bewegst! Desktop: Verwende die WASD-Tasten oder Pfeiltasten zum Bewegen. Mobile: Verwende den virtuellen Joystick in der unteren linken Ecke. Versuche jetzt, deinen Charakter zu bewegen. Beachte, wie die Kamera dir folgt!",
+        "hints": [
+          "Die Charakterposition wird in der oberen rechten Ecke angezeigt",
+          "Du kannst die Maus ziehen, um die Kameraansicht zu drehen",
+          "Das Mausrad zoomt rein und raus"
+        ]
+      },
+      "camera_controls": {
+        "title": "Kamera-Steuerung",
+        "description": "Du kannst die Kamera steuern, um die beste Sicht auf deinen Hof zu bekommen. Desktop: Drücke C zum Umschalten des Kameramodus, ziehe die Maus zum Drehen, scrolle zum Zoomen. Mobile: Verwende den Kamera-Button, ziehe zum Drehen, kneife zum Zoomen. Versuche jetzt, den Kameramodus umzuschalten!",
+        "hints": [
+          "Der Charakter-Folge-Modus hält die Kamera auf deinen Charakter zentriert",
+          "Der Freie-Kamera-Modus lässt dich unabhängig umherblicken",
+          "Du kannst reinzoomen für Details oder rauszoomen für eine breitere Sicht"
+        ]
+      },
+      "farm_plots": {
+        "title": "Hoffelder verstehen",
+        "description": "Dein Hof ist in Felder unterteilt, auf denen du Pflanzen anbauen kannst. Einige Felder sind bereits freigeschaltet, während andere gekauft werden müssen. Gehe nah an ein Feld heran, um zu sehen, ob du damit interagieren kannst. Freigeschaltete Felder haben eine braune Erdfarbe. Gehe nah an ein leeres Feld heran, um fortzufahren!",
+        "hints": [
+          "Braune Felder sind bereit zum Bepflanzen",
+          "Graue Felder müssen mit Münzen freigeschaltet werden",
+          "Ein grüner Kreis erscheint um deinen Charakter, wenn du interagieren kannst"
+        ]
+      },
+      "planting_seeds": {
+        "title": "Samen pflanzen",
+        "description": "Zeit, deine ersten Pflanzen anzubauen! Du beginnst mit einigen kostenlosen Samen in deinem Inventar. Desktop: Stehe nah bei einem braunen Feld und drücke LEERTASTE zum Pflanzen. Mobile: Stehe nah bei einem Feld und tippe den grünen Pflanzen-Button. Pflanze jetzt einen Samen!",
+        "hints": [
+          "Du kannst nur auf braunen (freigeschalteten) Feldern pflanzen",
+          "Samen werden automatisch aus deinem Inventar verwendet",
+          "Verschiedene Pflanzen haben unterschiedliche Wachstumszeiten"
+        ]
+      },
+      "plant_growth": {
+        "title": "Pflanzenwachstum beobachten",
+        "description": "Pflanzen wachsen automatisch im Laufe der Zeit durch 3 Stufen: Sämling, wachsend und reif. Du kannst das Wachstum beschleunigen, indem du sie gießt! Beobachte deine gepflanzte Pflanze, während sie wächst. Reife Pflanzen haben einen goldenen Glanz.",
+        "hints": [
+          "Sämlinge sind kleine grüne Triebe",
+          "Wachsende Pflanzen sind größer und detaillierter",
+          "Reife Pflanzen glänzen golden und sind bereit zur Ernte"
+        ]
+      },
+      "watering_plants": {
+        "title": "Pflanzen gießen",
+        "description": "Das Gießen deiner Pflanzen lässt sie schneller wachsen! Desktop: Stehe nah bei einer Pflanze und drücke E zum Gießen. Mobile: Verwende den blauen Gießen-Button. Gieße jetzt deine Pflanze und beobachte, wie sie schneller wächst!",
+        "hints": [
+          "Gegossene Pflanzen wachsen etwa doppelt so schnell",
+          "Du kannst jede Pflanze einmal pro Wachstumsstufe gießen",
+          "Gießen kostet keine Ressourcen - es ist kostenlos!"
+        ]
+      },
+      "harvesting": {
+        "title": "Pflanzen ernten",
+        "description": "Wenn Pflanzen vollständig gewachsen sind, kannst du sie ernten! Desktop: Drücke LEERTASTE nah bei reifen Pflanzen. Mobile: Tippe den grünen Button nah bei reifen Pflanzen.",
+        "hints": [
+          "Reife Pflanzen haben einen goldenen Glanz",
+          "Erntegut geht in dein Inventar",
+          "Du kannst Erntegut am Marktplatz verkaufen"
+        ]
+      },
+      "inventory_management": {
+        "title": "Dein Inventar verwalten",
+        "description": "Großartig! Du hast deine erste Ernte eingefahren. Überprüfe dein Inventar, um zu sehen, was du gesammelt hast. Das Inventar zeigt all deine Gegenstände organisiert nach Kategorien.",
+        "hints": [
+          "Inventar ist in Kategorien unterteilt: Erntegut, Ausrüstung und Tierprodukte",
+          "Zahlen zeigen, wie viele von jedem Gegenstand du hast",
+          "Gegenstände werden automatisch nach Typ sortiert"
+        ]
+      },
+      "marketplace_intro": {
+        "title": "Der Marktplatz",
+        "description": "Der Marktplatz ist, wo du Samen und Ausrüstung kaufst und deine Erntegüter für Münzen verkaufst. Preise ändern sich täglich basierend auf Angebot und Nachfrage. Nutze ihn weise!",
+        "hints": [
+          "Preise schwanken basierend auf Marktbedingungen",
+          "Erntegut verkaufen ist der Hauptweg, Münzen zu verdienen",
+          "Verwende Münzen, um Samen, Ausrüstung zu kaufen und Felder freizuschalten"
+        ]
+      },
+      "managing_inventory": {
+        "title": "Dein Inventar verwalten",
+        "description": "Dein Inventar zeigt all dein Erntegut, deine Samen und Ausrüstung. Desktop: Überprüfe das Inventar-Panel links. Mobile: Tippe den Inventar-Button im unteren Menü.",
+        "hints": [
+          "Samen werden zum Pflanzen benötigt",
+          "Erntegut kann für Münzen verkauft werden",
+          "Ausrüstung hilft bei der Automatisierung deines Hofs"
+        ]
+      },
+      "using_marketplace": {
+        "title": "Den Marktplatz nutzen",
+        "description": "Der Marktplatz ist, wo du Erntegut verkaufen und neue Samen kaufen kannst. Desktop: Klicke das Marktplatz-Panel oder drücke M. Mobile: Tippe den Marktplatz-Button. Öffne jetzt den Marktplatz!",
+        "hints": [
+          "Preise ändern sich basierend auf Angebot und Nachfrage",
+          "Verkaufe dein Erntegut, wenn die Preise hoch sind",
+          "Kaufe verschiedene Samenarten für Vielfalt"
+        ]
+      },
+      "selling_crops": {
+        "title": "Erntegut verkaufen",
+        "description": "Zeit, dein hart erarbeitetes Erntegut zu verkaufen! Im Marktplatz klicke auf Erntegut in deinem Inventar, dann klicke \"Verkaufen\". Der Preis wird in Münzen angezeigt. Verkaufe etwas Erntegut jetzt!",
+        "hints": [
+          "Überprüfe die Preise, bevor du verkaufst",
+          "Du kannst auswählen, wie viel du verkaufen möchtest",
+          "Münzen werden deinem Guthaben hinzugefügt"
+        ]
+      },
+      "buying_seeds": {
+        "title": "Neue Samen kaufen",
+        "description": "Mit deinen Münzen kannst du neue Samenarten kaufen! Im Marktplatz browze die verfügbaren Samen und klicke \"Kaufen\". Verschiedene Pflanzen haben unterschiedliche Kosten und Erträge. Kaufe einige neue Samen!",
+        "hints": [
+          "Teurere Samen bringen normalerweise höhere Erträge",
+          "Diversifiziere deine Pflanzen für stabile Einkommen",
+          "Einige Samen können nur in bestimmten Jahreszeiten wachsen"
+        ]
+      },
+      "changing_plant_types": {
+        "title": "Verschiedene Pflanzenarten anbauen",
+        "description": "Jetzt hast du verschiedene Samenarten! Beim Pflanzen wird automatisch der erste verfügbare Samentyp aus deinem Inventar verwendet. Pflanze verschiedene Arten auf verschiedenen Feldern. Experimentiere mit verschiedenen Pflanzen!",
+        "hints": [
+          "Verschiedene Pflanzen haben unterschiedliche Wachstumszeiten",
+          "Einige Pflanzen sind profitabler als andere",
+          "Diversifizierung hilft beim Risikomanagement"
+        ]
+      },
+      "unlocking_plots": {
+        "title": "Neue Felder freischalten",
+        "description": "Erweitere deinen Hof, indem du neue Felder freischaltest! Gehe nah an ein graues (gesperrtes) Feld heran und drücke LEERTASTE zum Kaufen. Es kostet Münzen, aber gibt dir mehr Platz zum Anbauen. Schalte ein neues Feld frei!",
+        "hints": [
+          "Feld-Kosten steigen mit der Entfernung vom Zentrum",
+          "Mehr Felder bedeuten mehr potenzielle Erträge",
+          "Plane dein Feld-Layout für Effizienz"
+        ]
+      },
+      "objectives_system": {
+        "title": "Ziele und Quests verstehen",
+        "description": "Das Spiel hat ein Zielsystem, das dir Aufgaben zum Erfüllen gibt! Desktop: Überprüfe das Ziele-Panel rechts. Mobile: Tippe den Ziele-Button. Ziele geben Belohnungen wenn abgeschlossen. Überprüfe deine aktuellen Ziele!",
+        "hints": [
+          "Ziele leiten deinen Fortschritt",
+          "Abgeschlossene Ziele geben Münzen und Erfahrung",
+          "Neue Ziele werden freigeschaltet, während du fortschreitest"
+        ]
+      },
+      "day_night_cycle": {
+        "title": "Tag/Nacht-Zyklus",
+        "description": "Das Spiel hat einen Tag/Nacht-Zyklus, der das Gameplay beeinflusst! Beobachte, wie sich die Beleuchtung und Atmosphäre ändert. Pflanzen wachsen sowohl tag als auch nachts, aber die visuelle Erfahrung ändert sich. Beobachte den Himmel für Änderungen!",
+        "hints": [
+          "Der Zyklus läuft automatisch ab",
+          "Tageszeit beeinflusst die Spielatmosphäre",
+          "Zukünftige Updates könnten zeitbasierte Funktionen hinzufügen"
+        ]
+      },
+      "weather_system": {
+        "title": "Wettersystem verstehen",
+        "description": "Das Spiel enthält ein Wettersystem, das sich auf deine Pflanzen auswirken kann! Verschiedene Wetterbedingungen können das Pflanzenwachstum beeinflussen. Achte auf Wetteränderungen und passe deine Strategie entsprechend an.",
+        "hints": [
+          "Regen kann das Pflanzenwachstum beschleunigen",
+          "Verschiedene Pflanzen reagieren unterschiedlich auf Wetter",
+          "Wetter ist Teil der Spielstrategie"
+        ]
+      },
+      "seasons_system": {
+        "title": "Jahreszeitensystem",
+        "description": "Das Spiel hat ein Jahreszeitensystem! Verschiedene Jahreszeiten können verschiedene Pflanzenarten und Wachstumsbedingungen haben. Plane deine Anpflanzung entsprechend der aktuellen Jahreszeit für optimale Erträge.",
+        "hints": [
+          "Jahreszeiten ändern sich automatisch",
+          "Einige Pflanzen sind jahreszeitenspezifisch",
+          "Plane im Voraus für Jahreszeitenwechsel"
+        ]
+      },
+      "animals_intro": {
+        "title": "Tiere einführen",
+        "description": "Zusätzlich zu Pflanzen kannst du auch Tiere auf deinem Hof haben! Tiere können Ressourcen wie Milch, Eier oder Wolle produzieren. Sie benötigen Pflege und Futter, bieten aber passive Einkommen.",
+        "hints": [
+          "Tiere benötigen regelmäßige Pflege",
+          "Sie produzieren wertvolle Ressourcen",
+          "Verschiedene Tiere haben verschiedene Anforderungen"
+        ]
+      },
+      "daily_quests": {
+        "title": "Tägliche Quests",
+        "description": "Das Spiel bietet tägliche Quests für zusätzliche Belohnungen! Diese erneuern sich jeden Tag und bieten neue Herausforderungen. Tägliche Quests sind eine großartige Möglichkeit, zusätzliche Münzen und Erfahrung zu verdienen.",
+        "hints": [
+          "Tägliche Quests erneuern sich um Mitternacht",
+          "Sie bieten bonus Belohnungen",
+          "Versuche alle täglichen Quests zu erfüllen"
+        ]
+      },
+      "equipment_intro": {
+        "title": "Ausrüstung und Werkzeuge",
+        "description": "Während du fortschreitest, kannst du Ausrüstung freischalten, die deine Effizienz steigert! Werkzeuge können Aufgaben automatisieren, deine Geschwindigkeit erhöhen oder bessere Erträge bieten. Investiere in Ausrüstung für langfristigen Erfolg.",
+        "hints": [
+          "Ausrüstung kann gekauft oder freigeschaltet werden",
+          "Verschiedene Werkzeuge haben verschiedene Vorteile",
+          "Rüstung verbessert deine Gesamteffizienz"
+        ]
+      },
+      "game_menu": {
+        "title": "Spielmenü erkunden",
+        "description": "Das Spielmenü bietet Zugang zu verschiedenen Funktionen! Du kannst Einstellungen ändern, den Tutorial-Fortschritt überprüfen, die Sprache wechseln und mehr. Desktop: Drücke ESC oder klicke das Menü. Mobile: Tippe den Menü-Button.",
+        "hints": [
+          "Das Menü pausiert das Spiel",
+          "Du kannst Einstellungen hier anpassen",
+          "Sprachoptionen sind verfügbar"
+        ]
+      },
+      "mobile_controls": {
+        "title": "Mobile Steuerung meistern",
+        "description": "Wenn du auf einem mobilen Gerät spielst, gibt es spezielle Touch-Steuerung! Der virtuelle Joystick, Aktions-Buttons und Touch-Gesten machen das Spielen auf Tablets und Telefonen einfach. Erkunde alle Touch-Steuerungen!",
+        "hints": [
+          "Der Joystick ist in der unteren linken Ecke",
+          "Aktions-Buttons sind in der unteren rechten Ecke",
+          "Kneif-Gesten steuern Zoom"
+        ]
+      },
+      "tutorial_complete": {
+        "title": "Tutorial abgeschlossen!",
+        "description": "Herzlichen Glückwunsch! Du hast alle grundlegenden Mechaniken von Pixel-Harvest gemeistert! Du weißt jetzt, wie man pflanzt, erntet, handelt und deinen Hof erweitert. Dein Landwirtschaftsabenteuer hat gerade erst begonnen!",
+        "hints": [
+          "Denke daran: Du kannst dieses Tutorial jederzeit über das Spielmenü neu starten",
+          "Experimentiere mit verschiedenen Pflanzen und Strategien",
+          "Hab Spaß und genieße dein Landwirtschaftsabenteuer!"
+        ]
+      }
+    }
+  },
+  "game": {
+    "plants": {
+      "carrot": "Karotte",
+      "tomato": "Tomate",
+      "wheat": "Weizen",
+      "corn": "Mais",
+      "potato": "Kartoffel",
+      "lettuce": "Salat",
+      "cabbage": "Kohl",
+      "onion": "Zwiebel",
+      "apple": "Apfel",
+      "pumpkin": "Kürbis",
+      "watermelon": "Wassermelone",
+      "rare": "Seltene Pflanze"
+    },
+    "animals": {
+      "cow": "Kuh",
+      "chicken": "Huhn",
+      "sheep": "Schaf",
+      "pig": "Schwein",
+      "goat": "Ziege",
+      "duck": "Ente"
+    },
+    "equipment": {
+      "shovel": "Schaufel",
+      "watering_can": "Gießkanne",
+      "plow": "Pflug",
+      "harvester": "Ernter",
+      "tractor": "Traktor",
+      "irrigation": "Bewässerung",
+      "sprinkler": "Auto-Sprinkler",
+      "fertilizer": "Dünger",
+      "greenhouse": "Mini-Gewächshaus"
+    },
+    "weather": {
+      "sunny": "Sonnig",
+      "rainy": "Regnerisch",
+      "cloudy": "Bewölkt",
+      "stormy": "Stürmisch",
+      "foggy": "Neblig",
+      "snowy": "Schneeig"
+    },
+    "seasons": {
+      "spring": "Frühling",
+      "summer": "Sommer",
+      "autumn": "Herbst",
+      "winter": "Winter"
+    },
+    "objectives": {
+      "plant_crops": "Pflanze {count} Pflanzen",
+      "harvest_crops": "Ernte {count} {crop}",
+      "earn_coins": "Verdiene {amount} Münzen",
+      "plant_seeds": "Pflanze {count} Samen",
+      "unlock_plots": "Schalte {count} Felder frei",
+      "buy_equipment": "Kaufe Ausrüstung",
+      "complete_daily": "Erfülle tägliche Quest",
+      "survive_cycles": "Überstehe {count} Tag/Nacht-Zyklen",
+      "total_plants": "Ernte {count} Pflanzen insgesamt"
+    },
+    "marketplace": {
+      "sell": "Verkaufen",
+      "buy": "Kaufen",
+      "seeds": "Samen",
+      "equipment": "Ausrüstung",
+      "animalProducts": "Tierprodukte"
+    }
+  },
+  "messages": {
+    "errors": {
+      "save_failed": "Speichern fehlgeschlagen",
+      "load_failed": "Laden fehlgeschlagen",
+      "network_error": "Netzwerkfehler",
+      "invalid_action": "Ungültige Aktion",
+      "insufficient_funds": "Unzureichende Mittel",
+      "plot_occupied": "Feld belegt",
+      "no_seeds": "Keine Samen verfügbar",
+      "notEnoughCoins": "Nicht genug Münzen!",
+      "notEnoughSeeds": "Nicht genug Samen!",
+      "plotNotUnlocked": "Feld nicht freigeschaltet!",
+      "invalidAction": "Ungültige Aktion!",
+      "saveError": "Fehler beim Speichern des Spielfortschritts"
+    },
+    "success": {
+      "game_saved": "Spiel gespeichert",
+      "crop_planted": "Pflanze gepflanzt",
+      "crop_harvested": "Pflanze geerntet",
+      "item_purchased": "Gegenstand gekauft",
+      "plot_unlocked": "Feld freigeschaltet",
+      "objective_completed": "Ziel erfüllt",
+      "planted": "{plant} gepflanzt!",
+      "harvested": "{plant} geerntet!",
+      "watered": "Pflanzen gegossen!",
+      "sold": "{item} verkauft!",
+      "bought": "{item} gekauft!",
+      "unlocked": "Feld freigeschaltet!",
+      "gameSaved": "Spielfortschritt gespeichert!"
+    },
+    "info": {
+      "season_changed": "Jahreszeit gewechselt zu {season}",
+      "weather_changed": "Wetter gewechselt zu {weather}",
+      "level_up": "Level aufgestiegen! Neues Level: {level}",
+      "daily_quest_available": "Neue tägliche Quest verfügbar",
+      "tutorial_available": "Tutorial verfügbar",
+      "dayStart": "Ein neuer Tag beginnt!",
+      "nightStart": "Die Nacht bricht über die Farm herein...",
+      "seasonChange": "Jahreszeit gewechselt zu {season}!",
+      "weatherChange": "Wetter gewechselt zu {weather}!"
+    }
+  }
+}

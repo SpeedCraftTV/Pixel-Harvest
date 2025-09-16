@@ -16,7 +16,7 @@ class InternationalizationSystem {
         // Configuration
         this.config = {
             translationsPath: './data/localization/',
-            supportedLanguages: ['en', 'fr', 'es'],
+            supportedLanguages: ['en', 'fr', 'es', 'de', 'it', 'pt'],
             autoDetectBrowser: true,
             persistLanguage: true,
             enableFallback: true,
