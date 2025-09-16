@@ -436,7 +436,7 @@
         // Game state
         let canvas, ctx;
         let score = 0;
-        let coins = 10;
+        let coins = 50; // Balanced starting amount
         let dayNightCycle = 0;
         let dayNightCycleCount = 0;
         
@@ -849,18 +849,33 @@
             windSource.connect(windGain);
             windGain.connect(audioContext.destination);
             
-            // Start the wind
-            if (audioContext.state === 'suspended') {
-                // Audio context needs user interaction to start
-                document.addEventListener('click', () => {
+            // Start the wind with proper audio context handling
+            const startAudio = () => {
+                if (audioContext.state === 'suspended') {
                     audioContext.resume().then(() => {
+                        try {
+                            windSource.start();
+                            lfo.start();
+                        } catch (e) {
+                            console.log('Audio already started', e);
+                        }
+                    });
+                } else {
+                    try {
                         windSource.start();
                         lfo.start();
-                    });
-                }, { once: true });
+                    } catch (e) {
+                        console.log('Audio already started', e);
+                    }
+                }
+            };
+            
+            // Try to start immediately, or wait for user interaction
+            if (audioContext.state === 'running') {
+                startAudio();
             } else {
-                windSource.start();
-                lfo.start();
+                document.addEventListener('click', startAudio, { once: true });
+                document.addEventListener('keydown', startAudio, { once: true });
             }
         }
         
@@ -910,66 +925,70 @@
         function playActionSound(action) {
             if (!audioContext) return;
             
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            switch (action) {
-                case 'plant':
-                    oscillator.frequency.value = 400;
-                    oscillator.type = 'triangle';
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                    oscillator.stop(audioContext.currentTime + 0.2);
-                    break;
-                    
-                case 'harvest':
-                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
-                    oscillator.frequency.linearRampToValueAtTime(800, audioContext.currentTime + 0.1);
-                    oscillator.type = 'sawtooth';
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                    break;
-                    
-                case 'water':
-                    // Water splash sound
-                    const whiteNoise = audioContext.createBufferSource();
-                    const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.3, audioContext.sampleRate);
-                    const data = buffer.getChannelData(0);
-                    for (let i = 0; i < buffer.length; i++) {
-                        data[i] = Math.random() * 2 - 1;
-                    }
-                    whiteNoise.buffer = buffer;
-                    
-                    const filter = audioContext.createBiquadFilter();
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 1000;
-                    
-                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    
-                    whiteNoise.connect(filter);
-                    filter.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    whiteNoise.start(audioContext.currentTime);
-                    whiteNoise.stop(audioContext.currentTime + 0.3);
-                    return; // Don't use oscillator for water sound
-                    
-                case 'unlock':
-                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.1);
-                    oscillator.frequency.exponentialRampToValueAtTime(900, audioContext.currentTime + 0.2);
-                    oscillator.type = 'square';
-                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-                    oscillator.stop(audioContext.currentTime + 0.4);
-                    break;
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                switch (action) {
+                    case 'plant':
+                        oscillator.frequency.value = 400;
+                        oscillator.type = 'triangle';
+                        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                        oscillator.stop(audioContext.currentTime + 0.2);
+                        break;
+                        
+                    case 'harvest':
+                        oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+                        oscillator.frequency.linearRampToValueAtTime(800, audioContext.currentTime + 0.1);
+                        oscillator.type = 'sawtooth';
+                        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                        oscillator.stop(audioContext.currentTime + 0.3);
+                        break;
+                        
+                    case 'water':
+                        // Water splash sound
+                        const whiteNoise = audioContext.createBufferSource();
+                        const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.3, audioContext.sampleRate);
+                        const data = buffer.getChannelData(0);
+                        for (let i = 0; i < buffer.length; i++) {
+                            data[i] = Math.random() * 2 - 1;
+                        }
+                        whiteNoise.buffer = buffer;
+                        
+                        const filter = audioContext.createBiquadFilter();
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 1000;
+                        
+                        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                        
+                        whiteNoise.connect(filter);
+                        filter.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        whiteNoise.start(audioContext.currentTime);
+                        whiteNoise.stop(audioContext.currentTime + 0.3);
+                        return; // Don't use oscillator for water sound
+                        
+                    case 'unlock':
+                        oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.1);
+                        oscillator.frequency.exponentialRampToValueAtTime(900, audioContext.currentTime + 0.2);
+                        oscillator.type = 'square';
+                        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                        oscillator.stop(audioContext.currentTime + 0.4);
+                        break;
+                }
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                oscillator.start(audioContext.currentTime);
+            } catch (e) {
+                console.log('Audio playback error:', e);
             }
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            oscillator.start(audioContext.currentTime);
         }
         
         function createPlots() {
@@ -1749,15 +1768,18 @@
                 equipment[itemType]++;
                 objectives.equipmentBought++;
                 
-                // Special handling for sprinklers
+                // Special handling for different equipment
                 if (itemType === 'sprinkler') {
                     // Player needs to place the sprinkler
                     selectedEquipment = 'sprinkler';
-                    // Update cursor or show placement mode
                     canvas.style.cursor = 'crosshair';
-                    
-                    // Show placement instruction
                     showInstruction('Click on a plot to place the Auto Sprinkler!', 3000);
+                } else if (itemType === 'fertilizer') {
+                    // Fertilizer is applied automatically to all plants
+                    showInstruction('Fertilizer pack applied! All plants grow 20% faster.', 2000);
+                } else if (itemType === 'greenhouse') {
+                    // Greenhouse provides passive benefits
+                    showInstruction('Mini Greenhouse built! Plants grow better day and night.', 2000);
                 }
                 
                 updateUI();
