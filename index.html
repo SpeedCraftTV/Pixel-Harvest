@@ -92,7 +92,25 @@
             background: rgba(0, 0, 0, 0.7);
             padding: 15px;
             border-radius: 10px;
-            min-width: 200px;
+            min-width: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .market-category {
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .market-category:last-child {
+            border-bottom: none;
+        }
+
+        .market-category h3 {
+            margin: 0 0 8px 0;
+            color: #FFD700;
+            font-size: 14px;
         }
 
         .market-btn {
@@ -309,22 +327,46 @@
             <div id="carrotCount">🥕 Carrots: 0</div>
             <div id="tomatoCount">🍅 Tomatoes: 0</div>
             <div id="rareCount">✨ Rare Plants: 0</div>
+            <hr style="margin: 10px 0; border-color: rgba(255,255,255,0.3);">
+            <div style="font-weight: bold; margin-bottom: 5px;">🔧 Equipment:</div>
+            <div id="sprinklerCount">💧 Auto Sprinklers: 0</div>
+            <div id="fertilizerCount">🌿 Fertilizer: 0</div>
+            <div id="greenhouseCount">🏠 Greenhouses: 0</div>
         </div>
         <div id="marketplace" style="display: none;">
             <div style="font-weight: bold; margin-bottom: 10px;">🏪 Marketplace:</div>
-            <button class="market-btn" onclick="sellAll('carrot')">Sell Carrots (1💰)</button><br>
-            <button class="market-btn" onclick="sellAll('tomato')">Sell Tomatoes (3💰)</button><br>
-            <button class="market-btn" onclick="sellAll('rare')">Sell Rare (10💰)</button><br>
-            <hr style="margin: 10px 0;">
-            <button class="market-btn" onclick="buySeeds('carrot', 1)">Buy Carrot Seeds (1💰)</button><br>
-            <button class="market-btn" onclick="buySeeds('tomato', 2)">Buy Tomato Seeds (2💰)</button><br>
-            <button class="market-btn" onclick="buySeeds('rare', 5)">Buy Rare Seeds (5💰)</button>
+            
+            <div class="market-category">
+                <h3>💰 Sell Produce</h3>
+                <button class="market-btn" onclick="sellAll('carrot')">Sell Carrots (1💰)</button><br>
+                <button class="market-btn" onclick="sellAll('tomato')">Sell Tomatoes (3💰)</button><br>
+                <button class="market-btn" onclick="sellAll('rare')">Sell Rare (10💰)</button>
+            </div>
+            
+            <div class="market-category">
+                <h3>🌱 Seeds</h3>
+                <button class="market-btn" onclick="buySeeds('carrot', 1)">Buy Carrot Seeds (1💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('tomato', 2)">Buy Tomato Seeds (2💰)</button><br>
+                <button class="market-btn" onclick="buySeeds('rare', 5)">Buy Rare Seeds (5💰)</button>
+            </div>
+            
+            <div class="market-category">
+                <h3>🔧 Equipment</h3>
+                <button class="market-btn" onclick="buyItem('sprinkler', 150)" id="sprinklerBtn">Auto Sprinkler (150💰)</button><br>
+                <button class="market-btn" onclick="buyItem('fertilizer', 50)" id="fertilizerBtn">Fertilizer Pack (50💰)</button><br>
+                <button class="market-btn" onclick="buyItem('greenhouse', 300)" id="greenhouseBtn">Mini Greenhouse (300💰)</button>
+            </div>
         </div>
         <div id="objectives" style="display: none;">
             <div style="font-weight: bold; margin-bottom: 10px;">🎯 Objectives:</div>
             <div id="objective1" class="objective">🥕 Harvest 5 carrots (0/5)</div>
             <div id="objective2" class="objective">🌙 Survive 2 day/night cycles (0/2)</div>
             <div id="objective3" class="objective">💰 Earn 20 coins (0/20)</div>
+            <div id="objective4" class="objective" style="display: none;">🌾 Harvest 25 total plants (0/25)</div>
+            <div id="objective5" class="objective" style="display: none;">🔧 Buy any equipment (0/1)</div>
+            <div id="objective6" class="objective" style="display: none;">💰 Earn 500 coins (0/500)</div>
+            <div id="objective7" class="objective" style="display: none;">🌱 Plant 50 seeds (0/50)</div>
+            <div id="objective8" class="objective" style="display: none;">🏆 Unlock all plots (0/25)</div>
         </div>
         <div id="dayNightIndicator" style="display: none;">
             <div id="timeDisplay">Day</div>
@@ -397,6 +439,19 @@
         let coins = 10;
         let dayNightCycle = 0;
         let dayNightCycleCount = 0;
+        
+        // Audio system
+        let audioContext;
+        let sounds = {
+            plant: null,
+            harvest: null,
+            water: null,
+            unlock: null,
+            wind: null,
+            birds: null
+        };
+        let windGain, windOscillator;
+        let lastBirdSound = 0;
         let cameraAngleX = 0;
         let cameraAngleY = 0;
         let cameraDistance = 10;
@@ -405,6 +460,7 @@
         let lastMouseY = 0;
         let hoveredPlot = null;
         let selectedPlantType = 'carrot';
+        let selectedEquipment = null;
         let cameraFollowCharacter = true;
         let freeCameraMode = false;
         
@@ -458,10 +514,20 @@
             tomato: 2,
             rare: 1
         };
+        let equipment = {
+            sprinkler: 0,
+            fertilizer: 0,
+            greenhouse: 0
+        };
+        let activeSprinklers = []; // Array of sprinkler positions
         let objectives = {
             carrotsHarvested: 0,
             dayNightCycles: 0,
-            coinsEarned: 0
+            coinsEarned: 0,
+            plantsHarvested: 0,
+            equipmentBought: 0,
+            seedsPlanted: 0,
+            plotsUnlocked: 9 // Start with 9 plots unlocked (3x3 center)
         };
         
         // Plant types configuration
@@ -694,6 +760,9 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             
+            // Initialize audio
+            initAudio();
+            
             // Load saved controls
             loadSavedControls();
             
@@ -725,6 +794,182 @@
             
             // Start game loop
             animate();
+        }
+        
+        // Audio system functions
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Initialize wind ambience
+                initWindAmbience();
+                
+                // Schedule bird sounds
+                scheduleBirdSounds();
+                
+            } catch (e) {
+                console.log('Web Audio API not supported', e);
+            }
+        }
+        
+        function initWindAmbience() {
+            if (!audioContext) return;
+            
+            // Create wind sound using brown noise
+            const bufferSize = audioContext.sampleRate * 2; // 2 seconds
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            let lastOut = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                data[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = data[i];
+                data[i] *= 0.1; // Lower volume
+            }
+            
+            const windSource = audioContext.createBufferSource();
+            windSource.buffer = buffer;
+            windSource.loop = true;
+            
+            windGain = audioContext.createGain();
+            windGain.gain.value = 0.1;
+            
+            // Create an irregular wind pattern
+            const lfo = audioContext.createOscillator();
+            lfo.frequency.value = 0.3; // Very slow modulation
+            lfo.type = 'sine';
+            
+            const lfoGain = audioContext.createGain();
+            lfoGain.gain.value = 0.05;
+            
+            lfo.connect(lfoGain);
+            lfoGain.connect(windGain.gain);
+            
+            windSource.connect(windGain);
+            windGain.connect(audioContext.destination);
+            
+            // Start the wind
+            if (audioContext.state === 'suspended') {
+                // Audio context needs user interaction to start
+                document.addEventListener('click', () => {
+                    audioContext.resume().then(() => {
+                        windSource.start();
+                        lfo.start();
+                    });
+                }, { once: true });
+            } else {
+                windSource.start();
+                lfo.start();
+            }
+        }
+        
+        function scheduleBirdSounds() {
+            if (!audioContext) return;
+            
+            const playBirdSound = () => {
+                if (Date.now() - lastBirdSound > 15000) { // At least 15 seconds between bird sounds
+                    createBirdSound();
+                    lastBirdSound = Date.now();
+                }
+                
+                // Schedule next bird sound randomly between 20-60 seconds
+                const nextDelay = 20000 + Math.random() * 40000;
+                setTimeout(playBirdSound, nextDelay);
+            };
+            
+            // Start first bird sound after 10 seconds
+            setTimeout(playBirdSound, 10000);
+        }
+        
+        function createBirdSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            // Random bird chirp frequency
+            const baseFreq = 800 + Math.random() * 1200;
+            oscillator.frequency.setValueAtTime(baseFreq, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, audioContext.currentTime + 0.1);
+            oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 0.8, audioContext.currentTime + 0.2);
+            
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.05);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+        
+        function playActionSound(action) {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            switch (action) {
+                case 'plant':
+                    oscillator.frequency.value = 400;
+                    oscillator.type = 'triangle';
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                    break;
+                    
+                case 'harvest':
+                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+                    oscillator.frequency.linearRampToValueAtTime(800, audioContext.currentTime + 0.1);
+                    oscillator.type = 'sawtooth';
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+                    
+                case 'water':
+                    // Water splash sound
+                    const whiteNoise = audioContext.createBufferSource();
+                    const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.3, audioContext.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < buffer.length; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    whiteNoise.buffer = buffer;
+                    
+                    const filter = audioContext.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 1000;
+                    
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    whiteNoise.connect(filter);
+                    filter.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    whiteNoise.start(audioContext.currentTime);
+                    whiteNoise.stop(audioContext.currentTime + 0.3);
+                    return; // Don't use oscillator for water sound
+                    
+                case 'unlock':
+                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.1);
+                    oscillator.frequency.exponentialRampToValueAtTime(900, audioContext.currentTime + 0.2);
+                    oscillator.type = 'square';
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                    oscillator.stop(audioContext.currentTime + 0.4);
+                    break;
+            }
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start(audioContext.currentTime);
         }
         
         function createPlots() {
@@ -1120,6 +1365,9 @@
                 plot.waterLevel = Math.min(1.0, plot.waterLevel + 0.5);
                 plot.lastWatered = Date.now();
                 
+                // Play water sound
+                playActionSound('water');
+                
                 // Revive withered plants when watered
                 if (plot.stage === PLANT_STAGES.WITHERING && plot.waterLevel > 0.3) {
                     // Determine what stage the plant should return to based on its growth timer
@@ -1175,6 +1423,28 @@
         }
         
         function handlePlotClick(plot) {
+            // Handle equipment placement
+            if (selectedEquipment === 'sprinkler' && plot.unlocked) {
+                // Check if there's already a sprinkler here
+                const existingSprinkler = activeSprinklers.find(s => s.x === plot.x && s.z === plot.z);
+                if (!existingSprinkler) {
+                    activeSprinklers.push({
+                        x: plot.x,
+                        y: plot.y + 1,
+                        z: plot.z,
+                        range: 6 // Affects plots within 6 units
+                    });
+                    
+                    equipment.sprinkler--; // Remove from inventory
+                    selectedEquipment = null;
+                    canvas.style.cursor = 'crosshair';
+                    
+                    showInstruction('Auto Sprinkler placed! It will water nearby plants automatically.', 2000);
+                    updateUI();
+                }
+                return;
+            }
+            
             if (!plot.unlocked) {
                 // Try to unlock the plot
                 if (coins >= plot.unlockCost) {
@@ -1207,6 +1477,7 @@
             
             const plantConfig = PLANT_TYPES[plantType];
             seedInventory[plantType]--;
+            objectives.seedsPlanted++;
             
             plot.stage = PLANT_STAGES.PLANTED;
             plot.plantType = plantType;
@@ -1219,7 +1490,11 @@
                 baseColor: plantConfig.color
             };
             
+            // Play plant sound
+            playActionSound('plant');
+            
             updateUI();
+            updateObjectives();
         }
         
         function growPlant(plot) {
@@ -1257,6 +1532,7 @@
             if (plantType === 'carrot') {
                 objectives.carrotsHarvested++;
             }
+            objectives.plantsHarvested++;
             
             // Reset plot
             plot.stage = PLANT_STAGES.EMPTY;
@@ -1264,6 +1540,9 @@
             plot.plantType = null;
             plot.growthTimer = 0;
             plot.waterLevel = 1.0;
+            
+            // Play harvest sound
+            playActionSound('harvest');
             
             // Create harvest effect with animation
             createHarvestEffect(plot);
@@ -1353,6 +1632,11 @@
             document.getElementById('tomatoCount').textContent = `🍅 Tomatoes: ${inventory.tomato}`;
             document.getElementById('rareCount').textContent = `✨ Rare Plants: ${inventory.rare}`;
             
+            // Update equipment inventory
+            document.getElementById('sprinklerCount').textContent = `💧 Auto Sprinklers: ${equipment.sprinkler}`;
+            document.getElementById('fertilizerCount').textContent = `🌿 Fertilizer: ${equipment.fertilizer}`;
+            document.getElementById('greenhouseCount').textContent = `🏠 Greenhouses: ${equipment.greenhouse}`;
+            
             // Update plant buttons availability
             document.querySelectorAll('.plant-btn').forEach(btn => {
                 const plantType = btn.dataset.plant;
@@ -1364,6 +1648,24 @@
                 const plantConfig = PLANT_TYPES[plantType];
                 btn.textContent = `${plantConfig.emoji} ${plantConfig.name} (${seedInventory[plantType]})`;
             });
+            
+            // Update equipment buttons availability
+            const sprinklerBtn = document.getElementById('sprinklerBtn');
+            const fertilizerBtn = document.getElementById('fertilizerBtn');
+            const greenhouseBtn = document.getElementById('greenhouseBtn');
+            
+            if (sprinklerBtn) {
+                sprinklerBtn.disabled = coins < 150;
+                sprinklerBtn.style.opacity = coins >= 150 ? '1' : '0.5';
+            }
+            if (fertilizerBtn) {
+                fertilizerBtn.disabled = coins < 50;
+                fertilizerBtn.style.opacity = coins >= 50 ? '1' : '0.5';
+            }
+            if (greenhouseBtn) {
+                greenhouseBtn.disabled = coins < 300;
+                greenhouseBtn.style.opacity = coins >= 300 ? '1' : '0.5';
+            }
         }
         
         function updateObjectives() {
@@ -1374,16 +1676,46 @@
                 `🌙 Survive 2 day/night cycles (${Math.min(objectives.dayNightCycles, 2)}/2)`;
             document.getElementById('objective3').textContent = 
                 `💰 Earn 20 coins (${Math.min(coins, 20)}/20)`;
+            document.getElementById('objective4').textContent = 
+                `🌾 Harvest 25 total plants (${Math.min(objectives.plantsHarvested, 25)}/25)`;
+            document.getElementById('objective5').textContent = 
+                `🔧 Buy any equipment (${Math.min(objectives.equipmentBought, 1)}/1)`;
+            document.getElementById('objective6').textContent = 
+                `💰 Earn 500 coins (${Math.min(coins, 500)}/500)`;
+            document.getElementById('objective7').textContent = 
+                `🌱 Plant 50 seeds (${Math.min(objectives.seedsPlanted, 50)}/50)`;
+            document.getElementById('objective8').textContent = 
+                `🏆 Unlock all plots (${Math.min(objectives.plotsUnlocked, 25)}/25)`;
                 
-            // Check for completed objectives
-            if (objectives.carrotsHarvested >= 5) {
+            // Check for completed objectives and show new ones
+            if (objectives.carrotsHarvested >= 5 && objectives.dayNightCycles >= 2 && coins >= 20) {
                 document.getElementById('objective1').style.color = '#4CAF50';
-            }
-            if (objectives.dayNightCycles >= 2) {
                 document.getElementById('objective2').style.color = '#4CAF50';
-            }
-            if (coins >= 20) {
                 document.getElementById('objective3').style.color = '#4CAF50';
+                
+                // Show next tier objectives
+                document.getElementById('objective4').style.display = 'block';
+                document.getElementById('objective5').style.display = 'block';
+            }
+            
+            if (objectives.plantsHarvested >= 25 && objectives.equipmentBought >= 1) {
+                document.getElementById('objective4').style.color = '#4CAF50';
+                document.getElementById('objective5').style.color = '#4CAF50';
+                
+                // Show final tier objectives
+                document.getElementById('objective6').style.display = 'block';
+                document.getElementById('objective7').style.display = 'block';
+                document.getElementById('objective8').style.display = 'block';
+            }
+            
+            if (coins >= 500) {
+                document.getElementById('objective6').style.color = '#4CAF50';
+            }
+            if (objectives.seedsPlanted >= 50) {
+                document.getElementById('objective7').style.color = '#4CAF50';
+            }
+            if (objectives.plotsUnlocked >= 25) {
+                document.getElementById('objective8').style.color = '#4CAF50';
             }
         }
         
@@ -1409,6 +1741,51 @@
                 seedInventory[plantType] += 5; // Buy 5 seeds at a time
                 updateUI();
             }
+        }
+        
+        function buyItem(itemType, cost) {
+            if (coins >= cost) {
+                coins -= cost;
+                equipment[itemType]++;
+                objectives.equipmentBought++;
+                
+                // Special handling for sprinklers
+                if (itemType === 'sprinkler') {
+                    // Player needs to place the sprinkler
+                    selectedEquipment = 'sprinkler';
+                    // Update cursor or show placement mode
+                    canvas.style.cursor = 'crosshair';
+                    
+                    // Show placement instruction
+                    showInstruction('Click on a plot to place the Auto Sprinkler!', 3000);
+                }
+                
+                updateUI();
+                updateObjectives();
+            }
+        }
+        
+        function showInstruction(text, duration) {
+            // Create a temporary instruction overlay
+            const instruction = document.createElement('div');
+            instruction.style.position = 'absolute';
+            instruction.style.top = '50%';
+            instruction.style.left = '50%';
+            instruction.style.transform = 'translate(-50%, -50%)';
+            instruction.style.background = 'rgba(0, 0, 0, 0.8)';
+            instruction.style.color = 'white';
+            instruction.style.padding = '15px 25px';
+            instruction.style.borderRadius = '10px';
+            instruction.style.fontSize = '18px';
+            instruction.style.zIndex = '200';
+            instruction.style.border = '2px solid #4CAF50';
+            instruction.textContent = text;
+            
+            document.body.appendChild(instruction);
+            
+            setTimeout(() => {
+                document.body.removeChild(instruction);
+            }, duration);
         }
         
         function updateDayNightCycle() {
@@ -1446,6 +1823,29 @@
             const dayProgress = (Math.sin(dayNightCycle) + 1) / 2;
             const isDay = dayProgress > 0.5;
             
+            // Auto-sprinkler functionality
+            activeSprinklers.forEach(sprinkler => {
+                plots.forEach(plot => {
+                    if (plot.stage !== PLANT_STAGES.EMPTY) {
+                        const distance = Math.sqrt(
+                            Math.pow(plot.x - sprinkler.x, 2) + 
+                            Math.pow(plot.z - sprinkler.z, 2)
+                        );
+                        
+                        if (distance <= sprinkler.range && plot.waterLevel < 0.8) {
+                            // Auto-water every 5 seconds if water level is low
+                            if (currentTime % 5000 < 100) { // Check every 5 seconds
+                                plot.waterLevel = Math.min(1.0, plot.waterLevel + 0.3);
+                                plot.lastWatered = currentTime;
+                                
+                                // Create water effect
+                                createWaterEffect(plot);
+                            }
+                        }
+                    }
+                });
+            });
+            
             plots.forEach(plot => {
                 if (plot.stage !== PLANT_STAGES.EMPTY && plot.stage !== PLANT_STAGES.MATURE) {
                     // Update water level (plants lose water over time)
@@ -1458,6 +1858,17 @@
                     
                     // Calculate growth speed based on conditions
                     let growthMultiplier = 1;
+                    
+                    // Equipment bonuses
+                    if (equipment.fertilizer > 0) {
+                        growthMultiplier *= 1.2; // 20% faster growth with fertilizer
+                    }
+                    
+                    if (equipment.greenhouse > 0) {
+                        growthMultiplier *= 1.1; // 10% faster growth with greenhouse
+                        // Greenhouse also provides weather protection
+                        if (!isDay) growthMultiplier *= 1.2; // Better night growth
+                    }
                     
                     // Day/night preference
                     if (plantConfig.dayPreference === isDay) {
@@ -1585,11 +1996,40 @@
             // Draw character
             drawCharacter();
             
+            // Draw sprinklers
+            drawSprinklers();
+            
             // Add some decorative elements
             drawDecorations();
             
             // Render visual effects
             renderEffects();
+        }
+        
+        function drawSprinklers() {
+            activeSprinklers.forEach(sprinkler => {
+                // Draw sprinkler base
+                drawCube(sprinkler.x, sprinkler.y, sprinkler.z, 1, '#4169E1');
+                
+                // Draw sprinkler head
+                drawCube(sprinkler.x, sprinkler.y + 0.5, sprinkler.z, 0.6, '#87CEEB');
+                
+                // Draw water effect if it's working
+                if (Date.now() % 5000 < 1000) { // Show water effect for 1 second every 5 seconds
+                    ctx.save();
+                    ctx.globalAlpha = 0.3;
+                    
+                    // Draw water spray area
+                    const projected = project3D(sprinkler.x, sprinkler.y + 0.8, sprinkler.z);
+                    const radiusScale = sprinkler.range * 10; // Visual radius on screen
+                    
+                    ctx.beginPath();
+                    ctx.arc(projected.x, projected.y, radiusScale, 0, Math.PI * 2);
+                    ctx.fillStyle = '#87CEEB';
+                    ctx.fill();
+                    ctx.restore();
+                }
+            });
         }
         
         function drawDecorations() {
@@ -1893,7 +2333,13 @@
                     // Unlock plot
                     coins -= closestPlot.unlockCost;
                     closestPlot.unlocked = true;
+                    objectives.plotsUnlocked++;
+                    
+                    // Play unlock sound
+                    playActionSound('unlock');
+                    
                     updateUI();
+                    updateObjectives();
                     character.currentAction = 'planting';
                     character.actionTimer = 1000;
                     
