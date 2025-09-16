@@ -624,16 +624,17 @@
 
         .mobile-joystick {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 25px;
+            left: 25px;
             width: 120px;
             height: 120px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 50%;
             pointer-events: all;
             touch-action: none;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
             transition: all 0.1s ease;
+            backdrop-filter: blur(5px);
         }
 
         .mobile-joystick:active,
@@ -647,13 +648,13 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: all 0.1s ease;
-            border: 2px solid rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(0, 0, 0, 0.2);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
@@ -665,18 +666,18 @@
 
         .mobile-action-buttons {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             pointer-events: all;
             z-index: 201;
         }
 
         .mobile-btn {
-            width: 60px;
-            height: 60px;
+            width: 58px;
+            height: 58px;
             background: rgba(76, 175, 80, 0.9);
             border: none;
             border-radius: 50%;
@@ -689,6 +690,9 @@
             touch-action: manipulation;
             transition: all 0.2s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            min-width: 58px;
+            min-height: 58px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .mobile-btn:active {
@@ -706,19 +710,19 @@
 
         .mobile-camera-controls {
             position: absolute;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: row;
-            gap: 10px;
+            gap: 12px;
             pointer-events: all;
             z-index: 201;
         }
 
         .mobile-camera-btn {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             background: rgba(156, 39, 176, 0.9);
             border: none;
             border-radius: 50%;
@@ -731,6 +735,9 @@
             touch-action: manipulation;
             transition: all 0.2s ease;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            min-width: 48px;
+            min-height: 48px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .mobile-camera-btn:active {
@@ -747,17 +754,18 @@
             z-index: 300;
             background: rgba(0, 0, 0, 0.9);
             border-radius: 25px;
-            padding: 15px;
+            padding: 12px;
             display: none;
             flex-direction: row;
-            gap: 10px;
+            gap: 12px;
             border: 2px solid #4CAF50;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
         }
 
         .mobile-nav-btn {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             background: linear-gradient(135deg, #4CAF50, #45a049);
             border: none;
             border-radius: 50%;
@@ -771,6 +779,8 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             position: relative;
+            min-width: 52px;
+            min-height: 52px;
         }
 
         .mobile-nav-btn:active {
@@ -784,18 +794,21 @@
 
         .mobile-nav-btn .badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -6px;
+            right: -6px;
             background: #FF5722;
             color: white;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
+            width: 22px;
+            height: 22px;
+            font-size: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1;
         }
 
         /* Mobile Panel System */
@@ -828,7 +841,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 15px;
+            padding-bottom: 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -845,15 +858,19 @@
             background: #f44336;
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             touch-action: manipulation;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            min-width: 42px;
+            min-height: 42px;
         }
 
         .mobile-panel-close:active {
@@ -868,26 +885,28 @@
         .mobile-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin: 15px 0;
+            gap: 16px;
+            margin: 16px 0;
+            padding: 0 4px;
         }
 
         .mobile-grid-item {
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(76, 175, 80, 0.3);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
             touch-action: manipulation;
-            min-height: 80px;
+            min-height: 85px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            backdrop-filter: blur(5px);
         }
 
         .mobile-grid-item:hover {
@@ -940,28 +959,87 @@
         /* Responsive Typography */
         @media (max-width: 480px) {
             #mobileNavMenu {
-                bottom: 160px; /* Further adjustment for very small screens */
+                bottom: 160px;
                 padding: 10px;
+                gap: 10px;
             }
 
             .mobile-nav-btn {
-                width: 45px;
-                height: 45px;
+                width: 46px;
+                height: 46px;
                 font-size: 18px;
+                min-width: 46px;
+                min-height: 46px;
+            }
+
+            .mobile-nav-btn .badge {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+                top: -5px;
+                right: -5px;
             }
 
             .mobile-grid {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-                gap: 10px;
+                gap: 12px;
+                margin: 12px 0;
             }
             
             .mobile-grid-item {
-                padding: 10px;
-                min-height: 70px;
+                padding: 12px;
+                min-height: 75px;
             }
             
             .mobile-grid-item .emoji {
                 font-size: 20px;
+            }
+
+            .mobile-joystick {
+                width: 110px;
+                height: 110px;
+                bottom: 20px;
+                left: 20px;
+            }
+
+            .mobile-joystick-handle {
+                width: 38px;
+                height: 38px;
+            }
+
+            .mobile-action-buttons {
+                bottom: 20px;
+                right: 20px;
+                gap: 10px;
+            }
+
+            .mobile-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+                min-width: 52px;
+                min-height: 52px;
+            }
+
+            .mobile-camera-controls {
+                top: 20px;
+                gap: 10px;
+            }
+
+            .mobile-camera-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 16px;
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .mobile-panel-close {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+                min-width: 38px;
+                min-height: 38px;
             }
         }
 
@@ -1021,38 +1099,42 @@
 
             /* Enhanced mobile controls */
             .mobile-joystick {
-                width: 100px;
-                height: 100px;
+                width: 120px;
+                height: 120px;
                 bottom: 25px;
                 left: 25px;
             }
 
             .mobile-joystick-handle {
-                width: 35px;
-                height: 35px;
+                width: 42px;
+                height: 42px;
             }
 
             .mobile-action-buttons {
                 bottom: 25px;
                 right: 25px;
-                gap: 8px;
+                gap: 12px;
             }
 
             .mobile-btn {
-                width: 55px;
-                height: 55px;
-                font-size: 22px;
+                width: 58px;
+                height: 58px;
+                font-size: 24px;
+                min-width: 58px;
+                min-height: 58px;
             }
 
             .mobile-camera-controls {
-                top: 60px;
-                gap: 8px;
+                top: 25px;
+                gap: 12px;
             }
 
             .mobile-camera-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 16px;
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+                min-width: 48px;
+                min-height: 48px;
             }
 
             /* Touch-friendly scrollbars */
@@ -1077,27 +1159,50 @@
 
         @media (max-height: 600px) {
             #mobileControls {
-                height: 120px;
+                height: 130px;
             }
 
             #mobileNavMenu {
-                bottom: 140px; /* Adjusted for shorter screens */
+                bottom: 150px;
             }
 
             .mobile-joystick {
-                width: 100px;
-                height: 100px;
+                width: 110px;
+                height: 110px;
+                bottom: 20px;
+                left: 20px;
             }
 
             .mobile-joystick-handle {
-                width: 35px;
-                height: 35px;
+                width: 38px;
+                height: 38px;
             }
 
             .mobile-btn {
-                width: 50px;
-                height: 50px;
+                width: 52px;
+                height: 52px;
                 font-size: 20px;
+                min-width: 52px;
+                min-height: 52px;
+            }
+
+            .mobile-action-buttons {
+                bottom: 20px;
+                right: 20px;
+                gap: 10px;
+            }
+
+            .mobile-camera-controls {
+                top: 20px;
+                gap: 10px;
+            }
+
+            .mobile-camera-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 16px;
+                min-width: 44px;
+                min-height: 44px;
             }
 
             /* Further reduce panel heights on very short screens */
@@ -1106,7 +1211,7 @@
             }
 
             .mobile-panel {
-                max-height: 50vh; /* Reduced height for small screens */
+                max-height: 50vh;
             }
         }
 
