@@ -991,20 +991,38 @@ class TutorialUI {
             btn.addEventListener('click', async () => {
                 const langCode = btn.dataset.lang;
                 const langName = languages.find(l => l.code === langCode)?.name;
+                const langData = languages.find(l => l.code === langCode);
                 
-                // Remove selection from all buttons
+                // Remove selection from all buttons and restore original content
                 modal.querySelectorAll('.tutorial-language-btn').forEach(b => {
                     b.classList.remove('selected');
                     b.style.background = 'rgba(255,255,255,0.1)';
                     b.style.borderColor = 'rgba(255,255,255,0.2)';
-                    b.querySelector('span:last-child')?.remove();
+                    
+                    // Get the language data for this button to restore original content
+                    const bLangCode = b.dataset.lang;
+                    const bLangData = languages.find(l => l.code === bLangCode);
+                    if (bLangData) {
+                        b.innerHTML = `
+                            <span style="font-size: 24px;">${bLangData.flag}</span>
+                            <span style="flex: 1; text-align: left;">${bLangData.name}</span>
+                        `;
+                    }
                 });
                 
                 // Add selection to clicked button
                 btn.classList.add('selected');
                 btn.style.background = '#4CAF50';
                 btn.style.borderColor = '#4CAF50';
-                btn.innerHTML += '<span style="color: #FFD700;">✓</span>';
+                
+                // Set the content with checkmark for selected button
+                if (langData) {
+                    btn.innerHTML = `
+                        <span style="font-size: 24px;">${langData.flag}</span>
+                        <span style="flex: 1; text-align: left;">${langData.name}</span>
+                        <span style="color: #FFD700;">✓</span>
+                    `;
+                }
                 
                 // Update selected language display
                 const selectedNameSpan = modal.querySelector('#selectedLanguageName');
