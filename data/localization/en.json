@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "language": "en",
+    "name": "English",
+    "flag": "🇺🇸",
+    "code": "en",
+    "completion": 100,
+    "contributors": ["Pixel-Harvest Team"],
+    "lastUpdated": "2024-12-19"
+  },
+  "ui": {
+    "common": {
+      "ok": "OK",
+      "cancel": "Cancel",
+      "save": "Save",
+      "close": "Close",
+      "back": "Back",
+      "next": "Next",
+      "previous": "Previous",
+      "skip": "Skip",
+      "continue": "Continue",
+      "loading": "Loading...",
+      "error": "Error",
+      "success": "Success",
+      "warning": "Warning",
+      "info": "Information"
+    },
+    "game": {
+      "score": "Score",
+      "coins": "Coins",
+      "level": "Level",
+      "experience": "Experience",
+      "inventory": "Inventory",
+      "marketplace": "Marketplace",
+      "objectives": "Objectives",
+      "settings": "Settings"
+    },
+    "menu": {
+      "main": "Main Menu",
+      "tutorial": "Tutorial",
+      "controls": "Controls",
+      "uiMode": "UI Mode",
+      "newGame": "New Game",
+      "language": "Language"
+    },
+    "instructions": {
+      "desktop": "🌱 Move with WASD or arrow keys<br>⚡ SPACE to plant/harvest at closest plot<br>💧 E to water plants<br>📹 C to toggle camera mode<br>🌿 Plants grow automatically (3 stages)<br>🔒 Unlock plots by getting close and pressing SPACE<br>🌙 Watch the day/night cycle!<br>🖱️ Drag to rotate camera view<br>🔍 Scroll wheel to zoom in/out",
+      "mobile": "🕹️ Use virtual joystick to move<br>🌱 Tap green button to plant/harvest<br>💧 Tap blue button to water plants<br>📹 Use camera controls to change view<br>📋 Access panels via bottom menu<br>👆 Touch and drag to rotate camera<br>🤏 Pinch to zoom in/out"
+    }
+  },
+  "tutorial": {
+    "ui": {
+      "welcome": "Welcome",
+      "next": "Next →",
+      "previous": "← Previous",
+      "skip": "Skip Step",
+      "close": "Skip Tutorial",
+      "settings": "Tutorial Settings",
+      "complete": "Complete Tutorial",
+      "restart": "Restart Tutorial",
+      "startPlaying": "🌟 Start Playing!",
+      "stepOf": "Step {current} of {total}",
+      "hints": "Hints",
+      "tutorialComplete": "Tutorial Complete!",
+      "congratulations": "Congratulations!",
+      "progress": "Progress",
+      "menu": "Menu"
+    },
+    "welcome": {
+      "title": "🌱 Welcome to Pixel-Harvest!",
+      "subtitle": "Ready to start your farming adventure?",
+      "description": "This interactive tutorial will teach you everything you need to know!",
+      "learnAbout": "You'll learn how to:",
+      "features": [
+        "🌱 Plant and harvest crops",
+        "💧 Water your plants",
+        "🐄 Manage farm animals",
+        "💰 Buy and sell in the marketplace",
+        "🎯 Complete quests and objectives"
+      ],
+      "startTutorial": "🚀 Start Tutorial",
+      "settings": "⚙️ Settings",
+      "skipTutorial": "⏭️ Skip Tutorial"
+    },
+    "completion": {
+      "title": "🎉 Tutorial Complete!",
+      "subtitle": "Congratulations! You've completed the Pixel-Harvest tutorial!",
+      "rewardsTitle": "🎁 Tutorial Rewards:",
+      "rewards": [
+        "💰 100 Coins",
+        "🥕 10 Carrot Seeds",
+        "🍅 5 Tomato Seeds",
+        "⭐ 50 Experience Points"
+      ],
+      "encouragement": "Now you're ready to build your farming empire! Good luck!",
+      "startPlaying": "🌟 Start Playing!",
+      "restartTutorial": "🔄 Restart Tutorial"
+    },
+    "skipConfirmation": {
+      "title": "⏭️ Skip Tutorial?",
+      "message": "Are you sure you want to skip the tutorial?",
+      "note": "You can always restart it later from the game menu.",
+      "confirmSkip": "✅ Yes, Skip Tutorial",
+      "continueTutorial": "❌ Continue Tutorial"
+    },
+    "settings": {
+      "title": "⚙️ Tutorial Settings",
+      "autoAdvance": "Auto-advance steps (when possible)",
+      "showHints": "Show helpful hints",
+      "highlightElements": "Highlight interactive elements",
+      "pauseGame": "Pause game during tutorial",
+      "saveSettings": "💾 Save Settings",
+      "cancel": "❌ Cancel"
+    },
+    "steps": {
+      "welcome": {
+        "title": "Welcome to Pixel-Harvest!",
+        "description": "Welcome to your new farm! You're about to learn how to grow crops, manage animals, and build a thriving agricultural business. This tutorial will guide you through all the essential game mechanics step by step.",
+        "hints": [
+          "You can skip any step by clicking \"Skip Step\"",
+          "Use keyboard arrows to navigate between steps",
+          "Press ESC to exit the tutorial at any time"
+        ]
+      },
+      "character_movement": {
+        "title": "Moving Your Character",
+        "description": "Let's start by learning how to move around your farm! Desktop: Use ZQSD keys or arrow keys to move. Mobile: Use the virtual joystick in the bottom-left corner. Try moving your character around now. Notice how the camera follows you!",
+        "hints": [
+          "The character position is shown in the top-right corner",
+          "You can drag the mouse to rotate the camera view",
+          "Scroll wheel zooms in and out"
+        ]
+      },
+      "camera_controls": {
+        "title": "Camera Controls",
+        "description": "You can control the camera to get the best view of your farm. Desktop: Press C to toggle camera mode, drag mouse to rotate, scroll to zoom. Mobile: Use the camera button, drag to rotate, pinch to zoom. Try toggling the camera mode now!",
+        "hints": [
+          "Character Follow mode keeps the camera centered on your character",
+          "Free Camera mode lets you look around independently",
+          "You can zoom in to see details or zoom out for a wider view"
+        ]
+      },
+      "farm_plots": {
+        "title": "Understanding Farm Plots",
+        "description": "Your farm is divided into plots where you can grow crops. Some plots are already unlocked, while others need to be purchased. Move close to a plot to see if you can interact with it. Unlocked plots have a brown soil color. Get close to an empty plot to continue!",
+        "hints": [
+          "Brown plots are ready for planting",
+          "Gray plots need to be unlocked with coins",
+          "A green circle appears around your character when you can interact"
+        ]
+      },
+      "planting_seeds": {
+        "title": "Planting Your First Seeds",
+        "description": "Great! Now you're close to a farm plot. Let's plant your first seeds! You start with some carrot seeds. Make sure carrots are selected in the plant selector, then press SPACE to plant. Plant a carrot seed now!",
+        "hints": [
+          "Check the Plant Types panel to see your available seeds",
+          "Selected plant type is highlighted in blue",
+          "You need to be close to an empty plot to plant"
+        ]
+      },
+      "plant_growth": {
+        "title": "Watching Plants Grow",
+        "description": "Excellent! You've planted your first seed. Plants in Pixel-Harvest grow automatically over time through 3 stages: 🌱 Seedling → 🌿 Growing → 🥕 Mature. Weather and seasons affect growth speed. You can also water plants to help them grow faster!",
+        "hints": [
+          "Plants grow faster in good weather",
+          "Watering plants speeds up growth",
+          "Different plants take different amounts of time to grow"
+        ]
+      },
+      "watering_plants": {
+        "title": "Watering Your Plants",
+        "description": "You can water your plants to help them grow faster! Get close to the plant you just planted and press E to water it. Watch for the watering animation and growth boost!",
+        "hints": [
+          "Watered plants have a blue sparkle effect",
+          "Each watering session provides a growth boost",
+          "You can water plants at any growth stage"
+        ]
+      },
+      "harvesting": {
+        "title": "Harvesting Crops",
+        "description": "When plants reach full maturity, they'll show their crop icon (like 🥕 for carrots). Get close to a mature plant and press SPACE to harvest it and add it to your inventory. For this tutorial, we'll simulate a mature plant. Try harvesting now!",
+        "hints": [
+          "Mature plants show the final crop icon",
+          "Harvesting adds items to your inventory",
+          "You earn points and coins from harvesting"
+        ]
+      },
+      "inventory_management": {
+        "title": "Managing Your Inventory",
+        "description": "Great! You've harvested your first crop. Check your inventory to see what you've collected. The inventory shows all your crops, equipment, and animal products. You can sell items in the marketplace to earn coins!",
+        "hints": [
+          "Inventory is divided into categories: crops, equipment, and animal products",
+          "Numbers show how many of each item you have",
+          "Items are automatically sorted by type"
+        ]
+      },
+      "marketplace_intro": {
+        "title": "The Marketplace",
+        "description": "The marketplace is where you buy seeds and equipment, and sell your crops for coins. Prices change dynamically based on supply and demand! Let's sell your harvested crop for some coins.",
+        "hints": [
+          "Prices fluctuate based on market conditions",
+          "Selling crops is the main way to earn coins",
+          "Use coins to buy seeds, equipment, and unlock plots"
+        ]
+      },
+      "selling_crops": {
+        "title": "Selling Your Crops",
+        "description": "In the marketplace's \"Sell Produce\" section, click on \"Sell Carrots\" to sell your harvested crop. Watch your coin count increase when you make the sale! Try selling your carrot now.",
+        "hints": [
+          "You can only sell items you actually have",
+          "Disabled buttons mean you have none of that item",
+          "Each sale gives you coins and experience"
+        ]
+      },
+      "buying_seeds": {
+        "title": "Buying More Seeds",
+        "description": "Now that you have coins, you can buy more seeds to expand your farming operation! In the \"Seeds\" section of the marketplace, try buying some tomato seeds. Click \"Buy Tomato Seeds\" to purchase them.",
+        "hints": [
+          "Different seeds have different costs and growth times",
+          "Some seeds are only available in certain seasons",
+          "Start with cheaper seeds and work your way up"
+        ]
+      },
+      "changing_plant_types": {
+        "title": "Selecting Plant Types",
+        "description": "Great! You now have tomato seeds. To plant them, you need to select tomatoes in the Plant Types panel. Click on the tomato button in the Plant Types panel to select it. Notice how the selected plant is highlighted in blue.",
+        "hints": [
+          "Only the selected plant type will be planted",
+          "You can see how many seeds you have of each type",
+          "Some plants require specific seasons to grow"
+        ]
+      },
+      "unlocking_plots": {
+        "title": "Unlocking New Plots",
+        "description": "To expand your farm, you need to unlock new plots using coins. Move close to a gray (locked) plot and press SPACE to unlock it. Each plot costs coins to unlock, but gives you more space to grow crops!",
+        "hints": [
+          "Locked plots appear gray and show an unlock cost",
+          "Unlocking plots permanently expands your farm",
+          "Start with plots close to your existing ones"
+        ]
+      },
+      "objectives_system": {
+        "title": "Objectives and Goals",
+        "description": "Check out the Objectives panel to see your current goals! Completing objectives gives you direction and rewards. Try to complete the visible objectives by playing the game naturally.",
+        "hints": [
+          "Objectives provide guidance on what to do next",
+          "Completed objectives give rewards and unlock new ones",
+          "Focus on easier objectives first"
+        ]
+      },
+      "day_night_cycle": {
+        "title": "Day and Night Cycle",
+        "description": "Pixel-Harvest features a dynamic day/night cycle that affects gameplay! Different things happen during day and night - plants grow differently, and the atmosphere changes. Watch the time indicator to track the current time of day.",
+        "hints": [
+          "The day/night cycle affects plant growth rates",
+          "Some animals are more active at certain times",
+          "The lighting and ambiance change with the time"
+        ]
+      },
+      "weather_system": {
+        "title": "Weather Effects",
+        "description": "Weather affects how fast your plants grow and your overall farming efficiency. ☀️ Sunny weather makes plants grow faster. 🌧️ Rainy weather provides natural watering. ❄️ Cold weather slows growth but some plants thrive.",
+        "hints": [
+          "Check the weather panel to plan your farming",
+          "Some plants prefer certain weather conditions",
+          "Weather changes randomly throughout the game"
+        ]
+      },
+      "seasons_system": {
+        "title": "Seasonal Changes",
+        "description": "The game features four seasons, each lasting 20 in-game days: 🌸 Spring: Best for most crops. ☀️ Summer: Hot weather, great for heat-loving plants. 🍂 Autumn: Harvest season with unique crops. ❄️ Winter: Limited growing, but some special plants thrive.",
+        "hints": [
+          "Some plants can only be grown in specific seasons",
+          "Seasonal events and festivals occur regularly",
+          "Plan your crops around the seasonal calendar"
+        ]
+      },
+      "animals_intro": {
+        "title": "Farm Animals",
+        "description": "You can buy and raise animals on your farm! Animals produce valuable resources: 🐔 Chickens produce eggs. 🐄 Cows produce milk. 🐷 Pigs find truffles. Take care of your animals and collect their products regularly!",
+        "hints": [
+          "Animals need regular care and feeding",
+          "Collect products daily for maximum profit",
+          "Animal products sell for good prices"
+        ]
+      },
+      "daily_quests": {
+        "title": "Daily Quests",
+        "description": "Complete daily quests to earn extra rewards and experience! Quests reset daily and provide specific goals to work towards. Check the Daily Quests panel to see what challenges await you.",
+        "hints": [
+          "Quests provide bonus coins and experience",
+          "New quests appear daily",
+          "Focus on quests that match your current activities"
+        ]
+      },
+      "equipment_intro": {
+        "title": "Farm Equipment",
+        "description": "As you progress, you can buy equipment to automate and improve your farm: 💧 Auto Sprinklers: Automatically water nearby plants. 🌿 Fertilizer: Boosts plant growth speed. 🏠 Greenhouses: Protect plants from weather.",
+        "hints": [
+          "Equipment is expensive but saves time in the long run",
+          "Some equipment works automatically",
+          "Upgrade your farm gradually as you earn more coins"
+        ]
+      },
+      "game_menu": {
+        "title": "Game Menu and Settings",
+        "description": "Access the game menu in the top-right corner for various options: ⚙️ Controls: Customize your keyboard controls. 🔧 UI Mode: Rearrange interface panels. 🆕 New Game: Start fresh anytime. 🌍 Language: Change the game language.",
+        "hints": [
+          "Customize controls to your preference",
+          "Save your game progress automatically",
+          "UI Mode lets you drag panels around"
+        ]
+      },
+      "mobile_controls": {
+        "title": "Mobile Controls",
+        "description": "On mobile devices, use these touch controls: 🕹️ Virtual joystick for movement. 🌱 Green button to plant/harvest. 💧 Blue button to water plants. 📋 Bottom menu for panels. Touch and drag to rotate camera, pinch to zoom.",
+        "hints": [
+          "Mobile interface adapts automatically",
+          "Use the navigation menu at the bottom",
+          "Panels open as full-screen overlays on mobile"
+        ]
+      },
+      "tutorial_complete": {
+        "title": "Tutorial Complete!",
+        "description": "Congratulations! You've learned all the basics of Pixel-Harvest! Here's what you've mastered: Character movement and camera controls, Planting, watering, and harvesting crops, Buying and selling in the marketplace, Unlocking new farm plots, Understanding objectives and quests, Farm animals and their products, Weather and seasonal systems. Now go build your farming empire!",
+        "hints": [
+          "Remember: you can restart this tutorial anytime from the game menu",
+          "Experiment with different crops and strategies",
+          "Have fun and enjoy your farming adventure!"
+        ]
+      }
+    }
+  },
+  "game": {
+    "plants": {
+      "carrot": "Carrot",
+      "tomato": "Tomato",
+      "potato": "Potato",
+      "cabbage": "Cabbage",
+      "corn": "Corn",
+      "watermelon": "Watermelon",
+      "pumpkin": "Pumpkin",
+      "apple": "Apple Tree",
+      "rare": "Rare Plant"
+    },
+    "animals": {
+      "chicken": "Chicken",
+      "cow": "Cow",
+      "pig": "Pig"
+    },
+    "equipment": {
+      "sprinkler": "Auto Sprinkler",
+      "fertilizer": "Fertilizer",
+      "greenhouse": "Mini Greenhouse"
+    },
+    "weather": {
+      "sunny": "Sunny",
+      "rainy": "Rainy",
+      "cloudy": "Cloudy",
+      "snowy": "Snowy",
+      "stormy": "Stormy"
+    },
+    "seasons": {
+      "spring": "Spring",
+      "summer": "Summer",
+      "autumn": "Autumn",
+      "winter": "Winter"
+    },
+    "objectives": {
+      "harvest_crops": "Harvest {count} {crop}",
+      "earn_coins": "Earn {amount} coins",
+      "plant_seeds": "Plant {count} seeds",
+      "unlock_plots": "Unlock {count} plots",
+      "buy_equipment": "Buy any equipment",
+      "survive_cycles": "Survive {count} day/night cycles",
+      "total_plants": "Harvest {count} total plants"
+    },
+    "marketplace": {
+      "sell": "Sell",
+      "buy": "Buy",
+      "seeds": "Seeds",
+      "equipment": "Equipment",
+      "animalProducts": "Animal Products"
+    }
+  },
+  "messages": {
+    "errors": {
+      "notEnoughCoins": "Not enough coins!",
+      "notEnoughSeeds": "Not enough seeds!",
+      "plotNotUnlocked": "Plot not unlocked!",
+      "invalidAction": "Invalid action!",
+      "saveError": "Failed to save game progress"
+    },
+    "success": {
+      "planted": "Planted {plant}!",
+      "harvested": "Harvested {plant}!",
+      "watered": "Watered plants!",
+      "sold": "Sold {item}!",
+      "bought": "Bought {item}!",
+      "unlocked": "Plot unlocked!",
+      "gameSaved": "Game progress saved!"
+    },
+    "info": {
+      "dayStart": "A new day begins!",
+      "nightStart": "Night falls over the farm...",
+      "seasonChange": "Season changed to {season}!",
+      "weatherChange": "Weather changed to {weather}!"
+    }
+  }
+}

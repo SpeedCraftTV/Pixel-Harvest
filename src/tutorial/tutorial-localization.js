@@ -1,6 +1,7 @@
 /**
  * Tutorial Localization
- * Multi-language support for the tutorial system
+ * Enhanced multi-language support for the tutorial system
+ * Now integrated with JSON-based internationalization system
  */
 
 const TutorialLocalization = {
@@ -24,6 +25,12 @@ const TutorialLocalization = {
             flag: '🇪🇸',
             code: 'es'
         }
+    },
+
+    // Integration with main i18n system
+    i18nIntegration: {
+        enabled: false,
+        fallbackMode: true
     },
 
     // Translation strings organized by language
@@ -507,6 +514,19 @@ const TutorialLocalization = {
      * @returns {string} - Translated string
      */
     t(key, params = {}) {
+        // Try to use main i18n system first if available and enabled
+        if (this.i18nIntegration.enabled && window.i18n && window.i18n.isInitialized) {
+            try {
+                const translation = window.i18n.t(`tutorial.${key}`, params);
+                if (translation && translation !== `tutorial.${key}`) {
+                    return translation;
+                }
+            } catch (error) {
+                console.warn('Failed to get translation from main i18n system:', error);
+            }
+        }
+
+        // Fallback to legacy translation system
         const keys = key.split('.');
         let translation = this.translations[this.currentLanguage];
         
@@ -544,11 +564,25 @@ const TutorialLocalization = {
      * @param {string} languageCode - Language code (e.g., 'en', 'fr', 'es')
      */
     setLanguage(languageCode) {
-        if (this.translations[languageCode]) {
+        if (this.translations[languageCode] || this.i18nIntegration.enabled) {
+            const oldLanguage = this.currentLanguage;
             this.currentLanguage = languageCode;
+            
+            // Sync with main i18n system if available
+            if (this.i18nIntegration.enabled && window.i18n && window.i18n.setLanguage) {
+                window.i18n.setLanguage(languageCode).catch(error => {
+                    console.warn('Failed to sync language with main i18n system:', error);
+                });
+            }
+            
             this.updateUI();
             localStorage.setItem('pixelHarvestLanguage', languageCode);
-            console.log(`Tutorial language changed to: ${languageCode}`);
+            console.log(`Tutorial language changed from ${oldLanguage} to: ${languageCode}`);
+            
+            // Emit event for other systems
+            document.dispatchEvent(new CustomEvent('tutorialLanguageChanged', {
+                detail: { oldLanguage, newLanguage: languageCode }
+            }));
         } else {
             console.warn(`Language not supported: ${languageCode}`);
         }
@@ -571,9 +605,23 @@ const TutorialLocalization = {
     },
 
     /**
-     * Load language preference from localStorage
+     * Load language preference from localStorage and sync with main i18n system
      */
     loadLanguagePreference() {
+        // First try to get language from main i18n system if available
+        if (this.i18nIntegration.enabled && window.i18n && window.i18n.getCurrentLanguage) {
+            try {
+                const currentLang = window.i18n.getCurrentLanguage();
+                if (currentLang && currentLang.code) {
+                    this.currentLanguage = currentLang.code;
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to sync language from main i18n system:', error);
+            }
+        }
+
+        // Fallback to localStorage and browser detection
         const saved = localStorage.getItem('pixelHarvestLanguage');
         if (saved && this.translations[saved]) {
             this.currentLanguage = saved;
@@ -610,10 +658,23 @@ const TutorialLocalization = {
     },
 
     /**
-     * Get localized tutorial steps
+     * Get localized tutorial steps using the enhanced system
      * @returns {Object} - Localized tutorial steps
      */
     getLocalizedSteps() {
+        // Try to get steps from main i18n system first
+        if (this.i18nIntegration.enabled && window.i18n && window.i18n.isInitialized) {
+            try {
+                const steps = window.i18n.getLocalizedTutorialSteps();
+                if (steps && steps.length > 0) {
+                    return steps;
+                }
+            } catch (error) {
+                console.warn('Failed to get localized steps from main i18n system:', error);
+            }
+        }
+
+        // Fallback to legacy system
         const baseSteps = window.TutorialSteps ? window.TutorialSteps.steps : [];
         const currentTranslations = this.translations[this.currentLanguage];
         
@@ -684,6 +745,24 @@ const TutorialLocalization = {
      * Initialize the localization system
      */
     initialize() {
+        // Check if main i18n system is available
+        if (window.i18n) {
+            this.i18nIntegration.enabled = true;
+            console.log('🔗 Tutorial localization integrated with main i18n system');
+            
+            // Listen for language changes from main system
+            if (window.i18n.on) {
+                window.i18n.on('languageChanged', (data) => {
+                    if (data.newLanguage !== this.currentLanguage) {
+                        this.currentLanguage = data.newLanguage;
+                        this.updateUI();
+                    }
+                });
+            }
+        } else {
+            console.log('📚 Tutorial localization running in standalone mode');
+        }
+
         this.loadLanguagePreference();
         this.updateUI();
         
@@ -692,7 +771,26 @@ const TutorialLocalization = {
             this.setLanguage(event.detail.language);
         });
         
+        // Listen for main i18n system initialization
+        document.addEventListener('i18nInitialized', () => {
+            if (window.i18n && !this.i18nIntegration.enabled) {
+                this.i18nIntegration.enabled = true;
+                console.log('🔗 Tutorial localization connected to main i18n system');
+                this.updateUI();
+            }
+        });
+        
         console.log(`Tutorial localization initialized with language: ${this.currentLanguage}`);
+    },
+
+    /**
+     * Enable or disable integration with main i18n system
+     * @param {boolean} enabled - Whether to enable integration
+     */
+    setI18nIntegration(enabled) {
+        this.i18nIntegration.enabled = enabled;
+        console.log(`Tutorial i18n integration ${enabled ? 'enabled' : 'disabled'}`);
+        this.updateUI();
     }
 };
 
