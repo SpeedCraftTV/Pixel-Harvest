@@ -738,10 +738,232 @@
             background: rgba(156, 39, 176, 1);
         }
 
+        /* Mobile Navigation Menu */
+        #mobileNavMenu {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 25px;
+            padding: 15px;
+            display: none;
+            flex-direction: row;
+            gap: 10px;
+            border: 2px solid #4CAF50;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-nav-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .mobile-nav-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-nav-btn.active {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+        }
+
+        .mobile-nav-btn .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #FF5722;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Mobile Panel System */
+        .mobile-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 190;
+            max-height: 60vh;
+            overflow-y: auto;
+            border-top: 3px solid #4CAF50;
+        }
+
+        .mobile-panel.active {
+            transform: translateY(0);
+        }
+
+        .mobile-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-panel-title {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-panel-close {
+            background: #f44336;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .mobile-panel-close:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-panel-content {
+            color: white;
+        }
+
+        /* Mobile Grid Layout */
+        .mobile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .mobile-grid-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mobile-grid-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #4CAF50;
+        }
+
+        .mobile-grid-item:active {
+            transform: scale(0.95);
+            background: rgba(76, 175, 80, 0.4);
+        }
+
+        .mobile-grid-item.selected {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        .mobile-grid-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mobile-grid-item .emoji {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .mobile-grid-item .name {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .mobile-grid-item .count {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .mobile-grid-item .price {
+            font-size: 11px;
+            color: #FFD700;
+        }
+
+        /* Responsive Typography */
+        @media (max-width: 480px) {
+            .mobile-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 10px;
+            }
+            
+            .mobile-grid-item {
+                padding: 10px;
+                min-height: 70px;
+            }
+            
+            .mobile-grid-item .emoji {
+                font-size: 20px;
+            }
+        }
+
         /* Mobile responsive improvements */
         @media (max-width: 768px) {
             #mobileControls {
                 display: block;
+            }
+
+            #mobileNavMenu {
+                display: flex;
+            }
+
+            /* Hide desktop panels on mobile */
+            #ui, #plantSelector, #inventory, #marketplace, #objectives, #animalsPanel, #questsPanel {
+                display: none !important;
             }
 
             /* Hide some less critical panels on mobile to reduce clutter */
@@ -749,43 +971,9 @@
                 display: none !important;
             }
 
-            /* Adjust UI panels for mobile */
-            #ui, #plantSelector, #inventory, #marketplace, #objectives, #animalsPanel, #questsPanel {
-                position: fixed !important;
-                max-width: calc(100vw - 40px);
-                max-height: 40vh;
-                font-size: 14px;
-                overflow-y: auto;
-            }
-
-            /* Make buttons larger for touch */
-            .plant-btn, .market-btn, .animal-btn {
-                padding: 12px 16px;
-                font-size: 14px;
-                margin: 4px 2px;
-                min-height: 44px;
-                touch-action: manipulation;
-            }
-
             /* Adjust top buttons for mobile */
             #settingsButton, #newGameButton, #uiModeToggle {
-                position: fixed;
-                top: 10px;
-                font-size: 12px;
-                padding: 8px 12px;
-                z-index: 150;
-            }
-
-            #settingsButton {
-                right: 10px;
-            }
-
-            #newGameButton {
-                right: 80px;
-            }
-
-            #uiModeToggle {
-                right: 150px;
+                display: none !important;
             }
 
             /* Adjust day/night indicator */
@@ -793,30 +981,82 @@
                 position: fixed;
                 top: 10px;
                 left: 10px;
-                font-size: 14px;
+                font-size: 16px;
+                z-index: 150;
+                background: rgba(0, 0, 0, 0.7);
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            /* Mobile Menu Button */
+            #unifiedMenu {
+                position: fixed;
+                top: 10px;
+                right: 10px;
                 z-index: 150;
             }
 
+            #mainMenuButton {
+                padding: 8px 12px;
+                font-size: 14px;
+                border-radius: 8px;
+                background: #4CAF50;
+                border: 2px solid #45a049;
+            }
+
+            /* Enhanced mobile controls */
+            .mobile-joystick {
+                width: 100px;
+                height: 100px;
+                bottom: 25px;
+                left: 25px;
+            }
+
+            .mobile-joystick-handle {
+                width: 35px;
+                height: 35px;
+            }
+
+            .mobile-action-buttons {
+                bottom: 25px;
+                right: 25px;
+                gap: 8px;
+            }
+
+            .mobile-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
+            }
+
+            .mobile-camera-controls {
+                top: 60px;
+                gap: 8px;
+            }
+
+            .mobile-camera-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+
             /* Touch-friendly scrollbars */
-            .draggable-panel {
-                scrollbar-width: thick;
+            .mobile-panel::-webkit-scrollbar {
+                width: 8px;
             }
 
-            .draggable-panel::-webkit-scrollbar {
-                width: 12px;
-            }
-
-            .draggable-panel::-webkit-scrollbar-track {
+            .mobile-panel::-webkit-scrollbar-track {
                 background: rgba(255, 255, 255, 0.1);
-                border-radius: 6px;
+                border-radius: 4px;
             }
 
-            .draggable-panel::-webkit-scrollbar-thumb {
+            .mobile-panel::-webkit-scrollbar-thumb {
                 background: rgba(255, 255, 255, 0.3);
-                border-radius: 6px;
+                border-radius: 4px;
             }
 
-            .draggable-panel::-webkit-scrollbar-thumb:active {
+            .mobile-panel::-webkit-scrollbar-thumb:active {
                 background: rgba(255, 255, 255, 0.5);
             }
         }
@@ -1083,6 +1323,86 @@
             </div>
         </div>
         
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileNavMenu">
+            <button class="mobile-nav-btn" id="mobileInventoryBtn" data-panel="inventory">
+                📦
+                <span class="badge" id="inventoryBadge" style="display: none;">0</span>
+            </button>
+            <button class="mobile-nav-btn" id="mobilePlantsBtn" data-panel="plants">
+                🌱
+                <span class="badge" id="plantsBadge">5</span>
+            </button>
+            <button class="mobile-nav-btn" id="mobileMarketBtn" data-panel="market">
+                🏪
+                <span class="badge" id="marketBadge" style="display: none;">0</span>
+            </button>
+            <button class="mobile-nav-btn" id="mobileAnimalsBtn" data-panel="animals">
+                🐄
+                <span class="badge" id="animalsBadge" style="display: none;">0</span>
+            </button>
+            <button class="mobile-nav-btn" id="mobileQuestsBtn" data-panel="quests">
+                📋
+                <span class="badge" id="questsBadge">3</span>
+            </button>
+        </div>
+
+        <!-- Mobile Panels -->
+        <div id="mobileInventoryPanel" class="mobile-panel">
+            <div class="mobile-panel-header">
+                <div class="mobile-panel-title">📦 Inventory</div>
+                <button class="mobile-panel-close">×</button>
+            </div>
+            <div class="mobile-panel-content" id="mobileInventoryContent">
+                <!-- Inventory content will be dynamically populated -->
+            </div>
+        </div>
+
+        <div id="mobilePlantsPanel" class="mobile-panel">
+            <div class="mobile-panel-header">
+                <div class="mobile-panel-title">🌱 Plant Types</div>
+                <button class="mobile-panel-close">×</button>
+            </div>
+            <div class="mobile-panel-content">
+                <div style="margin-bottom: 15px; text-align: center; color: #FFD700;">
+                    💰 Coins: <span id="mobileCoins">50</span>
+                </div>
+                <div class="mobile-grid" id="mobilePlantsGrid">
+                    <!-- Plants will be dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <div id="mobileMarketPanel" class="mobile-panel">
+            <div class="mobile-panel-header">
+                <div class="mobile-panel-title">🏪 Marketplace</div>
+                <button class="mobile-panel-close">×</button>
+            </div>
+            <div class="mobile-panel-content" id="mobileMarketContent">
+                <!-- Market content will be dynamically populated -->
+            </div>
+        </div>
+
+        <div id="mobileAnimalsPanel" class="mobile-panel">
+            <div class="mobile-panel-header">
+                <div class="mobile-panel-title">🐄 Farm Animals</div>
+                <button class="mobile-panel-close">×</button>
+            </div>
+            <div class="mobile-panel-content" id="mobileAnimalsContent">
+                <!-- Animals content will be dynamically populated -->
+            </div>
+        </div>
+
+        <div id="mobileQuestsPanel" class="mobile-panel">
+            <div class="mobile-panel-header">
+                <div class="mobile-panel-title">📋 Daily Quests</div>
+                <button class="mobile-panel-close">×</button>
+            </div>
+            <div class="mobile-panel-content" id="mobileQuestsContent">
+                <!-- Quests content will be dynamically populated -->
+            </div>
+        </div>
+
         <!-- Mobile Controls -->
         <div id="mobileControls">
             <!-- Virtual Joystick for Movement -->
@@ -5233,6 +5553,7 @@
                     💧 Blue button to water plants<br>
                     📹 Purple button to toggle camera<br>
                     🔍 Pinch to zoom, drag to rotate camera<br>
+                    📋 Tap bottom menu buttons for inventory, plants, etc.<br>
                     🌿 Plants grow automatically (3 stages)<br>
                     🔒 Get close to plots and tap green button to unlock<br>
                     🌙 Watch the day/night cycle!
@@ -5865,6 +6186,440 @@
             setTimeout(() => {
                 initDraggableUI();
                 initMobileControls();
+                initMobileInterface();
+            }, 100); // Small delay to ensure game is initialized
+        });
+
+        // Mobile Interface System
+        let currentMobilePanel = null;
+
+        function initMobileInterface() {
+            // Setup mobile navigation buttons
+            const navButtons = document.querySelectorAll('.mobile-nav-btn');
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const panelType = btn.dataset.panel;
+                    toggleMobilePanel(panelType);
+                });
+            });
+
+            // Setup mobile panel close buttons
+            const closeButtons = document.querySelectorAll('.mobile-panel-close');
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', closeMobilePanels);
+            });
+
+            // Close panels when clicking outside
+            document.addEventListener('click', (e) => {
+                if (currentMobilePanel && 
+                    !e.target.closest('.mobile-panel') && 
+                    !e.target.closest('.mobile-nav-btn')) {
+                    closeMobilePanels();
+                }
+            });
+
+            // Initialize mobile panel content
+            updateMobilePanels();
+            
+            // Update mobile interface periodically
+            setInterval(updateMobilePanels, 1000);
+        }
+
+        function toggleMobilePanel(panelType) {
+            const panelId = `mobile${panelType.charAt(0).toUpperCase() + panelType.slice(1)}Panel`;
+            const panel = document.getElementById(panelId);
+            
+            if (!panel) return;
+
+            // Close current panel if different panel is being opened
+            if (currentMobilePanel && currentMobilePanel !== panelId) {
+                document.getElementById(currentMobilePanel).classList.remove('active');
+            }
+
+            // Toggle the requested panel
+            if (currentMobilePanel === panelId) {
+                panel.classList.remove('active');
+                currentMobilePanel = null;
+                
+                // Remove active state from navigation button
+                document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
+            } else {
+                panel.classList.add('active');
+                currentMobilePanel = panelId;
+                
+                // Add active state to navigation button
+                document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`[data-panel="${panelType}"]`).classList.add('active');
+                
+                // Update panel content
+                updateMobilePanelContent(panelType);
+            }
+
+            // Add haptic feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(30);
+            }
+        }
+
+        function closeMobilePanels() {
+            if (currentMobilePanel) {
+                document.getElementById(currentMobilePanel).classList.remove('active');
+                currentMobilePanel = null;
+                
+                // Remove active state from all navigation buttons
+                document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
+            }
+        }
+
+        function updateMobilePanels() {
+            // Update badges
+            updateMobileBadges();
+            
+            // Update coins display
+            const mobileCoins = document.getElementById('mobileCoins');
+            if (mobileCoins) mobileCoins.textContent = coins;
+            
+            // Update active panel content if open
+            if (currentMobilePanel) {
+                const panelType = currentMobilePanel.replace('mobile', '').replace('Panel', '').toLowerCase();
+                updateMobilePanelContent(panelType);
+            }
+        }
+
+        function updateMobileBadges() {
+            // Inventory badge (total items)
+            const inventoryTotal = Object.values(inventory).reduce((sum, count) => sum + count, 0) +
+                                 Object.values(animalInventory).reduce((sum, count) => sum + count, 0);
+            const inventoryBadge = document.getElementById('inventoryBadge');
+            if (inventoryBadge) {
+                inventoryBadge.textContent = inventoryTotal;
+                inventoryBadge.style.display = inventoryTotal > 0 ? 'flex' : 'none';
+            }
+
+            // Plants badge (available seeds)
+            const seedsTotal = Object.values(seedInventory).reduce((sum, count) => sum + count, 0);
+            const plantsBadge = document.getElementById('plantsBadge');
+            if (plantsBadge) {
+                plantsBadge.textContent = seedsTotal;
+            }
+
+            // Animals badge (total animals)
+            const animalsTotal = Object.values(animals).reduce((sum, count) => sum + count, 0);
+            const animalsBadge = document.getElementById('animalsBadge');
+            if (animalsBadge) {
+                animalsBadge.textContent = animalsTotal;
+                animalsBadge.style.display = animalsTotal > 0 ? 'flex' : 'none';
+            }
+
+            // Quests badge (available quests)
+            const questsBadge = document.getElementById('questsBadge');
+            if (questsBadge) {
+                questsBadge.textContent = dailyQuests.length;
+            }
+        }
+
+        function updateMobilePanelContent(panelType) {
+            switch(panelType) {
+                case 'inventory':
+                    updateMobileInventoryContent();
+                    break;
+                case 'plants':
+                    updateMobilePlantsContent();
+                    break;
+                case 'market':
+                    updateMobileMarketContent();
+                    break;
+                case 'animals':
+                    updateMobileAnimalsContent();
+                    break;
+                case 'quests':
+                    updateMobileQuestsContent();
+                    break;
+            }
+        }
+
+        function updateMobileInventoryContent() {
+            const content = document.getElementById('mobileInventoryContent');
+            if (!content) return;
+
+            let html = '<div class="mobile-grid">';
+            
+            // Add crops
+            Object.keys(inventory).forEach(itemType => {
+                const count = inventory[itemType];
+                const plantConfig = PLANT_TYPES[itemType];
+                if (plantConfig && count > 0) {
+                    html += `
+                        <div class="mobile-grid-item">
+                            <div class="emoji">${plantConfig.emoji}</div>
+                            <div class="name">${plantConfig.name}</div>
+                            <div class="count">${count}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            // Add animal products
+            Object.keys(animalInventory).forEach(productType => {
+                const count = animalInventory[productType];
+                if (count > 0) {
+                    const emoji = productType === 'eggs' ? '🥚' : productType === 'milk' ? '🥛' : '🍄';
+                    const name = productType.charAt(0).toUpperCase() + productType.slice(1);
+                    html += `
+                        <div class="mobile-grid-item">
+                            <div class="emoji">${emoji}</div>
+                            <div class="name">${name}</div>
+                            <div class="count">${count}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            // Add equipment
+            Object.keys(equipment).forEach(equipType => {
+                const count = equipment[equipType];
+                if (count > 0) {
+                    const emoji = equipType === 'sprinkler' ? '💧' : equipType === 'fertilizer' ? '🌿' : '🏠';
+                    const name = equipType.charAt(0).toUpperCase() + equipType.slice(1);
+                    html += `
+                        <div class="mobile-grid-item">
+                            <div class="emoji">${emoji}</div>
+                            <div class="name">${name}</div>
+                            <div class="count">${count}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += '</div>';
+            
+            if (html === '<div class="mobile-grid"></div>') {
+                html = '<div style="text-align: center; color: #999; padding: 40px;">Your inventory is empty</div>';
+            }
+
+            content.innerHTML = html;
+        }
+
+        function updateMobilePlantsContent() {
+            const grid = document.getElementById('mobilePlantsGrid');
+            if (!grid) return;
+
+            let html = '';
+            
+            Object.keys(PLANT_TYPES).forEach(plantType => {
+                const plantConfig = PLANT_TYPES[plantType];
+                const seedCount = seedInventory[plantType] || 0;
+                const isSelected = selectedPlantType === plantType;
+                const hasSeeds = seedCount > 0;
+                
+                html += `
+                    <div class="mobile-grid-item ${isSelected ? 'selected' : ''} ${!hasSeeds ? 'disabled' : ''}" 
+                         onclick="selectMobilePlant('${plantType}')">
+                        <div class="emoji">${plantConfig.emoji}</div>
+                        <div class="name">${plantConfig.name}</div>
+                        <div class="count">Seeds: ${seedCount}</div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function selectMobilePlant(plantType) {
+            if (seedInventory[plantType] > 0) {
+                selectedPlantType = plantType;
+                updateMobilePlantsContent();
+                updateUI();
+            }
+        }
+
+        function updateMobileMarketContent() {
+            const content = document.getElementById('mobileMarketContent');
+            if (!content) return;
+
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">💰 Sell Produce</h3>
+                    <div class="mobile-grid">
+            `;
+            
+            // Sell items
+            Object.keys(inventory).forEach(itemType => {
+                const count = inventory[itemType];
+                const plantConfig = PLANT_TYPES[itemType];
+                if (plantConfig && count > 0) {
+                    const price = getDynamicPrice(itemType, 'sell');
+                    html += `
+                        <div class="mobile-grid-item" onclick="sellAll('${itemType}')">
+                            <div class="emoji">${plantConfig.emoji}</div>
+                            <div class="name">Sell ${plantConfig.name}s</div>
+                            <div class="count">${count} items</div>
+                            <div class="price">${price}💰 each</div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">🌱 Buy Seeds</h3>
+                    <div class="mobile-grid">
+            `;
+
+            // Buy seeds
+            Object.keys(PLANT_TYPES).forEach(plantType => {
+                const plantConfig = PLANT_TYPES[plantType];
+                const price = getDynamicPrice(plantType, 'buy');
+                const canAfford = coins >= price;
+                
+                html += `
+                    <div class="mobile-grid-item ${!canAfford ? 'disabled' : ''}" 
+                         onclick="buySeeds('${plantType}', ${price})">
+                        <div class="emoji">${plantConfig.emoji}</div>
+                        <div class="name">${plantConfig.name} Seeds</div>
+                        <div class="price">${price}💰</div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">🔧 Equipment</h3>
+                    <div class="mobile-grid">
+                        <div class="mobile-grid-item ${coins < 150 ? 'disabled' : ''}" 
+                             onclick="buyItem('sprinkler', 150)">
+                            <div class="emoji">💧</div>
+                            <div class="name">Auto Sprinkler</div>
+                            <div class="price">150💰</div>
+                        </div>
+                        <div class="mobile-grid-item ${coins < 50 ? 'disabled' : ''}" 
+                             onclick="buyItem('fertilizer', 50)">
+                            <div class="emoji">🌿</div>
+                            <div class="name">Fertilizer Pack</div>
+                            <div class="price">50💰</div>
+                        </div>
+                        <div class="mobile-grid-item ${coins < 300 ? 'disabled' : ''}" 
+                             onclick="buyItem('greenhouse', 300)">
+                            <div class="emoji">🏠</div>
+                            <div class="name">Mini Greenhouse</div>
+                            <div class="price">300💰</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        function updateMobileAnimalsContent() {
+            const content = document.getElementById('mobileAnimalsContent');
+            if (!content) return;
+
+            let html = '<div class="mobile-grid">';
+            
+            // Chickens
+            html += `
+                <div class="mobile-grid-item" onclick="buyAnimal('chicken', 30)">
+                    <div class="emoji">🐔</div>
+                    <div class="name">Buy Chicken</div>
+                    <div class="count">Owned: ${animals.chicken || 0}</div>
+                    <div class="price">30💰</div>
+                </div>
+                <div class="mobile-grid-item ${(animalResources.eggs || 0) === 0 ? 'disabled' : ''}" 
+                     onclick="collectResource('eggs')">
+                    <div class="emoji">🥚</div>
+                    <div class="name">Collect Eggs</div>
+                    <div class="count">${animalResources.eggs || 0} available</div>
+                </div>
+            `;
+
+            // Cows
+            html += `
+                <div class="mobile-grid-item ${coins < 100 ? 'disabled' : ''}" onclick="buyAnimal('cow', 100)">
+                    <div class="emoji">🐄</div>
+                    <div class="name">Buy Cow</div>
+                    <div class="count">Owned: ${animals.cow || 0}</div>
+                    <div class="price">100💰</div>
+                </div>
+                <div class="mobile-grid-item ${(animalResources.milk || 0) === 0 ? 'disabled' : ''}" 
+                     onclick="collectResource('milk')">
+                    <div class="emoji">🥛</div>
+                    <div class="name">Collect Milk</div>
+                    <div class="count">${animalResources.milk || 0} available</div>
+                </div>
+            `;
+
+            // Pigs
+            html += `
+                <div class="mobile-grid-item ${coins < 150 ? 'disabled' : ''}" onclick="buyAnimal('pig', 150)">
+                    <div class="emoji">🐷</div>
+                    <div class="name">Buy Pig</div>
+                    <div class="count">Owned: ${animals.pig || 0}</div>
+                    <div class="price">150💰</div>
+                </div>
+                <div class="mobile-grid-item ${(animalResources.truffles || 0) === 0 ? 'disabled' : ''}" 
+                     onclick="collectResource('truffles')">
+                    <div class="emoji">🍄</div>
+                    <div class="name">Collect Truffles</div>
+                    <div class="count">${animalResources.truffles || 0} available</div>
+                </div>
+            `;
+
+            html += '</div>';
+            content.innerHTML = html;
+        }
+
+        function updateMobileQuestsContent() {
+            const content = document.getElementById('mobileQuestsContent');
+            if (!content) return;
+
+            let html = '';
+            
+            dailyQuests.forEach((quest, index) => {
+                const progressPercent = Math.min(100, (quest.progress / quest.target) * 100);
+                const isCompleted = quest.progress >= quest.target;
+                
+                html += `
+                    <div class="mobile-grid-item ${isCompleted ? 'completed' : ''}" style="min-height: 120px; width: 100%; margin-bottom: 15px;">
+                        <div class="emoji">${quest.icon}</div>
+                        <div class="name">${quest.title}</div>
+                        <div class="count">${quest.description}</div>
+                        <div style="width: 100%; background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin: 8px 0; overflow: hidden;">
+                            <div style="width: ${progressPercent}%; height: 100%; background: #4CAF50; transition: width 0.3s ease;"></div>
+                        </div>
+                        <div style="font-size: 12px; opacity: 0.8;">
+                            Progress: ${quest.progress}/${quest.target} | Reward: ${quest.reward}💰
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (dailyQuests.length === 0) {
+                html = '<div style="text-align: center; color: #999; padding: 40px;">No active quests</div>';
+            }
+
+            html += `
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="resetDailyQuests()" 
+                            style="background: #FF9800; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer;">
+                        🔄 New Quests (50💰)
+                    </button>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        // Initialize draggable UI when the game loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                initDraggableUI();
+                initMobileControls();
+                initMobileInterface();
             }, 100); // Small delay to ensure game is initialized
         });
     </script>
