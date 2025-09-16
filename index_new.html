@@ -1523,34 +1523,54 @@
             }
         }
         
-        // Translation function - delegates to the translation loader
+        // Translation function
         function t(key, ...args) {
-            if (window.translationLoader && window.translationLoader.isLoaded()) {
-                return window.translationLoader.t(key, ...args);
+            const keys = key.split('.');
+            let value = translations[currentLanguage];
+            
+            for (const k of keys) {
+                if (value && typeof value === 'object' && k in value) {
+                    value = value[k];
+                } else {
+                    // Fallback to English if translation not found
+                    value = translations['en'];
+                    for (const fallbackKey of keys) {
+                        if (value && typeof value === 'object' && fallbackKey in value) {
+                            value = value[fallbackKey];
+                        } else {
+                            return key; // Return key if not found
+                        }
+                    }
+                    break;
+                }
             }
-            // Fallback if loader not ready
-            console.warn('Translation loader not ready, returning key:', key);
-            return key;
+            
+            // Handle string formatting with {0}, {1}, etc.
+            if (typeof value === 'string' && args.length > 0) {
+                return value.replace(/\{(\d+)\}/g, (match, index) => {
+                    const argIndex = parseInt(index);
+                    return argIndex < args.length ? args[argIndex] : match;
+                });
+            }
+            
+            return value || key;
         }
         
         // Language switching function
-        async function setLanguage(lang) {
-            const success = await window.translationLoader.setLanguage(lang);
-            if (success) {
+        function setLanguage(lang) {
+            if (translations[lang]) {
                 currentLanguage = lang;
+                localStorage.setItem('pixelHarvestLanguage', lang);
                 updateAllUI();
-                updateMenuTexts();
-                
-                // Update tutorial localization if available
-                if (window.TutorialLocalization && window.TutorialLocalization.setLanguage) {
-                    window.TutorialLocalization.setLanguage(lang);
-                }
             }
         }
         
-        // Load saved language preference
+        // Load saved language
         function loadSavedLanguage() {
-            currentLanguage = window.translationLoader.loadLanguagePreference();
+            const saved = localStorage.getItem('pixelHarvestLanguage');
+            if (saved && translations[saved]) {
+                currentLanguage = saved;
+            }
         }
         
         // Menu System Functions
@@ -1574,8 +1594,9 @@
             });
             
             // Language selector change
-            languageSelector.addEventListener('change', async function() {
-                await setLanguage(this.value);
+            languageSelector.addEventListener('change', function() {
+                setLanguage(this.value);
+                updateMenuTexts();
             });
             
             // Close menu when clicking outside
@@ -3170,11 +3191,8 @@
         }
         
         
-        async function init() {
-            // Initialize translation system first
-            await initTranslations();
-            
-            // Load saved language
+        function init() {
+            // Load saved language first
             loadSavedLanguage();
             
             canvas = document.getElementById('canvas');
@@ -5211,9 +5229,7 @@
         }
         
         // Start the game when page loads
-        window.addEventListener('load', async () => {
-            await init();
-        });
+        window.addEventListener('load', init);
 
         // UI Dragging and Resizing System
         window.uiEditMode = false; // Make global for access

@@ -1510,47 +1510,526 @@
             }
         }
         
-        // Initialize translation system
-        async function initTranslations() {
-            try {
-                await window.translationLoader.initialize();
-                currentLanguage = window.translationLoader.getCurrentLanguage();
-                console.log('Translation system initialized successfully');
-            } catch (error) {
-                console.error('Failed to initialize translation system:', error);
-                // Fallback to English
-                currentLanguage = 'en';
+        const translations = {
+            en: {
+                // Game UI
+                score: 'Score',
+                instructions: {
+                    move: '🌱 Move with ZQSD or arrow keys',
+                    action: '⚡ SPACE to plant/harvest at closest plot',
+                    water: '💧 E to water plants',
+                    camera: '📹 C to toggle camera mode',
+                    growth: '🌿 Plants grow automatically (3 stages)',
+                    unlock: '🔒 Unlock plots by getting close and pressing SPACE',
+                    cycle: '🌙 Watch the day/night cycle!',
+                    drag: '🖱️ Drag to rotate camera view',
+                    zoom: '🔍 Scroll wheel to zoom in/out'
+                },
+                menu: {
+                    main: 'Menu',
+                    controls: 'Controls',
+                    newGame: 'New Game',
+                    language: 'Language',
+                    uiMode: 'UI Mode',
+                    settings: 'Settings',
+                    tutorial: 'Tutorial'
+                },
+                plants: {
+                    title: 'Plant Types:',
+                    carrot: 'Carrot',
+                    tomato: 'Tomato', 
+                    rare: 'Rare Plant',
+                    potato: 'Potato',
+                    cabbage: 'Cabbage',
+                    corn: 'Corn',
+                    watermelon: 'Watermelon',
+                    pumpkin: 'Pumpkin',
+                    apple: 'Apple Tree',
+                    fast: 'Fast',
+                    normal: 'Normal',
+                    slow: 'Slow',
+                    medium: 'Medium',
+                    verySlow: 'Very Slow',
+                    coins: 'Coins'
+                },
+                inventory: {
+                    title: 'Inventory:',
+                    carrots: 'Carrots',
+                    tomatoes: 'Tomatoes',
+                    rarePlants: 'Rare Plants',
+                    potatoes: 'Potatoes',
+                    cabbages: 'Cabbages',
+                    corn: 'Corn',
+                    watermelons: 'Watermelons',
+                    pumpkins: 'Pumpkins',
+                    apples: 'Apples',
+                    equipment: 'Equipment:',
+                    autoSprinklers: 'Auto Sprinklers',
+                    fertilizer: 'Fertilizer',
+                    greenhouses: 'Greenhouses',
+                    animalProducts: 'Animal Products:',
+                    eggs: 'Eggs',
+                    milk: 'Milk',
+                    truffles: 'Truffles'
+                },
+                marketplace: {
+                    title: 'Marketplace:',
+                    sellProduce: 'Sell Produce',
+                    sellAnimalProducts: 'Sell Animal Products',
+                    seeds: 'Seeds',
+                    equipment: 'Equipment',
+                    sell: 'Sell',
+                    buy: 'Buy',
+                    sellCarrots: 'Sell Carrots',
+                    sellTomatoes: 'Sell Tomatoes',
+                    sellRare: 'Sell Rare Plants',
+                    sellPotatoes: 'Sell Potatoes',
+                    sellCabbages: 'Sell Cabbages',
+                    sellCorn: 'Sell Corn',
+                    sellWatermelons: 'Sell Watermelons',
+                    sellPumpkins: 'Sell Pumpkins',
+                    sellApples: 'Sell Apples',
+                    sellEggs: 'Sell Eggs',
+                    sellMilk: 'Sell Milk',
+                    sellTruffles: 'Sell Truffles',
+                    buySeeds: 'Seeds',
+                    autoSprinkler: 'Auto Sprinkler',
+                    fertilizerPack: 'Fertilizer Pack',
+                    miniGreenhouse: 'Mini Greenhouse',
+                    each: 'each'
+                },
+                objectives: {
+                    title: 'Objectives:',
+                    harvestCarrots: 'Harvest 5 carrots',
+                    surviveCycles: 'Survive 2 day/night cycles', 
+                    earnCoins: 'Earn 20 coins',
+                    harvestPlants: 'Harvest 25 total plants',
+                    buyEquipment: 'Buy any equipment',
+                    earnMoreCoins: 'Earn 500 coins',
+                    plantSeeds: 'Plant 50 seeds',
+                    unlockPlots: 'Unlock all plots'
+                },
+                weather: {
+                    title: 'Weather',
+                    sunny: 'Sunny',
+                    cloudy: 'Cloudy',
+                    rainy: 'Rainy',
+                    stormy: 'Stormy',
+                    effect: {
+                        sunny: 'Plants grow faster',
+                        cloudy: 'Normal growth, less water loss',
+                        rainy: 'Slower growth, plants auto-watered',
+                        stormy: 'Much slower growth, auto-watered'
+                    }
+                },
+                season: {
+                    title: 'Season',
+                    spring: 'Spring',
+                    summer: 'Summer',
+                    autumn: 'Autumn',
+                    winter: 'Winter',
+                    day: 'Day',
+                    of: 'of'
+                },
+                animals: {
+                    title: 'Farm Animals',
+                    chickens: 'Chickens',
+                    cows: 'Cows',
+                    pigs: 'Pigs',
+                    produce: 'Produce',
+                    buy: 'Buy',
+                    collect: 'Collect'
+                },
+                quests: {
+                    title: 'Daily Quests',
+                    harvest: 'Harvest {0} plants',
+                    plant: 'Plant {0} seeds',
+                    earn: 'Earn {0} coins',
+                    collect: 'Collect {0} animal products',
+                    water: 'Water {0} plants',
+                    harvestDesc: 'Harvest any type of plant',
+                    plantDesc: 'Plant any type of seed',
+                    earnDesc: 'Earn coins by selling items',
+                    collectDesc: 'Collect eggs, milk, or truffles',
+                    waterDesc: 'Water growing plants',
+                    progress: 'Progress',
+                    reward: 'Reward',
+                    newQuests: 'New Quests'
+                },
+                time: {
+                    day: 'Day',
+                    night: 'Night',
+                    camera: 'Camera',
+                    characterFollow: 'Character Follow',
+                    character: 'Character',
+                    idle: 'Idle',
+                    walking: 'Walking',
+                    planting: 'Planting',
+                    watering: 'Watering'
+                }
+            },
+            fr: {
+                // French translations
+                score: 'Score',
+                instructions: {
+                    move: '🌱 Déplacez-vous avec ZQSD ou les touches fléchées',
+                    action: '⚡ ESPACE pour planter/récolter à la parcelle la plus proche',
+                    water: '💧 E pour arroser les plantes',
+                    camera: '📹 C pour changer de mode caméra',
+                    growth: '🌿 Les plantes poussent automatiquement (3 étapes)',
+                    unlock: '🔒 Débloquez les parcelles en vous approchant et en appuyant sur ESPACE',
+                    cycle: '🌙 Regardez le cycle jour/nuit !',
+                    drag: '🖱️ Faites glisser pour faire pivoter la vue de la caméra',
+                    zoom: '🔍 Molette de la souris pour zoomer/dézoomer'
+                },
+                menu: {
+                    main: 'Menu',
+                    controls: 'Contrôles',
+                    newGame: 'Nouveau Jeu',
+                    language: 'Langue',
+                    uiMode: 'Mode Interface',
+                    settings: 'Paramètres'
+                },
+                plants: {
+                    title: 'Types de Plantes :',
+                    carrot: 'Carotte',
+                    tomato: 'Tomate',
+                    rare: 'Plante Rare',
+                    potato: 'Pomme de terre',
+                    cabbage: 'Chou',
+                    corn: 'Maïs',
+                    watermelon: 'Pastèque',
+                    pumpkin: 'Citrouille',
+                    apple: 'Pommier',
+                    fast: 'Rapide',
+                    normal: 'Normal',
+                    slow: 'Lent',
+                    medium: 'Moyen',
+                    verySlow: 'Très Lent',
+                    coins: 'Pièces'
+                },
+                inventory: {
+                    title: 'Inventaire :',
+                    carrots: 'Carottes',
+                    tomatoes: 'Tomates',
+                    rarePlants: 'Plantes Rares',
+                    potatoes: 'Pommes de terre',
+                    cabbages: 'Choux',
+                    corn: 'Maïs',
+                    watermelons: 'Pastèques',
+                    pumpkins: 'Citrouilles',
+                    apples: 'Pommes',
+                    equipment: 'Équipement :',
+                    autoSprinklers: 'Arroseurs Auto',
+                    fertilizer: 'Engrais',
+                    greenhouses: 'Serres',
+                    animalProducts: 'Produits Animaux :',
+                    eggs: 'Œufs',
+                    milk: 'Lait',
+                    truffles: 'Truffes'
+                },
+                marketplace: {
+                    title: 'Marché :',
+                    sellProduce: 'Vendre Récoltes',
+                    sellAnimalProducts: 'Vendre Produits Animaux',
+                    seeds: 'Graines',
+                    equipment: 'Équipement',
+                    sell: 'Vendre',
+                    buy: 'Acheter',
+                    sellCarrots: 'Vendre Carottes',
+                    sellTomatoes: 'Vendre Tomates',
+                    sellRare: 'Vendre Plantes Rares',
+                    sellPotatoes: 'Vendre Pommes de terre',
+                    sellCabbages: 'Vendre Choux',
+                    sellCorn: 'Vendre Maïs',
+                    sellWatermelons: 'Vendre Pastèques',
+                    sellPumpkins: 'Vendre Citrouilles',
+                    sellApples: 'Vendre Pommes',
+                    sellEggs: 'Vendre Œufs',
+                    sellMilk: 'Vendre Lait',
+                    sellTruffles: 'Vendre Truffes',
+                    buySeeds: 'Graines',
+                    autoSprinkler: 'Arroseur Auto',
+                    fertilizerPack: 'Pack Engrais',
+                    miniGreenhouse: 'Mini Serre',
+                    each: 'chacun'
+                },
+                objectives: {
+                    title: 'Objectifs :',
+                    harvestCarrots: 'Récolter 5 carottes',
+                    surviveCycles: 'Survivre 2 cycles jour/nuit',
+                    earnCoins: 'Gagner 20 pièces',
+                    harvestPlants: 'Récolter 25 plantes au total',
+                    buyEquipment: 'Acheter un équipement',
+                    earnMoreCoins: 'Gagner 500 pièces',
+                    plantSeeds: 'Planter 50 graines',
+                    unlockPlots: 'Débloquer toutes les parcelles'
+                },
+                weather: {
+                    title: 'Météo',
+                    sunny: 'Ensoleillé',
+                    cloudy: 'Nuageux',
+                    rainy: 'Pluvieux',
+                    stormy: 'Orageux',
+                    effect: {
+                        sunny: 'Les plantes poussent plus vite',
+                        cloudy: 'Croissance normale, moins de perte d\'eau',
+                        rainy: 'Croissance plus lente, plantes auto-arrosées',
+                        stormy: 'Croissance beaucoup plus lente, auto-arrosées'
+                    }
+                },
+                season: {
+                    title: 'Saison',
+                    spring: 'Printemps',
+                    summer: 'Été',
+                    autumn: 'Automne',
+                    winter: 'Hiver',
+                    day: 'Jour',
+                    of: 'de'
+                },
+                animals: {
+                    title: 'Animaux de Ferme',
+                    chickens: 'Poules',
+                    cows: 'Vaches',
+                    pigs: 'Cochons',
+                    produce: 'Production',
+                    buy: 'Acheter',
+                    collect: 'Collecter'
+                },
+                quests: {
+                    title: 'Quêtes Quotidiennes',
+                    harvest: 'Récolter {0} plantes',
+                    plant: 'Planter {0} graines',
+                    earn: 'Gagner {0} pièces',
+                    collect: 'Collecter {0} produits animaux',
+                    water: 'Arroser {0} plantes',
+                    harvestDesc: 'Récolter n\'importe quel type de plante',
+                    plantDesc: 'Planter n\'importe quel type de graine',
+                    earnDesc: 'Gagner des pièces en vendant des objets',
+                    collectDesc: 'Collecter œufs, lait ou truffes',
+                    waterDesc: 'Arroser les plantes qui poussent',
+                    progress: 'Progrès',
+                    reward: 'Récompense',
+                    newQuests: 'Nouvelles Quêtes'
+                },
+                time: {
+                    day: 'Jour',
+                    night: 'Nuit',
+                    camera: 'Caméra',
+                    characterFollow: 'Suivi Personnage',
+                    character: 'Personnage',
+                    idle: 'Inactif',
+                    walking: 'Marche',
+                    planting: 'Plantation',
+                    watering: 'Arrosage'
+                }
+            },
+            es: {
+                // Spanish translations
+                score: 'Puntuación',
+                instructions: {
+                    move: '🌱 Muévete con ZQSD o las teclas de flecha',
+                    action: '⚡ ESPACIO para plantar/cosechar en la parcela más cercana',
+                    water: '💧 E para regar plantas',
+                    camera: '📹 C para cambiar modo de cámara',
+                    growth: '🌿 Las plantas crecen automáticamente (3 etapas)',
+                    unlock: '🔒 Desbloquea parcelas acercándote y presionando ESPACIO',
+                    cycle: '🌙 ¡Observa el ciclo día/noche!',
+                    drag: '🖱️ Arrastra para rotar la vista de la cámara',
+                    zoom: '🔍 Rueda del ratón para acercar/alejar'
+                },
+                menu: {
+                    main: 'Menú',
+                    controls: 'Controles',
+                    newGame: 'Nuevo Juego',
+                    language: 'Idioma',
+                    uiMode: 'Modo Interfaz',
+                    settings: 'Configuración'
+                },
+                plants: {
+                    title: 'Tipos de Plantas:',
+                    carrot: 'Zanahoria',
+                    tomato: 'Tomate',
+                    rare: 'Planta Rara',
+                    potato: 'Papa',
+                    cabbage: 'Repollo',
+                    corn: 'Maíz',
+                    watermelon: 'Sandía',
+                    pumpkin: 'Calabaza',
+                    apple: 'Manzano',
+                    fast: 'Rápido',
+                    normal: 'Normal',
+                    slow: 'Lento',
+                    medium: 'Medio',
+                    verySlow: 'Muy Lento',
+                    coins: 'Monedas'
+                },
+                inventory: {
+                    title: 'Inventario:',
+                    carrots: 'Zanahorias',
+                    tomatoes: 'Tomates',
+                    rarePlants: 'Plantas Raras',
+                    potatoes: 'Papas',
+                    cabbages: 'Repollos',
+                    corn: 'Maíz',
+                    watermelons: 'Sandías',
+                    pumpkins: 'Calabazas',
+                    apples: 'Manzanas',
+                    equipment: 'Equipamiento:',
+                    autoSprinklers: 'Aspersores Auto',
+                    fertilizer: 'Fertilizante',
+                    greenhouses: 'Invernaderos',
+                    animalProducts: 'Productos Animales:',
+                    eggs: 'Huevos',
+                    milk: 'Leche',
+                    truffles: 'Trufas'
+                },
+                marketplace: {
+                    title: 'Mercado:',
+                    sellProduce: 'Vender Productos',
+                    sellAnimalProducts: 'Vender Productos Animales',
+                    seeds: 'Semillas',
+                    equipment: 'Equipamiento',
+                    sell: 'Vender',
+                    buy: 'Comprar',
+                    sellCarrots: 'Vender Zanahorias',
+                    sellTomatoes: 'Vender Tomates',
+                    sellRare: 'Vender Plantas Raras',
+                    sellPotatoes: 'Vender Papas',
+                    sellCabbages: 'Vender Repollos',
+                    sellCorn: 'Vender Maíz',
+                    sellWatermelons: 'Vender Sandías',
+                    sellPumpkins: 'Vender Calabazas',
+                    sellApples: 'Vender Manzanas',
+                    sellEggs: 'Vender Huevos',
+                    sellMilk: 'Vender Leche',
+                    sellTruffles: 'Vender Trufas',
+                    buySeeds: 'Semillas',
+                    autoSprinkler: 'Aspersor Auto',
+                    fertilizerPack: 'Pack Fertilizante',
+                    miniGreenhouse: 'Mini Invernadero',
+                    each: 'cada uno'
+                },
+                objectives: {
+                    title: 'Objetivos:',
+                    harvestCarrots: 'Cosechar 5 zanahorias',
+                    surviveCycles: 'Sobrevivir 2 ciclos día/noche',
+                    earnCoins: 'Ganar 20 monedas',
+                    harvestPlants: 'Cosechar 25 plantas en total',
+                    buyEquipment: 'Comprar cualquier equipamiento',
+                    earnMoreCoins: 'Ganar 500 monedas',
+                    plantSeeds: 'Plantar 50 semillas',
+                    unlockPlots: 'Desbloquear todas las parcelas'
+                },
+                weather: {
+                    title: 'Clima',
+                    sunny: 'Soleado',
+                    cloudy: 'Nublado',
+                    rainy: 'Lluvioso',
+                    stormy: 'Tormentoso',
+                    effect: {
+                        sunny: 'Las plantas crecen más rápido',
+                        cloudy: 'Crecimiento normal, menos pérdida de agua',
+                        rainy: 'Crecimiento más lento, plantas auto-regadas',
+                        stormy: 'Crecimiento mucho más lento, auto-regadas'
+                    }
+                },
+                season: {
+                    title: 'Estación',
+                    spring: 'Primavera',
+                    summer: 'Verano',
+                    autumn: 'Otoño',
+                    winter: 'Invierno',
+                    day: 'Día',
+                    of: 'de'
+                },
+                animals: {
+                    title: 'Animales de Granja',
+                    chickens: 'Gallinas',
+                    cows: 'Vacas',
+                    pigs: 'Cerdos',
+                    produce: 'Producción',
+                    buy: 'Comprar',
+                    collect: 'Recolectar'
+                },
+                quests: {
+                    title: 'Misiones Diarias',
+                    harvest: 'Cosechar {0} plantas',
+                    plant: 'Plantar {0} semillas',
+                    earn: 'Ganar {0} monedas',
+                    collect: 'Recolectar {0} productos animales',
+                    water: 'Regar {0} plantas',
+                    harvestDesc: 'Cosechar cualquier tipo de planta',
+                    plantDesc: 'Plantar cualquier tipo de semilla',
+                    earnDesc: 'Ganar monedas vendiendo objetos',
+                    collectDesc: 'Recolectar huevos, leche o trufas',
+                    waterDesc: 'Regar plantas en crecimiento',
+                    progress: 'Progreso',
+                    reward: 'Recompensa',
+                    newQuests: 'Nuevas Misiones'
+                },
+                time: {
+                    day: 'Día',
+                    night: 'Noche',
+                    camera: 'Cámara',
+                    characterFollow: 'Seguir Personaje',
+                    character: 'Personaje',
+                    idle: 'Inactivo',
+                    walking: 'Caminando',
+                    planting: 'Plantando',
+                    watering: 'Regando'
+                }
             }
-        }
+        };
         
-        // Translation function - delegates to the translation loader
+        // Translation function
         function t(key, ...args) {
-            if (window.translationLoader && window.translationLoader.isLoaded()) {
-                return window.translationLoader.t(key, ...args);
+            const keys = key.split('.');
+            let value = translations[currentLanguage];
+            
+            for (const k of keys) {
+                if (value && typeof value === 'object' && k in value) {
+                    value = value[k];
+                } else {
+                    // Fallback to English if translation not found
+                    value = translations['en'];
+                    for (const fallbackKey of keys) {
+                        if (value && typeof value === 'object' && fallbackKey in value) {
+                            value = value[fallbackKey];
+                        } else {
+                            return key; // Return key if not found
+                        }
+                    }
+                    break;
+                }
             }
-            // Fallback if loader not ready
-            console.warn('Translation loader not ready, returning key:', key);
-            return key;
+            
+            // Handle string formatting with {0}, {1}, etc.
+            if (typeof value === 'string' && args.length > 0) {
+                return value.replace(/\{(\d+)\}/g, (match, index) => {
+                    const argIndex = parseInt(index);
+                    return argIndex < args.length ? args[argIndex] : match;
+                });
+            }
+            
+            return value || key;
         }
         
         // Language switching function
-        async function setLanguage(lang) {
-            const success = await window.translationLoader.setLanguage(lang);
-            if (success) {
+        function setLanguage(lang) {
+            if (translations[lang]) {
                 currentLanguage = lang;
+                localStorage.setItem('pixelHarvestLanguage', lang);
                 updateAllUI();
-                updateMenuTexts();
-                
-                // Update tutorial localization if available
-                if (window.TutorialLocalization && window.TutorialLocalization.setLanguage) {
-                    window.TutorialLocalization.setLanguage(lang);
-                }
             }
         }
         
-        // Load saved language preference
+        // Load saved language
         function loadSavedLanguage() {
-            currentLanguage = window.translationLoader.loadLanguagePreference();
+            const saved = localStorage.getItem('pixelHarvestLanguage');
+            if (saved && translations[saved]) {
+                currentLanguage = saved;
+            }
         }
         
         // Menu System Functions
@@ -1574,8 +2053,9 @@
             });
             
             // Language selector change
-            languageSelector.addEventListener('change', async function() {
-                await setLanguage(this.value);
+            languageSelector.addEventListener('change', function() {
+                setLanguage(this.value);
+                updateMenuTexts();
             });
             
             // Close menu when clicking outside
@@ -3170,11 +3650,8 @@
         }
         
         
-        async function init() {
-            // Initialize translation system first
-            await initTranslations();
-            
-            // Load saved language
+        function init() {
+            // Load saved language first
             loadSavedLanguage();
             
             canvas = document.getElementById('canvas');
@@ -5211,9 +5688,7 @@
         }
         
         // Start the game when page loads
-        window.addEventListener('load', async () => {
-            await init();
-        });
+        window.addEventListener('load', init);
 
         // UI Dragging and Resizing System
         window.uiEditMode = false; // Make global for access

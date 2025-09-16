@@ -332,6 +332,21 @@ const TutorialLocalization = {
      * @returns {string} - Translated string
      */
     t(key, params = {}) {
+        // Use the main translation loader if available and loaded
+        if (window.translationLoader && window.translationLoader.isLoaded()) {
+            const translation = window.translationLoader.t(key);
+            
+            // Handle string interpolation for tutorial-specific parameters
+            if (typeof translation === 'string' && Object.keys(params).length > 0) {
+                return translation.replace(/\{(\w+)\}/g, (match, param) => {
+                    return params[param] || match;
+                });
+            }
+            
+            return translation;
+        }
+        
+        // Fallback to local tutorial translations
         const keys = key.split('.');
         let translation = this.translations[this.currentLanguage];
         
@@ -374,6 +389,11 @@ const TutorialLocalization = {
             this.updateUI();
             localStorage.setItem('pixelHarvestLanguage', languageCode);
             console.log(`Tutorial language changed to: ${languageCode}`);
+            
+            // Sync with main translation loader if available
+            if (window.translationLoader && window.translationLoader.isLoaded()) {
+                window.translationLoader.setLanguage(languageCode);
+            }
         } else {
             console.warn(`Language not supported: ${languageCode}`);
         }
@@ -408,6 +428,11 @@ const TutorialLocalization = {
             if (this.translations[browserLang]) {
                 this.currentLanguage = browserLang;
             }
+        }
+        
+        // Sync with main translation loader if available
+        if (window.translationLoader && window.translationLoader.isLoaded()) {
+            this.currentLanguage = window.translationLoader.getCurrentLanguage();
         }
     },
 

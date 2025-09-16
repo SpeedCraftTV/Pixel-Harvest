@@ -2,6 +2,18 @@
 
 Pixel Harvest est un jeu de farm 3D relax en ligne. Plante, fais pousser et récolte tes cultures pour gagner des points. Profite d'un cycle jour/nuit immersif et d'un gameplay simple au clic. Objectif : faire prospérer ta parcelle et battre ton record de récoltes !
 
+## 🌐 Internationalization
+
+Pixel-Harvest supports multiple languages with a dynamic translation system:
+
+- **Supported Languages:** English, French (Français), Spanish (Español)  
+- **Translation Files:** `src/i18n/*.json` (JSON-based for easy localization)
+- **Dynamic Loading:** Translations loaded on-demand with fallback support
+- **Tutorial Integration:** Localized tutorial system with contextual help
+- **Offline Support:** Graceful degradation for file:// usage
+
+To contribute translations or suggest improvements, see the translation files in `src/i18n/`.
+
 ## 🎮 Fonctionnalités Actuelles
 
 - **Agriculture 3D**: Système de plantation et récolte avec croissance automatique des cultures
@@ -48,6 +60,14 @@ Le développement futur de Pixel-Harvest s'articule autour de cinq axes majeurs 
 - **Défis Communautaires**: Objectifs globaux pour tous les joueurs
 - **Système d'Achievements**: Accomplissements à long terme
 - **Progression Narrative**: Histoires et missions guidées
+
+## 📚 Documentation & Planning
+
+- **[Feature Ideas](docs/IDEAS.md)** - Comprehensive list of proposed features and improvements
+- **[Development Roadmap](docs/PR-ROADMAP.md)** - Phased implementation plan and milestones
+- **[Technical Specifications](design/FEATURE-SPECS.md)** - Detailed technical documentation
+- **[Tutorial Documentation](docs/TUTORIAL.md)** - Tutorial system guide
+- **[Internationalization](src/i18n/)** - Translation files and localization guide
 
 ## 🗺️ Roadmap de Développement
 
