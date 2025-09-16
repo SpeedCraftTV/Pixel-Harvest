@@ -490,6 +490,124 @@
                 max-height: 150px;
             }
         }
+
+        /* Draggable and Resizable Panel Styles */
+        .draggable-panel {
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease;
+            resize: both;
+            overflow: auto;
+            min-width: 150px;
+            min-height: 100px;
+        }
+
+        .draggable-panel:hover {
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        .draggable-panel.dragging {
+            border-color: #4CAF50;
+            z-index: 1000;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .drag-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.8), rgba(67, 160, 71, 0.8));
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .draggable-panel:hover .drag-handle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .draggable-panel.dragging .drag-handle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drag-handle::before {
+            content: "⋮⋮⋮";
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            cursor: se-resize;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            background: linear-gradient(135deg, transparent 40%, rgba(76, 175, 80, 0.8) 40%);
+            border-radius: 0 0 8px 0;
+        }
+
+        .draggable-panel:hover .resize-handle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .resize-handle::after {
+            content: "";
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-bottom: 8px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .ui-mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: #673AB7;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .ui-mode-toggle:hover {
+            background: #5E35B1;
+        }
+
+        .ui-mode-toggle.active {
+            background: #4CAF50;
+        }
+
+        .panel-content {
+            padding-top: 10px;
+        }
+
+        /* Adjust existing panels to work with draggable system */
+        .draggable-panel .drag-handle + * {
+            margin-top: 25px;
+        }
     </style>
 </head>
 <body>
@@ -638,6 +756,7 @@
         </div>
         <button id="settingsButton" style="display: none;">⚙️ Controls</button>
         <button id="newGameButton" style="display: none;">🆕 New Game</button>
+        <button id="uiModeToggle" class="ui-mode-toggle" style="display: none;">🔧 UI Mode</button>
         
         <!-- Settings Menu -->
         <div id="settingsMenu">
@@ -1812,6 +1931,7 @@
             document.getElementById('objectives').style.display = 'block';
             document.getElementById('settingsButton').style.display = 'block';
             document.getElementById('newGameButton').style.display = 'block';
+            document.getElementById('uiModeToggle').style.display = 'block';
             document.getElementById('weatherPanel').style.display = 'block';
             document.getElementById('seasonPanel').style.display = 'block';
             document.getElementById('animalsPanel').style.display = 'block';
@@ -2134,6 +2254,12 @@
                     openSettings();
                 }
             }
+            
+            // Handle R key for resetting panel positions (only in UI edit mode)
+            if (event.code === 'KeyR' && window.uiEditMode) {
+                event.preventDefault();
+                resetPanelPositions();
+            }
         }
         
         function updateInstructions() {
@@ -2155,7 +2281,9 @@
                 🌙 Watch the day/night cycle!<br>
                 🖱️ Drag to rotate camera view<br>
                 🔍 Scroll wheel to zoom in/out<br>
-                ⚙️ ESC to open settings
+                ⚙️ ESC to open settings<br>
+                🔧 UI Mode button to customize interface<br>
+                📝 R to reset panel positions (in UI Mode)
             `;
         }
         
@@ -3616,6 +3744,297 @@
         
         // Start the game when page loads
         window.addEventListener('load', init);
+
+        // UI Dragging and Resizing System
+        window.uiEditMode = false; // Make global for access
+        let draggedPanel = null;
+        let resizingPanel = null;
+        let dragOffset = { x: 0, y: 0 };
+        let resizeStartData = { x: 0, y: 0, width: 0, height: 0 };
+
+        // Panel configuration - defines which panels are draggable
+        const draggablePanels = [
+            { id: 'ui', name: 'Info' },
+            { id: 'plantSelector', name: 'Plants' },
+            { id: 'inventory', name: 'Inventory' },
+            { id: 'marketplace', name: 'Market' },
+            { id: 'objectives', name: 'Goals' },
+            { id: 'weatherPanel', name: 'Weather' },
+            { id: 'seasonPanel', name: 'Season' },
+            { id: 'animalsPanel', name: 'Animals' },
+            { id: 'questsPanel', name: 'Quests' }
+        ];
+
+        function initDraggableUI() {
+            // Add UI mode toggle functionality
+            const uiModeToggle = document.getElementById('uiModeToggle');
+            uiModeToggle.addEventListener('click', toggleUIEditMode);
+
+            // Setup each draggable panel
+            draggablePanels.forEach(panelConfig => {
+                const panel = document.getElementById(panelConfig.id);
+                if (panel) {
+                    setupDraggablePanel(panel, panelConfig.name);
+                }
+            });
+
+            // Load saved panel positions and sizes
+            loadPanelStates();
+
+            // Add global mouse event listeners
+            document.addEventListener('mousemove', handleGlobalMouseMove);
+            document.addEventListener('mouseup', handleGlobalMouseUp);
+        }
+
+        function setupDraggablePanel(panel, name) {
+            // Add draggable class
+            panel.classList.add('draggable-panel');
+
+            // Create drag handle
+            const dragHandle = document.createElement('div');
+            dragHandle.className = 'drag-handle';
+            dragHandle.textContent = name;
+            panel.appendChild(dragHandle);
+
+            // Create resize handle
+            const resizeHandle = document.createElement('div');
+            resizeHandle.className = 'resize-handle';
+            panel.appendChild(resizeHandle);
+
+            // Add panel content wrapper if needed
+            const children = Array.from(panel.children).filter(child => 
+                !child.classList.contains('drag-handle') && !child.classList.contains('resize-handle')
+            );
+            
+            if (children.length > 0 && !panel.querySelector('.panel-content')) {
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'panel-content';
+                children.forEach(child => contentWrapper.appendChild(child));
+                panel.appendChild(contentWrapper);
+            }
+
+            // Add event listeners
+            dragHandle.addEventListener('mousedown', (e) => startDragging(e, panel));
+            resizeHandle.addEventListener('mousedown', (e) => startResizing(e, panel));
+
+            // Prevent default drag behavior
+            dragHandle.addEventListener('dragstart', (e) => e.preventDefault());
+        }
+
+        function toggleUIEditMode() {
+            window.uiEditMode = !window.uiEditMode;
+            const toggle = document.getElementById('uiModeToggle');
+            
+            if (window.uiEditMode) {
+                toggle.classList.add('active');
+                toggle.textContent = '✅ UI Mode';
+                document.body.style.cursor = 'default';
+                
+                // Show all drag handles
+                draggablePanels.forEach(panelConfig => {
+                    const panel = document.getElementById(panelConfig.id);
+                    if (panel) {
+                        panel.style.border = '2px dashed rgba(76, 175, 80, 0.5)';
+                        const handle = panel.querySelector('.drag-handle');
+                        if (handle) {
+                            handle.style.opacity = '1';
+                            handle.style.visibility = 'visible';
+                        }
+                        const resizeHandle = panel.querySelector('.resize-handle');
+                        if (resizeHandle) {
+                            resizeHandle.style.opacity = '1';
+                            resizeHandle.style.visibility = 'visible';
+                        }
+                    }
+                });
+                
+                showInstruction('UI Edit Mode ON - Drag panels by their handles, resize from bottom-right corner', 3000);
+            } else {
+                toggle.classList.remove('active');
+                toggle.textContent = '🔧 UI Mode';
+                
+                // Hide drag handles
+                draggablePanels.forEach(panelConfig => {
+                    const panel = document.getElementById(panelConfig.id);
+                    if (panel) {
+                        panel.style.border = '2px solid transparent';
+                        const handle = panel.querySelector('.drag-handle');
+                        if (handle) {
+                            handle.style.opacity = '0';
+                            handle.style.visibility = 'hidden';
+                        }
+                        const resizeHandle = panel.querySelector('.resize-handle');
+                        if (resizeHandle) {
+                            resizeHandle.style.opacity = '0';
+                            resizeHandle.style.visibility = 'hidden';
+                        }
+                    }
+                });
+                
+                showInstruction('UI Edit Mode OFF - Panels locked in position', 2000);
+                savePanelStates();
+            }
+        }
+
+        function startDragging(e, panel) {
+            if (!window.uiEditMode) return;
+            
+            e.preventDefault();
+            draggedPanel = panel;
+            panel.classList.add('dragging');
+            
+            const rect = panel.getBoundingClientRect();
+            dragOffset.x = e.clientX - rect.left;
+            dragOffset.y = e.clientY - rect.top;
+            
+            // Bring panel to front
+            panel.style.zIndex = '1000';
+        }
+
+        function startResizing(e, panel) {
+            if (!window.uiEditMode) return;
+            
+            e.preventDefault();
+            resizingPanel = panel;
+            
+            const rect = panel.getBoundingClientRect();
+            resizeStartData = {
+                x: e.clientX,
+                y: e.clientY,
+                width: rect.width,
+                height: rect.height
+            };
+            
+            panel.style.transition = 'none';
+        }
+
+        function handleGlobalMouseMove(e) {
+            if (draggedPanel) {
+                const newX = e.clientX - dragOffset.x;
+                const newY = e.clientY - dragOffset.y;
+                
+                // Constrain to viewport
+                const maxX = window.innerWidth - draggedPanel.offsetWidth;
+                const maxY = window.innerHeight - draggedPanel.offsetHeight;
+                
+                const constrainedX = Math.max(0, Math.min(maxX, newX));
+                const constrainedY = Math.max(0, Math.min(maxY, newY));
+                
+                draggedPanel.style.left = constrainedX + 'px';
+                draggedPanel.style.top = constrainedY + 'px';
+                draggedPanel.style.right = 'auto';
+                draggedPanel.style.bottom = 'auto';
+            }
+            
+            if (resizingPanel) {
+                const deltaX = e.clientX - resizeStartData.x;
+                const deltaY = e.clientY - resizeStartData.y;
+                
+                const newWidth = Math.max(150, resizeStartData.width + deltaX);
+                const newHeight = Math.max(100, resizeStartData.height + deltaY);
+                
+                // Constrain to viewport
+                const rect = resizingPanel.getBoundingClientRect();
+                const maxWidth = window.innerWidth - rect.left;
+                const maxHeight = window.innerHeight - rect.top;
+                
+                resizingPanel.style.width = Math.min(newWidth, maxWidth) + 'px';
+                resizingPanel.style.height = Math.min(newHeight, maxHeight) + 'px';
+            }
+        }
+
+        function handleGlobalMouseUp(e) {
+            if (draggedPanel) {
+                draggedPanel.classList.remove('dragging');
+                draggedPanel.style.zIndex = '100';
+                draggedPanel = null;
+            }
+            
+            if (resizingPanel) {
+                resizingPanel.style.transition = '';
+                resizingPanel = null;
+            }
+        }
+
+        function savePanelStates() {
+            const panelStates = {};
+            
+            draggablePanels.forEach(panelConfig => {
+                const panel = document.getElementById(panelConfig.id);
+                if (panel) {
+                    const style = window.getComputedStyle(panel);
+                    panelStates[panelConfig.id] = {
+                        left: panel.style.left || style.left,
+                        top: panel.style.top || style.top,
+                        width: panel.style.width || style.width,
+                        height: panel.style.height || style.height,
+                        right: panel.style.right,
+                        bottom: panel.style.bottom
+                    };
+                }
+            });
+            
+            localStorage.setItem('pixelHarvestPanelStates', JSON.stringify(panelStates));
+            console.log('Panel states saved');
+        }
+
+        function loadPanelStates() {
+            try {
+                const savedStates = localStorage.getItem('pixelHarvestPanelStates');
+                if (!savedStates) return;
+                
+                const panelStates = JSON.parse(savedStates);
+                
+                draggablePanels.forEach(panelConfig => {
+                    const panel = document.getElementById(panelConfig.id);
+                    const state = panelStates[panelConfig.id];
+                    
+                    if (panel && state) {
+                        // Apply saved position and size
+                        if (state.left && state.left !== 'auto') {
+                            panel.style.left = state.left;
+                            panel.style.right = 'auto';
+                        }
+                        if (state.top && state.top !== 'auto') {
+                            panel.style.top = state.top;
+                            panel.style.bottom = 'auto';
+                        }
+                        if (state.width && state.width !== 'auto') {
+                            panel.style.width = state.width;
+                        }
+                        if (state.height && state.height !== 'auto') {
+                            panel.style.height = state.height;
+                        }
+                    }
+                });
+                
+                console.log('Panel states loaded');
+            } catch (e) {
+                console.error('Failed to load panel states:', e);
+            }
+        }
+
+        function resetPanelPositions() {
+            draggablePanels.forEach(panelConfig => {
+                const panel = document.getElementById(panelConfig.id);
+                if (panel) {
+                    panel.style.left = '';
+                    panel.style.top = '';
+                    panel.style.right = '';
+                    panel.style.bottom = '';
+                    panel.style.width = '';
+                    panel.style.height = '';
+                }
+            });
+            
+            localStorage.removeItem('pixelHarvestPanelStates');
+            showInstruction('Panel positions reset to defaults', 2000);
+        }
+
+        // Initialize draggable UI when the game loads
+        window.addEventListener('load', () => {
+            setTimeout(initDraggableUI, 100); // Small delay to ensure game is initialized
+        });
     </script>
 </body>
 </html>
