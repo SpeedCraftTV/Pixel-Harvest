@@ -442,7 +442,8 @@
       "notEnoughSeeds": "Not enough seeds!",
       "plotNotUnlocked": "Plot not unlocked!",
       "invalidAction": "Invalid action!",
-      "saveError": "Failed to save game progress"
+      "saveError": "Failed to save game progress",
+      "tutorialNotAvailable": "Tutorial system not available"
     },
     "success": {
       "planted": "Planted {plant}!",
@@ -451,13 +452,29 @@
       "sold": "Sold {item}!",
       "bought": "Bought {item}!",
       "unlocked": "Plot unlocked!",
-      "gameSaved": "Game progress saved!"
+      "gameSaved": "Game progress saved!",
+      "animalPurchased": "{animal} purchased! It will produce resources automatically.",
+      "resourcesCollected": "Collected {count} {resource}! Sell them at the marketplace.",
+      "questCompleted": "Quest completed! Earned {reward} coins.",
+      "coinsEarned": "+{amount} coins earned!",
+      "seedsEarned": "+{amount} {plantType} seeds!",
+      "experienceEarned": "+{amount} experience!",
+      "sprinklerPlaced": "Auto Sprinkler placed! It will water nearby plants automatically.",
+      "fertilizerApplied": "Fertilizer pack applied! All plants grow 20% faster.",
+      "greenhouseBuilt": "Mini Greenhouse built! Plants grow better day and night.",
+      "questsGenerated": "New daily quests generated!",
+      "questsGeneratedDiscount": "New daily quests generated (discounted)!",
+      "questsGeneratedFree": "Free quest generation (low coins)!"
     },
     "info": {
       "dayStart": "A new day begins!",
       "nightStart": "Night falls over the farm...",
-      "seasonChange": "Season changed to {season}!",
-      "weatherChange": "Weather changed to {weather}!"
+      "seasonChange": "Season changed to {season}! Available crops updated.",
+      "weatherChange": "Weather changed to {weather}!",
+      "plantNotAvailable": "{plant} is not available in {season}!",
+      "placeSprinkler": "Click on a plot to place the Auto Sprinkler!",
+      "uiEditModeOn": "UI Edit Mode ON - Drag panels by their handles, resize from bottom-right corner",
+      "uiEditModeOff": "UI Edit Mode OFF - Panels locked in position"
     }
   }
 }

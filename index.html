@@ -3914,7 +3914,7 @@
             updateUI(); // Update plant buttons based on season
             
             // Show season change notification
-            showInstruction(`🍂 Season changed to ${currentSeason.name}! Available crops updated.`, 3000);
+            showInstruction(t('messages.info.seasonChange', { season: currentSeason.name }), 3000);
             saveGame();
         }
         
@@ -3948,7 +3948,7 @@
                 updateObjectives();
                 saveGame();
                 
-                showInstruction(`🐄 ${animalType.charAt(0).toUpperCase() + animalType.slice(1)} purchased! It will produce resources automatically.`, 2000);
+                showInstruction(t('messages.success.animalPurchased', { animal: animalType.charAt(0).toUpperCase() + animalType.slice(1) }), 2000);
             }
         }
         
@@ -3979,7 +3979,7 @@
                 updateQuestsUI();
                 saveGame();
                 
-                showInstruction(`📦 Collected ${collected} ${resourceType}! Sell them at the marketplace.`, 2000);
+                showInstruction(t('messages.success.resourcesCollected', { count: collected, resource: resourceType }), 2000);
             }
         }
         
@@ -4031,7 +4031,7 @@
                         objectives.coinsEarned += quest.reward;
                         questsCompleted = true;
                         
-                        showInstruction(`✅ Quest completed! Earned ${quest.reward} coins.`, 2000);
+                        showInstruction(t('messages.success.questCompleted', { reward: quest.reward }), 2000);
                     }
                 }
             });

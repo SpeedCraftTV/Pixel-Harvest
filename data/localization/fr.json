@@ -442,7 +442,8 @@
       "notEnoughSeeds": "Pas assez de graines !",
       "plotNotUnlocked": "Parcelle non débloquée !",
       "invalidAction": "Action invalide !",
-      "saveError": "Échec de la sauvegarde de la progression du jeu"
+      "saveError": "Échec de la sauvegarde de la progression du jeu",
+      "tutorialNotAvailable": "Système de tutoriel non disponible"
     },
     "success": {
       "planted": "{plant} planté !",
@@ -451,13 +452,29 @@
       "sold": "{item} vendu !",
       "bought": "{item} acheté !",
       "unlocked": "Parcelle débloquée !",
-      "gameSaved": "Progression du jeu sauvegardée !"
+      "gameSaved": "Progression du jeu sauvegardée !",
+      "animalPurchased": "{animal} acheté ! Il produira des ressources automatiquement.",
+      "resourcesCollected": "{count} {resource} collectées ! Vendez-les au marché.",
+      "questCompleted": "Quête terminée ! {reward} pièces gagnées.",
+      "coinsEarned": "+{amount} pièces gagnées !",
+      "seedsEarned": "+{amount} graines de {plantType} !",
+      "experienceEarned": "+{amount} expérience !",
+      "sprinklerPlaced": "Arroseur automatique placé ! Il arrosera les plantes proches automatiquement.",
+      "fertilizerApplied": "Pack d'engrais appliqué ! Toutes les plantes poussent 20% plus vite.",
+      "greenhouseBuilt": "Mini serre construite ! Les plantes poussent mieux jour et nuit.",
+      "questsGenerated": "Nouvelles quêtes quotidiennes générées !",
+      "questsGeneratedDiscount": "Nouvelles quêtes quotidiennes générées (remisées) !",
+      "questsGeneratedFree": "Génération gratuite de quêtes (peu de pièces) !"
     },
     "info": {
       "dayStart": "Un nouveau jour commence !",
       "nightStart": "La nuit tombe sur la ferme...",
-      "seasonChange": "Saison changée en {season} !",
-      "weatherChange": "Météo changée en {weather} !"
+      "seasonChange": "Saison changée en {season} ! Cultures disponibles mises à jour.",
+      "weatherChange": "Météo changée en {weather} !",
+      "plantNotAvailable": "{plant} n'est pas disponible en {season} !",
+      "placeSprinkler": "Cliquez sur une parcelle pour placer l'arroseur automatique !",
+      "uiEditModeOn": "Mode édition interface ACTIVÉ - Faites glisser les panneaux par leurs poignées, redimensionnez depuis le coin inférieur droit",
+      "uiEditModeOff": "Mode édition interface DÉSACTIVÉ - Panneaux verrouillés en position"
     }
   }
 }
