@@ -1161,16 +1161,19 @@ class TutorialUI {
      * Show skip confirmation modal
      */
     showSkipConfirmation() {
+        const localization = window.TutorialLocalization;
+        const skipConfirmation = localization.t('skipConfirmation');
+        
         const modal = this.createModal({
-            title: '⏭️ Skip Tutorial?',
+            title: skipConfirmation.title,
             icon: '❓',
             content: `
-                <p>Are you sure you want to skip the tutorial?</p>
-                <p>You can always restart it later from the game menu.</p>
+                <p>${skipConfirmation.message}</p>
+                <p>${skipConfirmation.note}</p>
             `,
             buttons: [
                 {
-                    text: '✅ Yes, Skip Tutorial',
+                    text: skipConfirmation.confirmSkip,
                     className: 'tutorial-btn-primary',
                     onClick: () => {
                         this.closeModal();
@@ -1178,7 +1181,7 @@ class TutorialUI {
                     }
                 },
                 {
-                    text: '❌ Continue Tutorial',
+                    text: skipConfirmation.continueTutorial,
                     className: 'tutorial-btn-secondary',
                     onClick: () => {
                         this.closeModal();
