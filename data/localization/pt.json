@@ -31,9 +31,57 @@
       "level": "Nível",
       "experience": "Experiência",
       "inventory": "Inventário",
+      "inventoryDetails": {
+        "title": "Inventário",
+        "equipment": "Equipamento",
+        "animalProducts": "Produtos animais"
+      },
       "marketplace": "Mercado",
+      "marketplaceDetails": {
+        "title": "Mercado",
+        "sellProduce": "Vender produtos",
+        "sellAnimalProducts": "Vender produtos animais",
+        "seeds": "Sementes",
+        "equipment": "Equipamento"
+      },
       "objectives": "Objetivos",
-      "settings": "Configurações"
+      "objectivesDetails": {
+        "title": "Objetivos",
+        "harvestCarrots": "Colher cenouras",
+        "surviveCycles": "Sobreviver aos ciclos dia/noite",
+        "earnCoins": "Ganhar moedas"
+      },
+      "settings": "Configurações",
+      "plants": {
+        "title": "Tipos de plantas"
+      },
+      "animals": {
+        "title": "Animais da fazenda",
+        "buy": "Comprar",
+        "collect": "Coletar",
+        "produce": "Produto"
+      },
+      "quests": {
+        "title": "Missões diárias",
+        "progress": "Progresso",
+        "reward": "Recompensa",
+        "newQuests": "Novas missões"
+      },
+      "weather": {
+        "title": "Clima"
+      },
+      "season": {
+        "title": "Estação",
+        "day": "Dia",
+        "of": "de"
+      },
+      "time": {
+        "day": "Dia",
+        "night": "Noite",
+        "camera": "Câmera",
+        "character": "Personagem",
+        "characterFollow": "Seguir personagem"
+      }
     },
     "menu": {
       "main": "Menu Principal",

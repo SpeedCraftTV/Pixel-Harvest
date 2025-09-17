@@ -31,9 +31,57 @@
       "level": "Livello",
       "experience": "Esperienza",
       "inventory": "Inventario",
+      "inventoryDetails": {
+        "title": "Inventario",
+        "equipment": "Equipaggiamento",
+        "animalProducts": "Prodotti animali"
+      },
       "marketplace": "Mercato",
+      "marketplaceDetails": {
+        "title": "Mercato",
+        "sellProduce": "Vendi prodotti",
+        "sellAnimalProducts": "Vendi prodotti animali",
+        "seeds": "Semi",
+        "equipment": "Equipaggiamento"
+      },
       "objectives": "Obiettivi",
-      "settings": "Impostazioni"
+      "objectivesDetails": {
+        "title": "Obiettivi",
+        "harvestCarrots": "Raccogli carote",
+        "surviveCycles": "Sopravvivi ai cicli giorno/notte",
+        "earnCoins": "Guadagna monete"
+      },
+      "settings": "Impostazioni",
+      "plants": {
+        "title": "Tipi di piante"
+      },
+      "animals": {
+        "title": "Animali da fattoria",
+        "buy": "Compra",
+        "collect": "Raccogli",
+        "produce": "Prodotto"
+      },
+      "quests": {
+        "title": "Missioni giornaliere",
+        "progress": "Progresso",
+        "reward": "Ricompensa",
+        "newQuests": "Nuove missioni"
+      },
+      "weather": {
+        "title": "Tempo"
+      },
+      "season": {
+        "title": "Stagione",
+        "day": "Giorno",
+        "of": "di"
+      },
+      "time": {
+        "day": "Giorno",
+        "night": "Notte",
+        "camera": "Fotocamera",
+        "character": "Personaggio",
+        "characterFollow": "Segui personaggio"
+      }
     },
     "menu": {
       "main": "Menu Principale",

@@ -2555,7 +2555,7 @@
         function updatePlantSelectorUI() {
             const plantTitle = document.querySelector('#plantSelector > div:first-child');
             if (plantTitle) {
-                plantTitle.innerHTML = `🌱 ${t('plants.title')}`;
+                plantTitle.innerHTML = `🌱 ${t('ui.game.plants.title')}`;
             }
             
             // Update plant button names and seed counts
@@ -2566,7 +2566,7 @@
                 const seedCountSpan = button.querySelector(`[data-seed-count="${plantType}"]`);
                 
                 if (plantNameSpan && plantType) {
-                    plantNameSpan.textContent = t(`plants.${plantType}`);
+                    plantNameSpan.textContent = t(`game.plants.${plantType}`);
                 }
                 
                 if (seedCountSpan && plantType) {
@@ -2598,112 +2598,98 @@
         function updateInventoryUI() {
             const inventoryTitle = document.querySelector('#inventory > div:first-child');
             if (inventoryTitle) {
-                inventoryTitle.innerHTML = `📦 ${t('inventory.title')}`;
+                inventoryTitle.innerHTML = `📦 ${t('ui.game.inventoryDetails.title')}`;
             }
             
             // Update individual inventory items with current counts
             const inventoryElements = {
-                'carrotCount': { key: 'carrots', emoji: '🥕', inventoryKey: 'carrot' },
-                'tomatoCount': { key: 'tomatoes', emoji: '🍅', inventoryKey: 'tomato' },
-                'rareCount': { key: 'rarePlants', emoji: '✨', inventoryKey: 'rare' },
-                'potatoCount': { key: 'potatoes', emoji: '🥔', inventoryKey: 'potato' },
-                'cabbageCount': { key: 'cabbages', emoji: '🥬', inventoryKey: 'cabbage' },
+                'carrotCount': { key: 'carrot', emoji: '🥕', inventoryKey: 'carrot' },
+                'tomatoCount': { key: 'tomato', emoji: '🍅', inventoryKey: 'tomato' },
+                'rareCount': { key: 'rare', emoji: '✨', inventoryKey: 'rare' },
+                'potatoCount': { key: 'potato', emoji: '🥔', inventoryKey: 'potato' },
+                'cabbageCount': { key: 'cabbage', emoji: '🥬', inventoryKey: 'cabbage' },
                 'cornCount': { key: 'corn', emoji: '🌽', inventoryKey: 'corn' },
-                'watermelonCount': { key: 'watermelons', emoji: '🍉', inventoryKey: 'watermelon' },
-                'pumpkinCount': { key: 'pumpkins', emoji: '🎃', inventoryKey: 'pumpkin' },
-                'appleCount': { key: 'apples', emoji: '🍎', inventoryKey: 'apple' }
+                'watermelonCount': { key: 'watermelon', emoji: '🍉', inventoryKey: 'watermelon' },
+                'pumpkinCount': { key: 'pumpkin', emoji: '🎃', inventoryKey: 'pumpkin' },
+                'appleCount': { key: 'apple', emoji: '🍎', inventoryKey: 'apple' }
             };
             
             Object.entries(inventoryElements).forEach(([id, config]) => {
                 const element = document.getElementById(id);
                 if (element) {
                     const count = inventory[config.inventoryKey] || 0;
-                    element.innerHTML = `${config.emoji} ${t('inventory.' + config.key)}: ${count}`;
+                    element.innerHTML = `${config.emoji} ${t('game.plants.' + config.key)}s: ${count}`;
                 }
             });
             
             // Update equipment items
             const sprinklerElement = document.getElementById('sprinklerCount');
             if (sprinklerElement) {
-                sprinklerElement.innerHTML = `💧 ${t('inventory.autoSprinklers')}: ${equipment.sprinkler || 0}`;
+                sprinklerElement.innerHTML = `💧 ${t('game.equipment.sprinkler')}s: ${equipment.sprinkler || 0}`;
             }
             
             const fertilizerElement = document.getElementById('fertilizerCount');
             if (fertilizerElement) {
-                fertilizerElement.innerHTML = `🌿 ${t('inventory.fertilizer')}: ${equipment.fertilizer || 0}`;
+                fertilizerElement.innerHTML = `🌿 ${t('game.equipment.fertilizer')}: ${equipment.fertilizer || 0}`;
             }
             
             const greenhouseElement = document.getElementById('greenhouseCount');
             if (greenhouseElement) {
-                greenhouseElement.innerHTML = `🏠 ${t('inventory.greenhouses')}: ${equipment.greenhouse || 0}`;
+                greenhouseElement.innerHTML = `🏠 ${t('game.equipment.greenhouse')}s: ${equipment.greenhouse || 0}`;
             }
             
             // Update animal products
             const eggElement = document.getElementById('eggInventory');
             if (eggElement) {
-                eggElement.innerHTML = `🥚 ${t('inventory.eggs')}: ${animalInventory.eggs || 0}`;
+                eggElement.innerHTML = `🥚 Eggs: ${animalInventory.eggs || 0}`;
             }
             
             const milkElement = document.getElementById('milkInventory');
             if (milkElement) {
-                milkElement.innerHTML = `🥛 ${t('inventory.milk')}: ${animalInventory.milk || 0}`;
+                milkElement.innerHTML = `🥛 Milk: ${animalInventory.milk || 0}`;
             }
             
             const truffleElement = document.getElementById('truffleInventory');
             if (truffleElement) {
-                truffleElement.innerHTML = `🍄 ${t('inventory.truffles')}: ${animalInventory.truffles || 0}`;
+                truffleElement.innerHTML = `🍄 Truffles: ${animalInventory.truffles || 0}`;
             }
             
             // Update section headers
             const equipmentHeader = document.querySelector('#inventory .equipment-header');
             if (equipmentHeader) {
-                equipmentHeader.innerHTML = `🔧 ${t('inventory.equipment')}`;
+                equipmentHeader.innerHTML = `🔧 ${t('ui.game.inventoryDetails.equipment')}:`;
             }
             
             const animalProductsHeader = document.querySelector('#inventory .animal-products-header');
             if (animalProductsHeader) {
-                animalProductsHeader.innerHTML = `🐄 ${t('inventory.animalProducts')}`;
+                animalProductsHeader.innerHTML = `🐄 ${t('ui.game.inventoryDetails.animalProducts')}:`;
             }
         }
         
         function updateMarketplaceUI() {
             const marketTitle = document.querySelector('#marketplace > div:first-child');
             if (marketTitle) {
-                marketTitle.innerHTML = `🏪 ${t('marketplace.title')}`;
+                marketTitle.innerHTML = `🏪 ${t('ui.game.marketplaceDetails.title')}`;
             }
             
             // Update category headers
             const categories = document.querySelectorAll('#marketplace .market-category h3');
             if (categories.length >= 4) {
-                categories[0].innerHTML = `💰 ${t('marketplace.sellProduce')}`;
-                categories[1].innerHTML = `🐄 ${t('marketplace.sellAnimalProducts')}`;
-                categories[2].innerHTML = `🌱 ${t('marketplace.seeds')}`;
-                categories[3].innerHTML = `🔧 ${t('marketplace.equipment')}`;
+                categories[0].innerHTML = `💰 ${t('ui.game.marketplaceDetails.sellProduce')}`;
+                categories[1].innerHTML = `🐄 ${t('ui.game.marketplaceDetails.sellAnimalProducts')}`;
+                categories[2].innerHTML = `🌱 ${t('ui.game.marketplaceDetails.seeds')}`;
+                categories[3].innerHTML = `🔧 ${t('ui.game.marketplaceDetails.equipment')}`;
             }
             
             // Update sell buttons with dynamic prices and translations
             const plantTypes = ['carrot', 'tomato', 'rare', 'potato', 'cabbage', 'corn', 'watermelon', 'pumpkin', 'apple'];
             plantTypes.forEach(plantType => {
                 const price = getDynamicPrice(plantType, 'sell');
-                const plantTranslation = t(`plants.${plantType}`);
+                const plantTranslation = t(`game.plants.${plantType}`);
                 const sellBtn = document.getElementById(`sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}Btn`);
                 if (sellBtn) {
                     const count = inventory[plantType] || 0;
-                    const sellText = (() => {
-                        switch(plantType) {
-                            case 'carrot': return t('marketplace.sellCarrots');
-                            case 'tomato': return t('marketplace.sellTomatoes');
-                            case 'rare': return t('marketplace.sellRare');
-                            case 'potato': return t('marketplace.sellPotatoes');
-                            case 'cabbage': return t('marketplace.sellCabbages');
-                            case 'corn': return t('marketplace.sellCorn');
-                            case 'watermelon': return t('marketplace.sellWatermelons');
-                            case 'pumpkin': return t('marketplace.sellPumpkins');
-                            case 'apple': return t('marketplace.sellApples');
-                            default: return t(`marketplace.sell${plantType.charAt(0).toUpperCase() + plantType.slice(1)}`);
-                        }
-                    })();
-                    sellBtn.textContent = `${sellText} (${price}💰)`;
+                    sellBtn.textContent = `Sell ${plantTranslation}s (${price}💰)`;
                     sellBtn.disabled = count <= 0;
                     sellBtn.style.opacity = count > 0 ? '1' : '0.5';
                 }
@@ -2717,15 +2703,8 @@
                 const sellBtn = document.getElementById(`sell${productType.charAt(0).toUpperCase() + productType.slice(1)}Btn`);
                 if (sellBtn) {
                     const count = animalInventory[productType] || 0;
-                    const productTranslation = (() => {
-                        switch(productType) {
-                            case 'eggs': return t('marketplace.sellEggs');
-                            case 'milk': return t('marketplace.sellMilk');
-                            case 'truffles': return t('marketplace.sellTruffles');
-                            default: return t(`marketplace.sell${productType.charAt(0).toUpperCase() + productType.slice(1)}`);
-                        }
-                    })();
-                    sellBtn.textContent = `${productTranslation} (${price}💰 ${t('marketplace.each')}) [${count}]`;
+                    const productName = productType.charAt(0).toUpperCase() + productType.slice(1);
+                    sellBtn.textContent = `Sell ${productName} (${price}💰 each) [${count}]`;
                     sellBtn.disabled = count <= 0;
                     sellBtn.style.opacity = count > 0 ? '1' : '0.5';
                 }
@@ -2734,10 +2713,10 @@
             // Update seed purchase buttons
             plantTypes.forEach(plantType => {
                 const price = getDynamicPrice(plantType, 'buy');
-                const plantTranslation = t(`plants.${plantType}`);
+                const plantTranslation = t(`game.plants.${plantType}`);
                 const buyBtn = document.getElementById(`buy${plantType.charAt(0).toUpperCase() + plantType.slice(1)}SeedsBtn`);
                 if (buyBtn) {
-                    buyBtn.textContent = `${t('marketplace.buy')} ${plantTranslation} ${t('marketplace.seeds')} (${price}💰)`;
+                    buyBtn.textContent = `Buy ${plantTranslation} Seeds (${price}💰)`;
                     buyBtn.disabled = coins < price;
                     buyBtn.style.opacity = coins >= price ? '1' : '0.5';
                 }
@@ -2745,9 +2724,21 @@
             
             // Update equipment buttons
             const equipmentButtons = [
-                { id: 'sprinklerBtn', key: 'autoSprinkler', cost: 150 },
-                { id: 'fertilizerBtn', key: 'fertilizerPack', cost: 50 },
-                { id: 'greenhouseBtn', key: 'miniGreenhouse', cost: 300 }
+                { id: 'sprinklerBtn', key: 'sprinkler', cost: 150 },
+                { id: 'fertilizerBtn', key: 'fertilizer', cost: 50 },
+                { id: 'greenhouseBtn', key: 'greenhouse', cost: 300 }
+            ];
+            
+            equipmentButtons.forEach(equipment => {
+                const btn = document.getElementById(equipment.id);
+                if (btn) {
+                    const equipmentTranslation = t(`game.equipment.${equipment.key}`);
+                    btn.textContent = `${equipmentTranslation} (${equipment.cost}💰)`;
+                    btn.disabled = coins < equipment.cost;
+                    btn.style.opacity = coins >= equipment.cost ? '1' : '0.5';
+                }
+            });
+        }
             ];
             
             equipmentButtons.forEach(({ id, key, cost }) => {
@@ -5221,7 +5212,7 @@
         
         function updateUI() {
             // Update score and coins
-            document.getElementById('score').textContent = `${t('score')}: ${score}`;
+            document.getElementById('score').textContent = `${t('ui.game.score')}: ${score}`;
             document.getElementById('coins').textContent = coins;
             
             // Use the new translation-aware UI update functions

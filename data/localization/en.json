@@ -31,9 +31,57 @@
       "level": "Level",
       "experience": "Experience",
       "inventory": "Inventory",
+      "inventoryDetails": {
+        "title": "Inventory",
+        "equipment": "Equipment",
+        "animalProducts": "Animal Products"
+      },
       "marketplace": "Marketplace",
+      "marketplaceDetails": {
+        "title": "Marketplace",
+        "sellProduce": "Sell Produce",
+        "sellAnimalProducts": "Sell Animal Products",
+        "seeds": "Seeds",
+        "equipment": "Equipment"
+      },
       "objectives": "Objectives",
-      "settings": "Settings"
+      "objectivesDetails": {
+        "title": "Objectives",
+        "harvestCarrots": "Harvest carrots",
+        "surviveCycles": "Survive day/night cycles",
+        "earnCoins": "Earn coins"
+      },
+      "settings": "Settings",
+      "plants": {
+        "title": "Plant Types"
+      },
+      "animals": {
+        "title": "Farm Animals",
+        "buy": "Buy",
+        "collect": "Collect",
+        "produce": "Produce"
+      },
+      "quests": {
+        "title": "Daily Quests",
+        "progress": "Progress",
+        "reward": "Reward",
+        "newQuests": "New Quests"
+      },
+      "weather": {
+        "title": "Weather"
+      },
+      "season": {
+        "title": "Season",
+        "day": "Day",
+        "of": "of"
+      },
+      "time": {
+        "day": "Day",
+        "night": "Night",
+        "camera": "Camera",
+        "character": "Character",
+        "characterFollow": "Character Follow"
+      }
     },
     "menu": {
       "main": "Main Menu",
