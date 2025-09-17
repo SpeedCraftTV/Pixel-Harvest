@@ -5,7 +5,9 @@
     "flag": "🇵🇹",
     "code": "pt",
     "completion": 100,
-    "contributors": ["Pixel-Harvest Team"],
+    "contributors": [
+      "Pixel-Harvest Team"
+    ],
     "lastUpdated": "2024-12-19"
   },
   "ui": {
@@ -208,24 +210,6 @@
           "Use moedas para comprar sementes, equipamentos e desbloquear parcelas"
         ]
       },
-      "managing_inventory": {
-        "title": "Gerenciando seu inventário",
-        "description": "Seu inventário mostra todas suas colheitas, sementes e equipamentos. Desktop: Verifique o painel do inventário à esquerda. Mobile: Toque no botão inventário no menu inferior.",
-        "hints": [
-          "Sementes são necessárias para plantar",
-          "Colheitas podem ser vendidas por moedas",
-          "Equipamentos ajudam a automatizar sua fazenda"
-        ]
-      },
-      "using_marketplace": {
-        "title": "Usando o mercado",
-        "description": "O mercado é onde você pode vender colheitas e comprar novas sementes. Desktop: Clique no painel do mercado ou pressione M. Mobile: Toque no botão mercado. Abra o mercado agora!",
-        "hints": [
-          "Preços mudam baseados em oferta e demanda",
-          "Venda suas colheitas quando os preços estão altos",
-          "Compre diferentes tipos de sementes para variedade"
-        ]
-      },
       "selling_crops": {
         "title": "Vendendo colheitas",
         "description": "Hora de vender suas colheitas ganhas com muito trabalho! No mercado, clique nas colheitas no seu inventário, depois clique \"Vender\". O preço será mostrado em moedas. Venda algumas colheitas agora!",
@@ -358,33 +342,21 @@
     "plants": {
       "carrot": "Cenoura",
       "tomato": "Tomate",
-      "wheat": "Trigo",
-      "corn": "Milho",
       "potato": "Batata",
-      "lettuce": "Alface",
       "cabbage": "Repolho",
-      "onion": "Cebola",
-      "apple": "Maçã",
-      "pumpkin": "Abóbora",
+      "corn": "Milho",
       "watermelon": "Melancia",
+      "pumpkin": "Abóbora",
+      "apple": "Árvore de maçã",
       "rare": "Planta rara"
     },
     "animals": {
-      "cow": "Vaca",
       "chicken": "Galinha",
-      "sheep": "Ovelha",
-      "pig": "Porco",
-      "goat": "Cabra",
-      "duck": "Pato"
+      "cow": "Vaca",
+      "pig": "Porco"
     },
     "equipment": {
-      "shovel": "Pá",
-      "watering_can": "Regador",
-      "plow": "Arado",
-      "harvester": "Colheitadeira",
-      "tractor": "Trator",
-      "irrigation": "Irrigação",
-      "sprinkler": "Aspersor automático",
+      "sprinkler": "Borrifador automático",
       "fertilizer": "Fertilizante",
       "greenhouse": "Mini estufa"
     },
@@ -392,9 +364,8 @@
       "sunny": "Ensolarado",
       "rainy": "Chuvoso",
       "cloudy": "Nublado",
-      "stormy": "Tempestuoso",
-      "foggy": "Nebuloso",
-      "snowy": "Nevando"
+      "snowy": "Nevando",
+      "stormy": "Tempestuoso"
     },
     "seasons": {
       "spring": "Primavera",
@@ -403,15 +374,13 @@
       "winter": "Inverno"
     },
     "objectives": {
-      "plant_crops": "Plante {count} culturas",
-      "harvest_crops": "Colha {count} {crop}",
-      "earn_coins": "Ganhe {amount} moedas",
-      "plant_seeds": "Plante {count} sementes",
-      "unlock_plots": "Desbloqueie {count} parcelas",
-      "buy_equipment": "Compre equipamento",
-      "complete_daily": "Complete missão diária",
-      "survive_cycles": "Sobreviva a {count} ciclos dia/noite",
-      "total_plants": "Colha {count} plantas no total"
+      "harvest_crops": "Colher {count} {crop}",
+      "earn_coins": "Ganhar {amount} moedas",
+      "plant_seeds": "Plantar {count} sementes",
+      "unlock_plots": "Desbloquear {count} parcelas",
+      "buy_equipment": "Comprar qualquer equipamento",
+      "survive_cycles": "Sobreviver a {count} ciclos dia/noite",
+      "total_plants": "Colher {count} plantas totais"
     },
     "marketplace": {
       "sell": "Vender",
@@ -423,13 +392,6 @@
   },
   "messages": {
     "errors": {
-      "save_failed": "Falha ao salvar",
-      "load_failed": "Falha ao carregar",
-      "network_error": "Erro de rede",
-      "invalid_action": "Ação inválida",
-      "insufficient_funds": "Fundos insuficientes",
-      "plot_occupied": "Parcela ocupada",
-      "no_seeds": "Nenhuma semente disponível",
       "notEnoughCoins": "Moedas insuficientes!",
       "notEnoughSeeds": "Sementes insuficientes!",
       "plotNotUnlocked": "Parcela não desbloqueada!",
@@ -437,12 +399,6 @@
       "saveError": "Falha ao salvar progresso do jogo"
     },
     "success": {
-      "game_saved": "Jogo salvo",
-      "crop_planted": "Cultura plantada",
-      "crop_harvested": "Cultura colhida",
-      "item_purchased": "Item comprado",
-      "plot_unlocked": "Parcela desbloqueada",
-      "objective_completed": "Objetivo completado",
       "planted": "{plant} plantado!",
       "harvested": "{plant} colhido!",
       "watered": "Plantas regadas!",
@@ -452,11 +408,6 @@
       "gameSaved": "Progresso do jogo salvo!"
     },
     "info": {
-      "season_changed": "Estação mudou para {season}",
-      "weather_changed": "Clima mudou para {weather}",
-      "level_up": "Subiu de nível! Novo nível: {level}",
-      "daily_quest_available": "Nova missão diária disponível",
-      "tutorial_available": "Tutorial disponível",
       "dayStart": "Um novo dia começa!",
       "nightStart": "A noite cai sobre a fazenda...",
       "seasonChange": "Estação mudou para {season}!",

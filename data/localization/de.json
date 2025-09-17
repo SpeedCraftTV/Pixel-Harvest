@@ -83,6 +83,7 @@
         "subtitle": "Wählen Sie Ihre bevorzugte Sprache für das Spiel und Tutorial:",
         "continue": "Weiter mit"
       },
+      "startTutorial": "🚀 Tutorial starten",
       "settings": "⚙️ Einstellungen",
       "skipTutorial": "⏭️ Tutorial überspringen"
     },
@@ -205,24 +206,6 @@
           "Preise schwanken basierend auf Marktbedingungen",
           "Erntegut verkaufen ist der Hauptweg, Münzen zu verdienen",
           "Verwende Münzen, um Samen, Ausrüstung zu kaufen und Felder freizuschalten"
-        ]
-      },
-      "managing_inventory": {
-        "title": "Dein Inventar verwalten",
-        "description": "Dein Inventar zeigt all dein Erntegut, deine Samen und Ausrüstung. Desktop: Überprüfe das Inventar-Panel links. Mobile: Tippe den Inventar-Button im unteren Menü.",
-        "hints": [
-          "Samen werden zum Pflanzen benötigt",
-          "Erntegut kann für Münzen verkauft werden",
-          "Ausrüstung hilft bei der Automatisierung deines Hofs"
-        ]
-      },
-      "using_marketplace": {
-        "title": "Den Marktplatz nutzen",
-        "description": "Der Marktplatz ist, wo du Erntegut verkaufen und neue Samen kaufen kannst. Desktop: Klicke das Marktplatz-Panel oder drücke M. Mobile: Tippe den Marktplatz-Button. Öffne jetzt den Marktplatz!",
-        "hints": [
-          "Preise ändern sich basierend auf Angebot und Nachfrage",
-          "Verkaufe dein Erntegut, wenn die Preise hoch sind",
-          "Kaufe verschiedene Samenarten für Vielfalt"
         ]
       },
       "selling_crops": {
@@ -357,32 +340,20 @@
     "plants": {
       "carrot": "Karotte",
       "tomato": "Tomate",
-      "wheat": "Weizen",
-      "corn": "Mais",
       "potato": "Kartoffel",
-      "lettuce": "Salat",
       "cabbage": "Kohl",
-      "onion": "Zwiebel",
-      "apple": "Apfel",
-      "pumpkin": "Kürbis",
+      "corn": "Mais",
       "watermelon": "Wassermelone",
+      "pumpkin": "Kürbis",
+      "apple": "Apfelbaum",
       "rare": "Seltene Pflanze"
     },
     "animals": {
-      "cow": "Kuh",
       "chicken": "Huhn",
-      "sheep": "Schaf",
-      "pig": "Schwein",
-      "goat": "Ziege",
-      "duck": "Ente"
+      "cow": "Kuh",
+      "pig": "Schwein"
     },
     "equipment": {
-      "shovel": "Schaufel",
-      "watering_can": "Gießkanne",
-      "plow": "Pflug",
-      "harvester": "Ernter",
-      "tractor": "Traktor",
-      "irrigation": "Bewässerung",
       "sprinkler": "Auto-Sprinkler",
       "fertilizer": "Dünger",
       "greenhouse": "Mini-Gewächshaus"
@@ -391,9 +362,8 @@
       "sunny": "Sonnig",
       "rainy": "Regnerisch",
       "cloudy": "Bewölkt",
-      "stormy": "Stürmisch",
-      "foggy": "Neblig",
-      "snowy": "Schneeig"
+      "snowy": "Schneeig",
+      "stormy": "Stürmisch"
     },
     "seasons": {
       "spring": "Frühling",
@@ -402,13 +372,11 @@
       "winter": "Winter"
     },
     "objectives": {
-      "plant_crops": "Pflanze {count} Pflanzen",
       "harvest_crops": "Ernte {count} {crop}",
       "earn_coins": "Verdiene {amount} Münzen",
       "plant_seeds": "Pflanze {count} Samen",
       "unlock_plots": "Schalte {count} Felder frei",
       "buy_equipment": "Kaufe Ausrüstung",
-      "complete_daily": "Erfülle tägliche Quest",
       "survive_cycles": "Überstehe {count} Tag/Nacht-Zyklen",
       "total_plants": "Ernte {count} Pflanzen insgesamt"
     },
@@ -422,13 +390,6 @@
   },
   "messages": {
     "errors": {
-      "save_failed": "Speichern fehlgeschlagen",
-      "load_failed": "Laden fehlgeschlagen",
-      "network_error": "Netzwerkfehler",
-      "invalid_action": "Ungültige Aktion",
-      "insufficient_funds": "Unzureichende Mittel",
-      "plot_occupied": "Feld belegt",
-      "no_seeds": "Keine Samen verfügbar",
       "notEnoughCoins": "Nicht genug Münzen!",
       "notEnoughSeeds": "Nicht genug Samen!",
       "plotNotUnlocked": "Feld nicht freigeschaltet!",
@@ -436,12 +397,6 @@
       "saveError": "Fehler beim Speichern des Spielfortschritts"
     },
     "success": {
-      "game_saved": "Spiel gespeichert",
-      "crop_planted": "Pflanze gepflanzt",
-      "crop_harvested": "Pflanze geerntet",
-      "item_purchased": "Gegenstand gekauft",
-      "plot_unlocked": "Feld freigeschaltet",
-      "objective_completed": "Ziel erfüllt",
       "planted": "{plant} gepflanzt!",
       "harvested": "{plant} geerntet!",
       "watered": "Pflanzen gegossen!",
@@ -451,11 +406,6 @@
       "gameSaved": "Spielfortschritt gespeichert!"
     },
     "info": {
-      "season_changed": "Jahreszeit gewechselt zu {season}",
-      "weather_changed": "Wetter gewechselt zu {weather}",
-      "level_up": "Level aufgestiegen! Neues Level: {level}",
-      "daily_quest_available": "Neue tägliche Quest verfügbar",
-      "tutorial_available": "Tutorial verfügbar",
       "dayStart": "Ein neuer Tag beginnt!",
       "nightStart": "Die Nacht bricht über die Farm herein...",
       "seasonChange": "Jahreszeit gewechselt zu {season}!",
