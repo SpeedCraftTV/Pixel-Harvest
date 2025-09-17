@@ -997,14 +997,21 @@ class TutorialUI {
                     b.classList.remove('selected');
                     b.style.background = 'rgba(255,255,255,0.1)';
                     b.style.borderColor = 'rgba(255,255,255,0.2)';
-                    b.querySelector('span:last-child')?.remove();
+                    // Only remove checkmark spans, not language name spans
+                    const checkmarkSpan = b.querySelector('span[style*="color: #FFD700"]');
+                    if (checkmarkSpan) {
+                        checkmarkSpan.remove();
+                    }
                 });
                 
                 // Add selection to clicked button
                 btn.classList.add('selected');
                 btn.style.background = '#4CAF50';
                 btn.style.borderColor = '#4CAF50';
-                btn.innerHTML += '<span style="color: #FFD700;">✓</span>';
+                // Only add checkmark if it doesn't already exist
+                if (!btn.querySelector('span[style*="color: #FFD700"]')) {
+                    btn.innerHTML += '<span style="color: #FFD700;">✓</span>';
+                }
                 
                 // Update selected language display
                 const selectedNameSpan = modal.querySelector('#selectedLanguageName');
