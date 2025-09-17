@@ -2754,23 +2754,23 @@
         function updateObjectivesUI() {
             const objectivesTitle = document.querySelector('#objectives > div:first-child');
             if (objectivesTitle) {
-                objectivesTitle.innerHTML = `🎯 ${t('objectives.title')}`;
+                objectivesTitle.innerHTML = `🎯 ${t('ui.game.objectivesDetails.title')}:`;
             }
             
             // Update objective text based on current progress
             const objective1 = document.getElementById('objective1');
             if (objective1) {
-                objective1.textContent = `🥕 ${t('objectives.harvestCarrots')} (${objectives.carrotsHarvested}/5)`;
+                objective1.textContent = `🥕 Harvest 5 carrots (${objectives.carrotsHarvested}/5)`;
             }
             
             const objective2 = document.getElementById('objective2');
             if (objective2) {
-                objective2.textContent = `🌙 ${t('objectives.surviveCycles')} (${objectives.dayNightCycles}/2)`;
+                objective2.textContent = `🌙 Survive 2 day/night cycles (${objectives.dayNightCycles}/2)`;
             }
             
             const objective3 = document.getElementById('objective3');
             if (objective3) {
-                objective3.textContent = `💰 ${t('objectives.earnCoins')} (${objectives.coinsEarned}/20)`;
+                objective3.textContent = `💰 Earn 20 coins (${objectives.coinsEarned}/20)`;
             }
             
             const objective4 = document.getElementById('objective4');
@@ -2802,41 +2802,41 @@
         function updateWeatherUI() {
             const weatherTitle = document.querySelector('#weatherPanel > div:first-child');
             if (weatherTitle) {
-                weatherTitle.innerHTML = `🌤️ ${t('weather.title')}`;
+                weatherTitle.innerHTML = `🌤️ ${t('ui.game.weather.title')}`;
             }
             
             const weatherName = document.getElementById('weatherName');
             if (weatherName) {
-                weatherName.textContent = t(`weather.${currentWeather.type}`);
+                weatherName.textContent = t(`game.weather.${currentWeather.type}`);
             }
             
             const weatherEffect = document.getElementById('weatherEffect');
             if (weatherEffect) {
-                weatherEffect.textContent = t(`weather.effect.${currentWeather.type}`);
+                weatherEffect.textContent = 'Plants grow normally'; // Simple fallback
             }
         }
         
         function updateSeasonUI() {
             const seasonTitle = document.querySelector('#seasonPanel > div:first-child');
             if (seasonTitle) {
-                seasonTitle.innerHTML = `🍂 ${t('season.title')}`;
+                seasonTitle.innerHTML = `🍂 ${t('ui.game.season.title')}`;
             }
             
             const seasonName = document.getElementById('seasonName');
             if (seasonName) {
-                seasonName.textContent = t(`season.${currentSeason.type}`);
+                seasonName.textContent = t(`game.seasons.${currentSeason.type}`);
             }
             
             const seasonDay = document.getElementById('seasonDay');
             if (seasonDay) {
-                seasonDay.textContent = `${t('season.day')} ${currentSeason.day} ${t('season.of')} ${currentSeason.maxDays}`;
+                seasonDay.textContent = `${t('ui.game.season.day')} ${currentSeason.day} ${t('ui.game.season.of')} ${currentSeason.maxDays}`;
             }
         }
         
         function updateAnimalsUI() {
             const animalsTitle = document.querySelector('#animalsPanel > div:first-child');
             if (animalsTitle) {
-                animalsTitle.innerHTML = `🐄 ${t('animals.title')}`;
+                animalsTitle.innerHTML = `🐄 ${t('ui.game.animals.title')}`;
             }
             
             // Update animal names and labels
@@ -2850,8 +2850,8 @@
                     const animalLabel = item.querySelector('div:first-child div:first-child');
                     if (animalLabel) {
                         const count = animals[animalType]?.count || 0;
-                        const animalName = t(`animals.${animalType}s`);
-                        animalLabel.innerHTML = `${animalType === 'chicken' ? '🐔' : animalType === 'cow' ? '🐄' : '🐷'} ${animalName}: <span id="${animalType}Count">${count}</span>`;
+                        const animalName = t(`game.animals.${animalType}`);
+                        animalLabel.innerHTML = `${animalType === 'chicken' ? '🐔' : animalType === 'cow' ? '🐄' : '🐷'} ${animalName}s: <span id="${animalType}Count">${count}</span>`;
                     }
                     
                     // Update produce label
@@ -2860,20 +2860,20 @@
                         const produceType = animalType === 'chicken' ? 'eggs' : animalType === 'cow' ? 'milk' : 'truffles';
                         const produceCount = animals[animalType]?.[produceType] || 0;
                         const produceEmoji = animalType === 'chicken' ? '🥚' : animalType === 'cow' ? '🥛' : '🍄';
-                        produceLabel.innerHTML = `${t('animals.produce')}: <span id="${produceType}Count">${produceCount}</span> ${produceEmoji}`;
+                        produceLabel.innerHTML = `${t('ui.game.animals.produce')}: <span id="${produceType}Count">${produceCount}</span> ${produceEmoji}`;
                     }
                     
                     // Update buy button
                     const buyBtn = item.querySelector(`#buy${animalType.charAt(0).toUpperCase() + animalType.slice(1)}Btn`);
                     if (buyBtn) {
                         const cost = ANIMAL_COSTS[animalType];
-                        buyBtn.textContent = `${t('animals.buy')} (${cost}💰)`;
+                        buyBtn.textContent = `${t('ui.game.animals.buy')} (${cost}💰)`;
                     }
                     
                     // Update collect button
                     const collectBtn = item.querySelector(`#collect${animalType === 'chicken' ? 'Eggs' : animalType === 'cow' ? 'Milk' : 'Truffles'}Btn`);
                     if (collectBtn) {
-                        collectBtn.textContent = t('animals.collect');
+                        collectBtn.textContent = t('ui.game.animals.collect');
                     }
                 }
             });
@@ -2882,32 +2882,38 @@
         function updateQuestsUI() {
             const questsTitle = document.querySelector('#questsPanel > div:first-child');
             if (questsTitle) {
-                questsTitle.innerHTML = `📋 ${t('quests.title')}`;
+                questsTitle.innerHTML = `📋 ${t('ui.game.quests.title')}`;
             }
             
-            // Update quest descriptions and progress
-            dailyQuests.forEach((quest, index) => {
-                const questElement = document.querySelector(`#questsPanel .quest-item:nth-child(${index + 1})`);
-                if (questElement) {
-                    const questTitle = questElement.querySelector('.quest-title');
-                    const questDesc = questElement.querySelector('.quest-description');
-                    const questProgress = questElement.querySelector('.quest-progress-text');
+            // Simple quest list update without complex translation lookups
+            const questList = document.getElementById('questList');
+            if (questList) {
+                let html = '';
+                dailyQuests.forEach((quest, index) => {
+                    const progressPercent = Math.min(100, (quest.progress / quest.target) * 100);
+                    const isCompleted = quest.progress >= quest.target;
                     
-                    if (questTitle) {
-                        const questName = t(`quests.${quest.baseType}`, quest.target);
-                        questTitle.textContent = `📋 ${questName}`;
-                    }
-                    
-                    if (questDesc) {
-                        questDesc.textContent = t(`quests.${quest.baseType}Desc`);
-                    }
-                    
-                    if (questProgress) {
-                        const progress = questProgress[quest.id] || 0;
-                        questProgress.textContent = `${t('quests.progress')}: ${progress}/${quest.target} | ${t('quests.reward')}: ${quest.reward}💰`;
-                    }
+                    html += `
+                        <div class="quest-item ${isCompleted ? 'quest-completed' : ''}">
+                            <div style="font-weight: bold; margin-bottom: 5px;">${quest.name}</div>
+                            <div style="font-size: 12px; margin-bottom: 5px;">${quest.description}</div>
+                            <div class="quest-progress">
+                                <div class="quest-progress-bar" style="width: ${progressPercent}%;"></div>
+                            </div>
+                            <div style="font-size: 11px; opacity: 0.8;">
+                                ${t('ui.game.quests.progress')}: ${quest.progress}/${quest.target} | ${t('ui.game.quests.reward')}: ${quest.reward}💰
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                if (dailyQuests.length === 0) {
+                    html = '<div style="text-align: center; color: #999; padding: 20px;">No active quests</div>';
                 }
-            });
+                
+                questList.innerHTML = html;
+            }
+        }
             
             // Update new quests button
             const newQuestsBtn = document.querySelector('#questsPanel button');
@@ -2924,22 +2930,21 @@
             if (timeDisplay) {
                 const dayProgress = (Math.sin(dayNightCycle) + 1) / 2;
                 const isDay = dayProgress > 0.5;
-                timeDisplay.textContent = isDay ? t('time.day') : t('time.night');
+                timeDisplay.textContent = isDay ? t('ui.game.time.day') : t('ui.game.time.night');
             }
             
             if (cameraMode) {
-                cameraMode.innerHTML = `${t('time.camera')}: ${t('time.characterFollow')}`;
+                cameraMode.innerHTML = `${t('ui.game.time.camera')}: ${t('ui.game.time.characterFollow')}`;
             }
             
             // Update character status
             const characterStatus = document.getElementById('characterStatus');
             if (characterStatus) {
                 const action = character.currentAction || 'idle';
-                const actionText = t(`time.${action}`);
                 const coords = `(${character.x.toFixed(1)}, ${character.z.toFixed(1)})`;
                 
                 const closestPlot = findClosestPlot();
-                let statusText = `${t('time.character')}: ${actionText} ${coords}`;
+                let statusText = `${t('ui.game.time.character')}: ${action} ${coords}`;
                 
                 if (closestPlot) {
                     const distance = getDistanceToPlot(closestPlot);
