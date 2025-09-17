@@ -82,7 +82,7 @@ class TutorialManager {
                 // After language is selected, show the welcome modal
                 this.ui.showWelcomeModal({
                     onStartTutorial: () => this.startTutorial(),
-                    onSkipTutorial: () => this.skipTutorial(),
+                    onSkipTutorial: () => this.ui.showSkipConfirmation(),
                     onViewSettings: () => this.showTutorialSettings()
                 });
             }

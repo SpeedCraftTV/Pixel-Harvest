@@ -110,7 +110,7 @@ const TutorialLocalization = {
                 message: 'Are you sure you want to skip the tutorial?',
                 note: 'You can always restart it later from the game menu.',
                 confirmSkip: '✅ Yes, Skip Tutorial',
-                continueTutorial: '❌ Continue Tutorial'
+                continueTutorial: '✅ Continue Tutorial'
             },
 
             // Settings modal
@@ -267,7 +267,7 @@ const TutorialLocalization = {
                 message: 'Êtes-vous sûr de vouloir ignorer le tutoriel ?',
                 note: 'Vous pouvez toujours le redémarrer plus tard depuis le menu du jeu.',
                 confirmSkip: '✅ Oui, ignorer le tutoriel',
-                continueTutorial: '❌ Continuer le tutoriel'
+                continueTutorial: '✅ Continuer le tutoriel'
             },
 
             // Settings modal
@@ -424,7 +424,7 @@ const TutorialLocalization = {
                 message: '¿Estás seguro de que quieres saltar el tutorial?',
                 note: 'Siempre puedes reiniciarlo más tarde desde el menú del juego.',
                 confirmSkip: '✅ Sí, saltar tutorial',
-                continueTutorial: '❌ Continuar tutorial'
+                continueTutorial: '✅ Continuar tutorial'
             },
 
             // Settings modal
