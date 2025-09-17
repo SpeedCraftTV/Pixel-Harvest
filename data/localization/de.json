@@ -31,9 +31,57 @@
       "level": "Level",
       "experience": "Erfahrung",
       "inventory": "Inventar",
+      "inventoryDetails": {
+        "title": "Inventar",
+        "equipment": "Ausrüstung",
+        "animalProducts": "Tierprodukte"
+      },
       "marketplace": "Marktplatz",
+      "marketplaceDetails": {
+        "title": "Marktplatz",
+        "sellProduce": "Produkte verkaufen",
+        "sellAnimalProducts": "Tierprodukte verkaufen",
+        "seeds": "Samen",
+        "equipment": "Ausrüstung"
+      },
       "objectives": "Ziele",
-      "settings": "Einstellungen"
+      "objectivesDetails": {
+        "title": "Ziele",
+        "harvestCarrots": "Karotten ernten",
+        "surviveCycles": "Tag/Nacht-Zyklen überleben",
+        "earnCoins": "Münzen verdienen"
+      },
+      "settings": "Einstellungen",
+      "plants": {
+        "title": "Pflanzentypen"
+      },
+      "animals": {
+        "title": "Nutztiere",
+        "buy": "Kaufen",
+        "collect": "Sammeln",
+        "produce": "Produkt"
+      },
+      "quests": {
+        "title": "Tagesaufgaben",
+        "progress": "Fortschritt",
+        "reward": "Belohnung",
+        "newQuests": "Neue Aufgaben"
+      },
+      "weather": {
+        "title": "Wetter"
+      },
+      "season": {
+        "title": "Jahreszeit",
+        "day": "Tag",
+        "of": "von"
+      },
+      "time": {
+        "day": "Tag",
+        "night": "Nacht",
+        "camera": "Kamera",
+        "character": "Charakter",
+        "characterFollow": "Charakterverfolgung"
+      }
     },
     "menu": {
       "main": "Hauptmenü",

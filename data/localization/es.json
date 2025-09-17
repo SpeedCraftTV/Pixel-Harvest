@@ -31,9 +31,57 @@
       "level": "Nivel",
       "experience": "Experiencia",
       "inventory": "Inventario",
+      "inventoryDetails": {
+        "title": "Inventario",
+        "equipment": "Equipamiento",
+        "animalProducts": "Productos animales"
+      },
       "marketplace": "Mercado",
+      "marketplaceDetails": {
+        "title": "Mercado",
+        "sellProduce": "Vender productos",
+        "sellAnimalProducts": "Vender productos animales",
+        "seeds": "Semillas",
+        "equipment": "Equipamiento"
+      },
       "objectives": "Objetivos",
-      "settings": "Configuración"
+      "objectivesDetails": {
+        "title": "Objetivos",
+        "harvestCarrots": "Cosechar zanahorias",
+        "surviveCycles": "Sobrevivir ciclos día/noche",
+        "earnCoins": "Ganar monedas"
+      },
+      "settings": "Configuración",
+      "plants": {
+        "title": "Tipos de plantas"
+      },
+      "animals": {
+        "title": "Animales de granja",
+        "buy": "Comprar",
+        "collect": "Recoger",
+        "produce": "Producto"
+      },
+      "quests": {
+        "title": "Misiones diarias",
+        "progress": "Progreso",
+        "reward": "Recompensa",
+        "newQuests": "Nuevas misiones"
+      },
+      "weather": {
+        "title": "Clima"
+      },
+      "season": {
+        "title": "Estación",
+        "day": "Día",
+        "of": "de"
+      },
+      "time": {
+        "day": "Día",
+        "night": "Noche",
+        "camera": "Cámara",
+        "character": "Personaje",
+        "characterFollow": "Seguimiento del personaje"
+      }
     },
     "menu": {
       "main": "Menú Principal",
@@ -394,7 +442,8 @@
       "notEnoughSeeds": "¡No tienes suficientes semillas!",
       "plotNotUnlocked": "¡Parcela no desbloqueada!",
       "invalidAction": "¡Acción inválida!",
-      "saveError": "Error al guardar el progreso del juego"
+      "saveError": "Error al guardar el progreso del juego",
+      "tutorialNotAvailable": "Sistema de tutorial no disponible"
     },
     "success": {
       "planted": "¡{plant} plantado!",
@@ -403,13 +452,29 @@
       "sold": "¡{item} vendido!",
       "bought": "¡{item} comprado!",
       "unlocked": "¡Parcela desbloqueada!",
-      "gameSaved": "¡Progreso del juego guardado!"
+      "gameSaved": "¡Progreso del juego guardado!",
+      "animalPurchased": "¡{animal} comprado! Producirá recursos automáticamente.",
+      "resourcesCollected": "¡{count} {resource} recolectados! Véndelos en el mercado.",
+      "questCompleted": "¡Misión completada! {reward} monedas ganadas.",
+      "coinsEarned": "¡+{amount} monedas ganadas!",
+      "seedsEarned": "¡+{amount} semillas de {plantType}!",
+      "experienceEarned": "¡+{amount} experiencia!",
+      "sprinklerPlaced": "¡Rociador automático colocado! Regará las plantas cercanas automáticamente.",
+      "fertilizerApplied": "¡Paquete de fertilizante aplicado! Todas las plantas crecen 20% más rápido.",
+      "greenhouseBuilt": "¡Mini invernadero construido! Las plantas crecen mejor día y noche.",
+      "questsGenerated": "¡Nuevas misiones diarias generadas!",
+      "questsGeneratedDiscount": "¡Nuevas misiones diarias generadas (con descuento)!",
+      "questsGeneratedFree": "¡Generación gratuita de misiones (pocas monedas)!"
     },
     "info": {
       "dayStart": "¡Comienza un nuevo día!",
       "nightStart": "La noche cae sobre la granja...",
-      "seasonChange": "¡Estación cambiada a {season}!",
-      "weatherChange": "¡Clima cambiado a {weather}!"
+      "seasonChange": "¡Estación cambiada a {season}! Cultivos disponibles actualizados.",
+      "weatherChange": "¡Clima cambiado a {weather}!",
+      "plantNotAvailable": "¡{plant} no está disponible en {season}!",
+      "placeSprinkler": "¡Haz clic en una parcela para colocar el rociador automático!",
+      "uiEditModeOn": "Modo edición UI ACTIVADO - Arrastra paneles por sus manijas, redimensiona desde la esquina inferior derecha",
+      "uiEditModeOff": "Modo edición UI DESACTIVADO - Paneles bloqueados en posición"
     }
   }
 }
