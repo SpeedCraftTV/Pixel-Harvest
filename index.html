@@ -2739,17 +2739,6 @@
                 }
             });
         }
-            ];
-            
-            equipmentButtons.forEach(({ id, key, cost }) => {
-                const btn = document.getElementById(id);
-                if (btn) {
-                    btn.textContent = `${t(`marketplace.${key}`)} (${cost}💰)`;
-                    btn.disabled = coins < cost;
-                    btn.style.opacity = coins >= cost ? '1' : '0.5';
-                }
-            });
-        }
         
         function updateObjectivesUI() {
             const objectivesTitle = document.querySelector('#objectives > div:first-child');
@@ -2913,7 +2902,6 @@
                 
                 questList.innerHTML = html;
             }
-        }
             
             // Update new quests button
             const newQuestsBtn = document.querySelector('#questsPanel button');
