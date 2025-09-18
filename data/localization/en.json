@@ -81,7 +81,101 @@
         "camera": "Camera",
         "character": "Character",
         "characterFollow": "Character Follow"
+      },
+      "plants": {
+        "title": "Plant Types",
+        "carrot": "Carrot",
+        "tomato": "Tomato",
+        "rare": "Rare Plant",
+        "potato": "Potato",
+        "cabbage": "Cabbage",
+        "corn": "Corn",
+        "watermelon": "Watermelon",
+        "pumpkin": "Pumpkin",
+        "apple": "Apple Tree",
+        "carrots": "Carrots",
+        "tomatos": "Tomatoes",
+        "rares": "Rare Plants",
+        "potatos": "Potatoes",
+        "cabbages": "Cabbages",
+        "corns": "Corn",
+        "watermelons": "Watermelons",
+        "pumpkins": "Pumpkins",
+        "apples": "Apples",
+        "fast": "Fast",
+        "normal": "Normal",
+        "slow": "Slow",
+        "medium": "Medium",
+        "verySlow": "Very Slow",
+        "coins": "Coins"
       }
+    },
+    "game": {
+      "plants": {
+        "carrot": "Carrot",
+        "tomato": "Tomato",
+        "rare": "Rare Plant",
+        "potato": "Potato",
+        "cabbage": "Cabbage",
+        "corn": "Corn",
+        "watermelon": "Watermelon",
+        "pumpkin": "Pumpkin",
+        "apple": "Apple Tree",
+        "carrots": "Carrots",
+        "tomatos": "Tomatoes",
+        "rares": "Rare Plants",
+        "potatos": "Potatoes",
+        "cabbages": "Cabbages",
+        "corns": "Corn",
+        "watermelons": "Watermelons",
+        "pumpkins": "Pumpkins",
+        "apples": "Apples"
+      },
+      "equipment": {
+        "sprinkler": "Auto Sprinkler",
+        "sprinklers": "Auto Sprinklers",
+        "fertilizer": "Fertilizer",
+        "greenhouse": "Mini Greenhouse",
+        "greenhouses": "Greenhouses"
+      },
+      "weather": {
+        "sunny": "Sunny",
+        "cloudy": "Cloudy",
+        "rainy": "Rainy",
+        "stormy": "Stormy"
+      },
+      "seasons": {
+        "spring": "Spring",
+        "summer": "Summer",
+        "autumn": "Autumn",
+        "winter": "Winter"
+      },
+      "animals": {
+        "chickens": "Chickens",
+        "cows": "Cows",
+        "pigs": "Pigs"
+      }
+    },
+    "instructions": {
+      "move": "🌱 Move with ZQSD or arrow keys",
+      "action": "⚡ SPACE to plant/harvest at closest plot",
+      "water": "💧 E to water plants",
+      "camera": "📹 C to toggle camera mode",
+      "growth": "🌿 Plants grow automatically (3 stages)",
+      "unlock": "🔒 Unlock plots by getting close and pressing SPACE",
+      "cycle": "🌙 Watch the day/night cycle!",
+      "drag": "🖱️ Drag to rotate camera view",
+      "zoom": "🔍 Scroll wheel to zoom in/out"
+    },
+    "objectives": {
+      "harvestPlants": "Harvest 25 total plants",
+      "buyEquipment": "Buy any equipment",
+      "earnMoreCoins": "Earn 500 coins",
+      "plantSeeds": "Plant 50 seeds",
+      "unlockPlots": "Unlock all plots"
+    },
+    "quests": {
+      "newQuests": "New Quests"
     },
     "menu": {
       "main": "Main Menu",
