@@ -1782,6 +1782,9 @@
 
         // Listen for language changes from i18n system
         document.addEventListener('i18nInitialized', () => {
+            // Update UI when i18n system is ready
+            updateAllUI();
+            
             if (window.i18n && window.i18n.on) {
                 window.i18n.on('languageChanged', (data) => {
                     const languageSelector = document.getElementById('languageSelector');
@@ -1792,6 +1795,9 @@
                     // Update legacy system
                     currentLanguage = data.newLanguage;
                     updateLegacyTranslations(data.newLanguage);
+                    
+                    // Update UI with new language
+                    updateAllUI();
                 });
             }
         });
@@ -1852,6 +1858,97 @@
                     cycle: '🌙 Watch the day/night cycle!',
                     drag: '🖱️ Drag to rotate camera view',
                     zoom: '🔍 Scroll wheel to zoom in/out'
+                },
+                ui: {
+                    game: {
+                        score: 'Score',
+                        plants: {
+                            title: 'Plant Types'
+                        },
+                        inventoryDetails: {
+                            title: 'Inventory',
+                            equipment: 'Equipment',
+                            animalProducts: 'Animal Products'
+                        },
+                        marketplaceDetails: {
+                            title: 'Marketplace',
+                            sellProduce: 'Sell Produce',
+                            sellAnimalProducts: 'Sell Animal Products',
+                            seeds: 'Seeds',
+                            equipment: 'Equipment'
+                        },
+                        objectivesDetails: {
+                            title: 'Objectives'
+                        },
+                        weather: {
+                            title: 'Weather'
+                        },
+                        season: {
+                            title: 'Season',
+                            day: 'Day',
+                            of: 'of'
+                        },
+                        time: {
+                            camera: 'Camera',
+                            characterFollow: 'Character Follow'
+                        },
+                        animals: {
+                            title: 'Farm Animals',
+                            buy: 'Buy',
+                            collect: 'Collect'
+                        },
+                        quests: {
+                            title: 'Daily Quests',
+                            progress: 'Progress',
+                            reward: 'Reward'
+                        }
+                    }
+                },
+                game: {
+                    plants: {
+                        carrot: 'Carrot',
+                        tomato: 'Tomato',
+                        rare: 'Rare Plant',
+                        potato: 'Potato',
+                        cabbage: 'Cabbage',
+                        corn: 'Corn',
+                        watermelon: 'Watermelon',
+                        pumpkin: 'Pumpkin',
+                        apple: 'Apple Tree',
+                        carrots: 'Carrots',
+                        tomatos: 'Tomatoes',
+                        rares: 'Rare Plants',
+                        potatos: 'Potatoes',
+                        cabbages: 'Cabbages',
+                        corns: 'Corn',
+                        watermelons: 'Watermelons',
+                        pumpkins: 'Pumpkins',
+                        apples: 'Apples'
+                    },
+                    equipment: {
+                        sprinkler: 'Auto Sprinkler',
+                        sprinklers: 'Auto Sprinklers',
+                        fertilizer: 'Fertilizer',
+                        greenhouse: 'Mini Greenhouse',
+                        greenhouses: 'Greenhouses'
+                    },
+                    weather: {
+                        sunny: 'Sunny',
+                        cloudy: 'Cloudy',
+                        rainy: 'Rainy',
+                        stormy: 'Stormy'
+                    },
+                    seasons: {
+                        spring: 'Spring',
+                        summer: 'Summer',
+                        autumn: 'Autumn',
+                        winter: 'Winter'
+                    },
+                    animals: {
+                        chickens: 'Chickens',
+                        cows: 'Cows',
+                        pigs: 'Pigs'
+                    }
                 },
                 menu: {
                     main: 'Menu',
