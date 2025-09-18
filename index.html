@@ -2490,38 +2490,8 @@
             }
         };
         
-        // Translation function
-        function t(key, ...args) {
-            const keys = key.split('.');
-            let value = translations[currentLanguage];
-            
-            for (const k of keys) {
-                if (value && typeof value === 'object' && k in value) {
-                    value = value[k];
-                } else {
-                    // Fallback to English if translation not found
-                    value = translations['en'];
-                    for (const fallbackKey of keys) {
-                        if (value && typeof value === 'object' && fallbackKey in value) {
-                            value = value[fallbackKey];
-                        } else {
-                            return key; // Return key if not found
-                        }
-                    }
-                    break;
-                }
-            }
-            
-            // Handle string formatting with {0}, {1}, etc.
-            if (typeof value === 'string' && args.length > 0) {
-                return value.replace(/\{(\d+)\}/g, (match, index) => {
-                    const argIndex = parseInt(index);
-                    return argIndex < args.length ? args[argIndex] : match;
-                });
-            }
-            
-            return value || key;
-        }
+        // Legacy translation function - REMOVED to avoid conflicts
+        // The enhanced t() function above handles all translation needs
         
         // Language switching function
         function setLanguage(lang) {
