@@ -1,6 +1,7 @@
 :root {
   /* Valeur centralisée pour éviter les magic numbers */
-  --z-unified-menu: 1000;
+  /* Menu doit être au-dessus des modales du tutoriel (z-index: 10002) */
+  --z-unified-menu: 10003;
 }
 
 /* Règle pour le menu unifié */
@@ -11,4 +12,9 @@
   z-index: var(--z-unified-menu) !important; /* !important pour overrider les styles inline existants */
   pointer-events: auto;
   touch-action: manipulation;
+}
+
+/* Assurer que le dropdown du menu a aussi un z-index élevé */
+#menuDropdown {
+  z-index: var(--z-unified-menu) !important;
 }
