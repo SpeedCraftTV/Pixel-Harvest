@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src_cs", "src_cs", "{94EC34A6-87F5-78AA-4CAB-03C8F9AC7041}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelHarvest.Core", "src_cs\PixelHarvest.Core\PixelHarvest.Core.csproj", "{3A2A25CC-7A10-6BCD-42B7-E9512A8BE226}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A2A25CC-7A10-6BCD-42B7-E9512A8BE226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A2A25CC-7A10-6BCD-42B7-E9512A8BE226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A2A25CC-7A10-6BCD-42B7-E9512A8BE226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A2A25CC-7A10-6BCD-42B7-E9512A8BE226}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3A2A25CC-7A10-6BCD-42B7-E9512A8BE226} = {94EC34A6-87F5-78AA-4CAB-03C8F9AC7041}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B336EDDE-3064-4853-BE3F-AA3929595B49}
+	EndGlobalSection
+EndGlobal

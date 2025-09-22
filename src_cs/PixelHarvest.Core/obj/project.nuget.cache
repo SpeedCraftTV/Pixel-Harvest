@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "nd3GBpl6+lA=",
+  "success": true,
+  "projectFilePath": "h:\\Github\\Pixel-Harvest\\src_cs\\PixelHarvest.Core\\PixelHarvest.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\SpeedCrafTV\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
