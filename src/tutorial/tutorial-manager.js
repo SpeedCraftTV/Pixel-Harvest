@@ -43,7 +43,9 @@ class TutorialManager {
 
         this.gameInterface = gameInterface;
         this.tutorialData = tutorialData;
-        this.tutorialSteps = tutorialData.steps || [];
+        
+        // Load localized tutorial steps instead of using hardcoded English ones
+        this.loadLocalizedSteps();
         
         // Initialize UI components
         this.ui = new TutorialUI(this);
@@ -59,6 +61,55 @@ class TutorialManager {
         this.checkAutoStart();
         
         console.log('Tutorial Manager initialized with', this.tutorialSteps.length, 'steps');
+    }
+
+    /**
+     * Load localized tutorial steps based on current language
+     */
+    loadLocalizedSteps() {
+        // Try to get localized steps from the tutorial localization system
+        if (window.TutorialLocalization && window.TutorialLocalization.getLocalizedSteps) {
+            try {
+                const localizedSteps = window.TutorialLocalization.getLocalizedSteps();
+                if (localizedSteps && localizedSteps.length > 0) {
+                    this.tutorialSteps = localizedSteps;
+                    console.log('Using localized tutorial steps:', window.TutorialLocalization.currentLanguage);
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to load localized tutorial steps:', error);
+            }
+        }
+        
+        // Fallback to default steps if localization fails
+        this.tutorialSteps = this.tutorialData.steps || [];
+        console.log('Using fallback tutorial steps (English)');
+    }
+
+    /**
+     * Update tutorial language and reload steps
+     * Called when the language changes during runtime
+     */
+    updateLanguage() {
+        if (!this.isInitialized) return;
+        
+        console.log('Updating tutorial language...');
+        
+        // Reload localized steps
+        this.loadLocalizedSteps();
+        
+        // If tutorial is currently active, update the current step display
+        if (this.isActive && this.ui) {
+            const currentStep = this.tutorialSteps[this.currentStep];
+            if (currentStep) {
+                this.ui.updateStep(currentStep, this.currentStep, this.tutorialSteps.length);
+            }
+        }
+        
+        // Update the UI with new language
+        if (this.ui && this.ui.updateLanguage) {
+            this.ui.updateLanguage();
+        }
     }
 
     /**

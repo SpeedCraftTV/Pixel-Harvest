@@ -670,8 +670,8 @@ const TutorialLocalization = {
         });
 
         // Update tutorial steps if tutorial is active
-        if (window.tutorialManager && window.tutorialManager.isActive) {
-            window.tutorialManager.ui.updateLanguage();
+        if (window.tutorialManager && window.tutorialManager.updateLanguage) {
+            window.tutorialManager.updateLanguage();
         }
     },
 
