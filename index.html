@@ -3092,7 +3092,7 @@
         let isGamePaused = false;
         
         // Tutorial system
-        let tutorialManager = null;
+        window.tutorialManager = null;
         let tutorialEnabled = true;
         let tutorialProgress = {
             characterMoved: false,
@@ -4347,7 +4347,7 @@
                 }
                 
                 // Create tutorial manager
-                tutorialManager = new TutorialManager();
+                window.tutorialManager = new TutorialManager();
                 
                 // Create game interface for tutorial interaction
                 const gameInterface = {
@@ -4410,7 +4410,7 @@
                 };
                 
                 // Initialize tutorial with game interface and steps
-                await tutorialManager.initialize(gameInterface, TutorialSteps);
+                await window.tutorialManager.initialize(gameInterface, TutorialSteps);
                 
                 // Mark tutorial system as initialized
                 window.tutorialSystemInitialized = true;
@@ -4424,7 +4424,7 @@
         
         // Tutorial progress tracking functions
         function trackTutorialProgress(action, value = true) {
-            if (!tutorialManager || !tutorialManager.isActive) return;
+            if (!window.tutorialManager || !window.tutorialManager.isActive) return;
             
             tutorialProgress[action] = value;
             
@@ -4436,16 +4436,16 @@
         
         // Tutorial helper functions
         function showTutorialMenu() {
-            if (tutorialManager && tutorialManager.isAvailable()) {
-                tutorialManager.showWelcomeScreen();
+            if (window.tutorialManager && window.tutorialManager.isAvailable()) {
+                window.tutorialManager.showWelcomeScreen();
             } else {
                 showInstruction('Tutorial system not available', 2000);
             }
         }
         
         function restartTutorial() {
-            if (tutorialManager) {
-                tutorialManager.restartTutorial();
+            if (window.tutorialManager) {
+                window.tutorialManager.restartTutorial();
             }
         }
         
@@ -7518,6 +7518,11 @@
                     // Emit event for other systems
                     document.dispatchEvent(new CustomEvent('i18nInitialized'));
                     console.log('🌍 Internationalization system ready');
+                    
+                    // Force sync tutorial localization with main i18n system
+                    if (window.TutorialLocalization) {
+                        window.TutorialLocalization.syncWithMainI18n();
+                    }
                 }
 
                 // Initialize tutorial localization (as fallback)

@@ -631,6 +631,7 @@ const TutorialLocalization = {
             try {
                 const currentLang = window.i18n.getCurrentLanguage();
                 if (currentLang && currentLang.code) {
+                    console.log(`Syncing tutorial language to main i18n: ${currentLang.code}`);
                     this.currentLanguage = currentLang.code;
                     return;
                 }
@@ -650,6 +651,27 @@ const TutorialLocalization = {
                 this.currentLanguage = browserLang;
             }
         }
+    },
+
+    /**
+     * Force synchronization with main i18n system
+     * Called when the main i18n system is ready or language changes
+     */
+    syncWithMainI18n() {
+        if (window.i18n && window.i18n.getCurrentLanguage) {
+            try {
+                const currentLang = window.i18n.getCurrentLanguage();
+                if (currentLang && currentLang.code && currentLang.code !== this.currentLanguage) {
+                    console.log(`Force syncing tutorial language from ${this.currentLanguage} to ${currentLang.code}`);
+                    this.currentLanguage = currentLang.code;
+                    this.updateUI();
+                    return true;
+                }
+            } catch (error) {
+                console.warn('Failed to force sync with main i18n system:', error);
+            }
+        }
+        return false;
     },
 
     /**
