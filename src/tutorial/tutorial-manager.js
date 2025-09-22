@@ -13,6 +13,8 @@ class TutorialManager {
         this.tutorialData = null;
         this.ui = null;
         this.gameInterface = null;
+        this.isInitialized = false;
+        this.autoStartChecked = false;
         this.settings = {
             autoAdvance: false,
             showHints: true,
@@ -33,6 +35,12 @@ class TutorialManager {
      * @param {Object} tutorialData - Tutorial step definitions
      */
     async initialize(gameInterface, tutorialData) {
+        // Prevent duplicate initialization
+        if (this.isInitialized) {
+            console.log('Tutorial Manager already initialized, skipping...');
+            return;
+        }
+
         this.gameInterface = gameInterface;
         this.tutorialData = tutorialData;
         this.tutorialSteps = tutorialData.steps || [];
@@ -44,6 +52,9 @@ class TutorialManager {
         // Load tutorial progress from localStorage
         this.loadProgress();
         
+        // Mark as initialized before checking auto start to prevent race conditions
+        this.isInitialized = true;
+        
         // Check if tutorial should start automatically
         this.checkAutoStart();
         
@@ -54,8 +65,17 @@ class TutorialManager {
      * Check if tutorial should start automatically for new players
      */
     checkAutoStart() {
+        // Prevent multiple auto-start checks
+        if (this.autoStartChecked) {
+            console.log('Tutorial auto-start already checked, skipping...');
+            return;
+        }
+
         const hasPlayedBefore = localStorage.getItem('pixelHarvestHasPlayed');
         const tutorialCompleted = localStorage.getItem('pixelHarvestTutorialCompleted');
+        
+        // Mark as checked to prevent duplicate calls
+        this.autoStartChecked = true;
         
         if (!hasPlayedBefore && !tutorialCompleted) {
             // Show welcome screen and start tutorial for new players

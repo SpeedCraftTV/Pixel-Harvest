@@ -8,6 +8,9 @@ const TutorialLocalization = {
     // Current language
     currentLanguage: 'en',
     
+    // Initialization flag to prevent duplicate initialization
+    isInitialized: false,
+    
     // Available languages
     languages: {
         en: {
@@ -760,6 +763,12 @@ const TutorialLocalization = {
      * Initialize the localization system
      */
     initialize() {
+        // Prevent duplicate initialization
+        if (this.isInitialized) {
+            console.log('Tutorial localization already initialized, skipping...');
+            return;
+        }
+
         // Check if main i18n system is available
         if (window.i18n) {
             this.i18nIntegration.enabled = true;
@@ -794,6 +803,9 @@ const TutorialLocalization = {
                 this.updateUI();
             }
         });
+        
+        // Mark as initialized
+        this.isInitialized = true;
         
         console.log(`Tutorial localization initialized with language: ${this.currentLanguage}`);
     },
