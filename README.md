@@ -17,6 +17,50 @@ Pixel Harvest est un jeu de farm 3D relax en ligne. Plante, fais pousser et réc
 - **Système Multilingue**: Support complet pour français, anglais et espagnol
 - **Sauvegarde Automatique**: Persistance des données avec sauvegarde toutes les 10 secondes
 
+## 🔥 Détails des Fonctionnalités Implémentées
+
+### 🐄 Système d'Animaux Avancé
+- **Génétique Complexe**: Traits héréditaires avec calculs de probabilité
+- **Système de Santé**: Maladies, soins vétérinaires et bien-être animal
+- **Reproduction Avancée**: Sélection de partenaires et amélioration des races
+- **Soins Automatisés**: Gestion intelligente de l'alimentation et de l'hygiène
+- **Production Optimisée**: Rendements variables selon la qualité des soins
+
+### 📋 Missions Dynamiques
+- **Génération Procédurale**: Quêtes créées automatiquement selon la progression
+- **Variété de Défis**: Agriculture, élevage, collection et exploration
+- **Système de Récompenses**: Coins, déblocables et bonus d'expérience
+- **Progression Adaptative**: Difficulté qui s'ajuste au niveau du joueur
+- **Suivi Détaillé**: Interface complète de progression des objectifs
+
+### 🌪️ Événements Saisonniers
+- **Météo Dynamique**: Tempêtes, sécheresses et conditions parfaites
+- **Festivals Saisonniers**: Événements spéciaux avec récompenses uniques
+- **Défis Aléatoires**: Invasions de nuisibles et catastrophes naturelles
+- **Système de Notifications**: Alertes en temps réel pour les événements
+- **Effets Visuels**: Animations météorologiques et décorations saisonnières
+
+### 🎨 Personnalisation Avancée
+- **Éditeur d'Avatar**: Personnalisation complète de l'apparence
+- **Décorations de Ferme**: Plus de 100 éléments décoratifs disponibles
+- **Système de Thèmes**: Support pour différents styles visuels
+- **Déblocables Progressifs**: Contenu cosmétique lié aux accomplissements
+- **Qualité Adaptative**: Rendu optimisé selon les performances de l'appareil
+
+### 🎓 Tutoriel Interactif Complet
+- **24 Étapes Guidées**: Apprentissage progressif de tous les mécanismes
+- **Support Multilingue**: Disponible en français, anglais et espagnol
+- **Navigation Flexible**: Possibilité de revenir ou sauter des étapes
+- **Intégration Intelligente**: Guidance contextuelle dans l'interface de jeu
+- **Validation d'Actions**: Vérification que le joueur maîtrise chaque concept
+
+### 🏗️ Architecture Modulaire
+- **Système de Feature Flags**: Activation/désactivation dynamique des fonctionnalités
+- **Chargement Conditionnel**: Modules chargés selon la configuration et les besoins
+- **API Unifiée**: Interface cohérente entre tous les modules du jeu
+- **Gestion d'État Centralisée**: Synchronisation des données entre les systèmes
+- **Configuration Flexible**: Paramètres ajustables via `data/features.json`
+
 ## 🚀 Fonctionnalités Planifiées
 
 Le développement futur de Pixel-Harvest continue avec le multijoueur en cours de développement, tandis que plusieurs fonctionnalités majeures ont déjà été implémentées :
@@ -118,6 +162,14 @@ open index.html
 python -m http.server 8000
 # Puis aller sur http://localhost:8000
 ```
+
+### 📱 Support Mobile Optimal
+Le jeu détecte automatiquement les appareils mobiles et active :
+- **Joystick Virtuel**: Contrôle de mouvement tactile fluide
+- **Boutons Adaptatifs**: Interface optimisée pour les interactions tactiles
+- **Gestes Intuitifs**: Pincement pour zoom, glissement pour rotation caméra
+- **Interface Réactive**: Menus et panneaux adaptés à la taille d'écran
+- **Performance Optimisée**: Qualité graphique adaptative selon l'appareil
 
 ## 📊 Statut des Fonctionnalités
 
