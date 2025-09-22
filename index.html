@@ -7453,11 +7453,44 @@
                 // Initialize the main game
                 init();
 
+                // Load game features configuration
+                fetch('data/features.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        window.gameFeatures = data;
+                        console.log('🎮 Game features loaded:', data);
+                        
+                        // Initialize enhanced animals if enabled
+                        if (window.animalsIntegration && !window.animalsIntegration.initialized) {
+                            window.animalsIntegration.initialize();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Failed to load features.json:', error);
+                        // Set default features
+                        window.gameFeatures = {
+                            features: {
+                                enhanced_animals: { enabled: false }
+                            }
+                        };
+                    });
+
                 initDraggableUI();
                 initMobileControls();
                 initMobileInterface();
             }, 100); // Small delay to ensure game is initialized
         });
     </script>
+
+    <!-- Enhanced Animals Module Scripts -->
+    <script src="src/features/animals/genetics-system.js"></script>
+    <script src="src/features/animals/care-system.js"></script>
+    <script src="src/features/animals/breeding-system.js"></script>
+    <script src="src/features/animals/health-system.js"></script>
+    <script src="src/features/animals/production-system.js"></script>
+    <script src="src/features/animals/extended-species.js"></script>
+    <script src="src/features/animals/animals-core.js"></script>
+    <script src="src/features/animals/animals-ui.js"></script>
+    <script src="src/features/animals/animals-integration.js"></script>
 </body>
 </html>

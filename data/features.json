@@ -49,7 +49,7 @@
       }
     },
     "enhanced_animals": {
-      "enabled": false,
+      "enabled": true,
       "version": "0.1.0",
       "description": "Advanced animal care, breeding, genetics, and expanded species",
       "issueReference": "#27",
