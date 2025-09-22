@@ -1523,6 +1523,10 @@
                 📋
                 <span class="badge" id="questsBadge">3</span>
             </button>
+            <button class="mobile-nav-btn" id="mobileMultiplayerBtn" data-panel="multiplayer">
+                👥
+                <span class="badge" id="multiplayerBadge" style="display: none;">0</span>
+            </button>
         </div>
 
         <!-- Mobile Panels -->
@@ -1594,6 +1598,68 @@
             </div>
             <div class="mobile-panel-content" id="mobileQuestsContent">
                 <!-- Quests content will be dynamically populated -->
+            </div>
+        </div>
+
+        <div id="mobileMultiplayerPanel" class="mobile-panel">
+            <div class="mobile-panel-header">
+                <div class="mobile-panel-title">👥 Multiplayer</div>
+                <button class="mobile-panel-close">×</button>
+            </div>
+            <div class="mobile-panel-content" id="mobileMultiplayerContent">
+                <div class="mobile-multiplayer-main">
+                    <div class="connection-section" style="margin-bottom: 20px;">
+                        <div class="connection-status" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+                            <span class="status-indicator offline" style="width: 12px; height: 12px; border-radius: 50%; background: #666;"></span>
+                            <span class="status-text">Offline</span>
+                        </div>
+                        <button id="mobileConnectButton" class="mp-button primary" style="width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 8px; font-size: 16px;">Connect to Multiplayer</button>
+                    </div>
+                    
+                    <div class="room-section" style="display: none;">
+                        <h3 style="margin: 0 0 15px 0; color: #FFD700;">Room</h3>
+                        <div class="room-info" style="margin-bottom: 15px;">
+                            <div class="room-name" style="font-weight: bold; font-size: 16px;">Not in room</div>
+                            <div class="room-players" style="color: #ccc; font-size: 14px;">Players: 0/8</div>
+                        </div>
+                        <div class="mobile-grid">
+                            <div class="mobile-grid-item" onclick="mobileCreateRoom()">
+                                <div class="emoji">🏠</div>
+                                <div class="name">Create Room</div>
+                            </div>
+                            <div class="mobile-grid-item" onclick="mobileJoinRoom()">
+                                <div class="emoji">🚪</div>
+                                <div class="name">Join Room</div>
+                            </div>
+                            <div class="mobile-grid-item" onclick="mobileQuickJoin()">
+                                <div class="emoji">⚡</div>
+                                <div class="name">Quick Join</div>
+                            </div>
+                            <div class="mobile-grid-item" onclick="mobileLeaveRoom()" style="display: none;" id="mobileLeaveRoomBtn">
+                                <div class="emoji">🚪</div>
+                                <div class="name">Leave Room</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="players-section" style="display: none;">
+                        <h3 style="margin: 20px 0 15px 0; color: #FFD700;">Players <span id="mobilePlayerCount">(0)</span></h3>
+                        <div id="mobilePlayersList" class="players-list">
+                            <!-- Players will be populated dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="chat-section" style="display: none; margin-top: 20px;">
+                        <h3 style="margin: 0 0 10px 0; color: #FFD700;">Chat</h3>
+                        <div id="mobileChatMessages" class="mobile-chat-messages" style="height: 120px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 8px; margin-bottom: 10px; font-size: 12px;">
+                            <!-- Chat messages will appear here -->
+                        </div>
+                        <div class="mobile-chat-input" style="display: flex; gap: 8px;">
+                            <input type="text" id="mobileChatInput" placeholder="Type message..." style="flex: 1; padding: 8px; border-radius: 4px; border: none; background: rgba(255,255,255,0.1); color: white;" maxlength="200">
+                            <button onclick="sendMobileChatMessage()" style="padding: 8px 12px; background: #4CAF50; color: white; border: none; border-radius: 4px;">Send</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -7492,5 +7558,15 @@
     <script src="src/features/animals/animals-core.js"></script>
     <script src="src/features/animals/animals-ui.js"></script>
     <script src="src/features/animals/animals-integration.js"></script>
+
+    <!-- Multiplayer Module Scripts -->
+    <script src="src/features/multiplayer/core/connection/websocket-manager.js"></script>
+    <script src="src/features/multiplayer/core/rooms/room-manager.js"></script>
+    <script src="src/features/multiplayer/core/players/player-manager.js"></script>
+    <script src="src/features/multiplayer/core/events/event-system.js"></script>
+    <script src="src/features/multiplayer/communication/chat-system.js"></script>
+    <script src="src/features/multiplayer/ui/multiplayer-ui.js"></script>
+    <script src="src/features/multiplayer/multiplayer-core.js"></script>
+    <script src="src/features/multiplayer/multiplayer-integration.js"></script>
 </body>
 </html>
