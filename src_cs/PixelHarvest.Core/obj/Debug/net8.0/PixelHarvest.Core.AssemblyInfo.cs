@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PixelHarvest.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba6aa562fc1a87f2faa88a5d2cee3d5c6c6eaeff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2bd2e63e77d0a5328d59566d78e8e49dff04a16b")]
 [assembly: System.Reflection.AssemblyProductAttribute("PixelHarvest.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PixelHarvest.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
