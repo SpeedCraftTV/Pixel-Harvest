@@ -6,6 +6,7 @@
       "description": "Real-time multiplayer farming with cooperative and competitive modes",
       "issueReference": "#24",
       "config": {
+        "defaultServerUrl": "localhost:8080",
         "maxRooms": 100,
         "maxPlayersPerRoom": 8,
         "heartbeatInterval": 30000,

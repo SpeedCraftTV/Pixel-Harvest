@@ -54,7 +54,20 @@ class MultiplayerUI {
                         <span class="status-indicator offline"></span>
                         <span class="status-text">Offline</span>
                     </div>
-                    <button id="connectButton" class="mp-button primary">Connect</button>
+                    
+                    <div class="server-config">
+                        <label for="serverUrl" class="mp-label">Server URL:</label>
+                        <div class="server-input-group">
+                            <input type="text" id="serverUrl" class="mp-input" placeholder="localhost:8080" 
+                                   value="localhost:8080" title="Enter the multiplayer server address">
+                            <button id="connectButton" class="mp-button primary">Connect</button>
+                        </div>
+                        <div class="server-help">
+                            <small class="help-text">Enter the address of a multiplayer server. 
+                            If you don't have a server, you can <a href="#" id="demoModeLink">try demo mode</a> or 
+                            <a href="https://github.com/SpeedCraftTV/Pixel-Harvest#multiplayer-setup" target="_blank">set up your own server</a>.</small>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="room-section" style="display: none;">
@@ -285,10 +298,33 @@ class MultiplayerUI {
     setupPanelEventHandlers() {
         // Connect button
         document.getElementById('connectButton').addEventListener('click', async () => {
+            const serverUrlInput = document.getElementById('serverUrl');
+            const serverUrl = serverUrlInput ? serverUrlInput.value.trim() : '';
+            
+            if (!serverUrl) {
+                this.showNotification('Please enter a server URL', 'error');
+                return;
+            }
+            
             try {
-                await this.multiplayerModule.connect();
+                await this.multiplayerModule.connect(serverUrl);
+                this.showNotification('Connected successfully!', 'success');
             } catch (error) {
-                this.showNotification('Failed to connect: ' + this.getErrorMessage(error), 'error');
+                const errorMsg = this.getDetailedErrorMessage(error, serverUrl);
+                this.showNotification(errorMsg, 'error');
+            }
+        });
+        
+        // Demo mode link
+        document.getElementById('demoModeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.showDemoModeDialog();
+        });
+        
+        // Server URL input - connect on Enter key
+        document.getElementById('serverUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('connectButton').click();
             }
         });
         
@@ -695,6 +731,103 @@ class MultiplayerUI {
         return 'An unexpected error occurred';
     }
     
+    /**
+     * Get detailed error message with helpful suggestions
+     */
+    getDetailedErrorMessage(error, serverUrl) {
+        const baseMessage = this.getErrorMessage(error);
+        
+        // Check if it's a connection refusal to localhost
+        if (serverUrl && (serverUrl.includes('localhost') || serverUrl.includes('127.0.0.1')) && 
+            (baseMessage.includes('Connection failed') || baseMessage.includes('refused'))) {
+            return `Cannot connect to ${serverUrl}. No multiplayer server is running on this address. ` +
+                   `Try starting a server or use a different address.`;
+        }
+        
+        // Check for network/connection errors
+        if (baseMessage.includes('Connection failed') || baseMessage.includes('timeout')) {
+            return `Failed to connect to ${serverUrl}. Please check that the server is running and the address is correct.`;
+        }
+        
+        return `Connection error: ${baseMessage}`;
+    }
+    
+    /**
+     * Show demo mode dialog
+     */
+    showDemoModeDialog() {
+        const dialog = document.createElement('div');
+        dialog.className = 'demo-dialog';
+        dialog.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3000;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #9C27B0;
+            max-width: 500px;
+            text-align: center;
+        `;
+        
+        dialog.innerHTML = `
+            <h3 style="margin-top: 0; color: #9C27B0;">Demo Mode</h3>
+            <p>Demo mode allows you to simulate multiplayer features without a real server.</p>
+            <p style="color: #ccc; font-size: 14px;">
+                Note: This is a local simulation only. To play with other players, 
+                you'll need to set up a real multiplayer server.
+            </p>
+            <div style="margin-top: 20px;">
+                <button id="startDemoBtn" class="mp-button primary" style="margin: 5px;">Start Demo</button>
+                <button id="cancelDemoBtn" class="mp-button" style="margin: 5px;">Cancel</button>
+            </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        
+        // Event handlers for dialog buttons
+        document.getElementById('startDemoBtn').addEventListener('click', () => {
+            dialog.remove();
+            this.startDemoMode();
+        });
+        
+        document.getElementById('cancelDemoBtn').addEventListener('click', () => {
+            dialog.remove();
+        });
+        
+        // Close on backdrop click
+        dialog.addEventListener('click', (e) => {
+            if (e.target === dialog) {
+                dialog.remove();
+            }
+        });
+    }
+    
+    /**
+     * Start demo mode (local simulation)
+     */
+    startDemoMode() {
+        // Set demo server URL
+        const serverUrlInput = document.getElementById('serverUrl');
+        if (serverUrlInput) {
+            serverUrlInput.value = 'demo://local';
+        }
+        
+        // Simulate successful connection
+        this.multiplayerModule.setState('CONNECTED');
+        this.updateConnectionStatus('CONNECTED', 'ONLINE');
+        this.showNotification('Demo mode started! You are now in offline multiplayer simulation.', 'success');
+        
+        // Show room controls for demo
+        const roomSection = document.querySelector('.room-section');
+        if (roomSection) {
+            roomSection.style.display = 'block';
+        }
+    }
+    
     getStatusText(status) {
         switch (status) {
             case 'CONNECTED': return 'Online';
@@ -863,10 +996,53 @@ const multiplayerStyles = `
 }
 
 .connection-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 20px;
+}
+
+.server-config {
+    margin-top: 15px;
+}
+
+.mp-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.server-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.server-input-group .mp-input {
+    flex: 1;
+    margin: 0;
+}
+
+.server-input-group .mp-button {
+    white-space: nowrap;
+}
+
+.server-help {
+    margin-top: 8px;
+}
+
+.help-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.help-text a {
+    color: #9C27B0;
+    text-decoration: none;
+}
+
+.help-text a:hover {
+    text-decoration: underline;
 }
 
 .connection-status {
