@@ -8,6 +8,7 @@ class MultiplayerModule {
         this.initialized = false;
         this.enabled = false;
         this.config = null;
+        this.demoMode = false;
         
         // Core components
         this.wsManager = null;
@@ -218,6 +219,12 @@ class MultiplayerModule {
             // Use default server URL if not provided
             const url = serverUrl || this.config.defaultServerUrl || 'localhost:8080';
             
+            // Handle demo mode
+            if (url.startsWith('demo://')) {
+                this.handleDemoMode();
+                return;
+            }
+            
             await this.wsManager.connect(url);
             
             console.log('🌐 Connected to multiplayer server');
@@ -231,9 +238,40 @@ class MultiplayerModule {
     }
     
     /**
+     * Handle demo mode connection
+     */
+    handleDemoMode() {
+        console.log('🎮 Starting demo mode');
+        this.setState('CONNECTED');
+        this.demoMode = true;
+        
+        // Simulate being in a demo room
+        setTimeout(() => {
+            if (this.uiCallbacks.onRoomStatusChange) {
+                this.uiCallbacks.onRoomStatusChange('joined', {
+                    id: 'demo-room',
+                    name: 'Demo Room',
+                    players: ['You'],
+                    maxPlayers: 8
+                });
+            }
+        }, 500);
+    }
+    
+    /**
      * Disconnect from multiplayer server
      */
     async disconnect() {
+        if (this.demoMode) {
+            console.log('🎮 Stopping demo mode');
+            this.demoMode = false;
+            this.setState('OFFLINE');
+            if (this.uiCallbacks.onRoomStatusChange) {
+                this.uiCallbacks.onRoomStatusChange('left', null);
+            }
+            return;
+        }
+        
         if (this.wsManager) {
             // Leave current room if in one
             if (this.roomManager && this.roomManager.isInRoom()) {
