@@ -4334,6 +4334,12 @@
         async function initTutorialSystem() {
             if (!tutorialEnabled) return;
             
+            // Prevent duplicate tutorial system initialization
+            if (window.tutorialSystemInitialized) {
+                console.log('Tutorial system already initialized, skipping...');
+                return;
+            }
+            
             try {
                 // Initialize localization first
                 if (window.TutorialLocalization) {
@@ -4405,6 +4411,9 @@
                 
                 // Initialize tutorial with game interface and steps
                 await tutorialManager.initialize(gameInterface, TutorialSteps);
+                
+                // Mark tutorial system as initialized
+                window.tutorialSystemInitialized = true;
                 
                 console.log('Tutorial system initialized successfully');
             } catch (error) {
