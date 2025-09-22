@@ -288,7 +288,7 @@ class MultiplayerUI {
             try {
                 await this.multiplayerModule.connect();
             } catch (error) {
-                this.showNotification('Failed to connect: ' + error.message, 'error');
+                this.showNotification('Failed to connect: ' + this.getErrorMessage(error), 'error');
             }
         });
         
@@ -307,7 +307,7 @@ class MultiplayerUI {
                 await this.multiplayerModule.quickJoin();
                 this.showNotification('Joined room successfully!', 'success');
             } catch (error) {
-                this.showNotification('Failed to join room: ' + error.message, 'error');
+                this.showNotification('Failed to join room: ' + this.getErrorMessage(error), 'error');
             }
         });
         
@@ -316,7 +316,7 @@ class MultiplayerUI {
                 await this.multiplayerModule.leaveRoom();
                 this.showNotification('Left room', 'info');
             } catch (error) {
-                this.showNotification('Failed to leave room: ' + error.message, 'error');
+                this.showNotification('Failed to leave room: ' + this.getErrorMessage(error), 'error');
             }
         });
         
@@ -556,7 +556,7 @@ class MultiplayerUI {
             this.multiplayerModule.sendChatMessage(chatInput.value.trim());
             chatInput.value = '';
         } catch (error) {
-            this.showNotification('Failed to send message: ' + error.message, 'error');
+            this.showNotification('Failed to send message: ' + this.getErrorMessage(error), 'error');
         }
     }
     
@@ -579,7 +579,7 @@ class MultiplayerUI {
             await this.multiplayerModule.createRoom(roomOptions);
             this.showNotification('Room created successfully!', 'success');
         } catch (error) {
-            this.showNotification('Failed to create room: ' + error.message, 'error');
+            this.showNotification('Failed to create room: ' + this.getErrorMessage(error), 'error');
         }
     }
     
@@ -612,7 +612,7 @@ class MultiplayerUI {
             
         } catch (error) {
             roomsList.innerHTML = '<div class="error">Failed to load rooms</div>';
-            this.showNotification('Failed to load rooms: ' + error.message, 'error');
+            this.showNotification('Failed to load rooms: ' + this.getErrorMessage(error), 'error');
         }
     }
     
@@ -624,7 +624,7 @@ class MultiplayerUI {
             await this.multiplayerModule.joinRoom(roomId);
             this.showNotification('Joined room successfully!', 'success');
         } catch (error) {
-            this.showNotification('Failed to join room: ' + error.message, 'error');
+            this.showNotification('Failed to join room: ' + this.getErrorMessage(error), 'error');
         }
     }
     
@@ -672,6 +672,29 @@ class MultiplayerUI {
     /**
      * Utility methods
      */
+    getErrorMessage(error) {
+        // Handle different types of error objects
+        if (typeof error === 'string') {
+            return error;
+        }
+        
+        if (error && error.message) {
+            return error.message;
+        }
+        
+        if (error && error.type) {
+            // WebSocket Event objects
+            return 'Connection failed';
+        }
+        
+        if (error && error.code) {
+            return `Connection error (${error.code})`;
+        }
+        
+        // Fallback for unknown error types
+        return 'An unexpected error occurred';
+    }
+    
     getStatusText(status) {
         switch (status) {
             case 'CONNECTED': return 'Online';
