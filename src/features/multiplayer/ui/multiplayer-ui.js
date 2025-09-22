@@ -67,6 +67,15 @@ class MultiplayerUI {
                             If you don't have a server, you can <a href="#" id="demoModeLink">try demo mode</a> or 
                             <a href="https://github.com/SpeedCraftTV/Pixel-Harvest#multiplayer-setup" target="_blank">set up your own server</a>.</small>
                         </div>
+                        <div class="quick-start-section" style="margin-top: 15px; padding: 12px; background: rgba(156, 39, 176, 0.1); border-left: 3px solid #9C27B0; border-radius: 4px;">
+                            <div style="font-weight: bold; color: #9C27B0; margin-bottom: 8px;">👋 New to multiplayer?</div>
+                            <div style="font-size: 13px; color: #ddd; margin-bottom: 10px;">
+                                Try demo mode to explore multiplayer features without setting up a server!
+                            </div>
+                            <button id="quickDemoButton" class="mp-button" style="background: #9C27B0; font-size: 12px; padding: 6px 12px;">
+                                🎮 Start Demo Mode
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -312,12 +321,24 @@ class MultiplayerUI {
             } catch (error) {
                 const errorMsg = this.getDetailedErrorMessage(error, serverUrl);
                 this.showNotification(errorMsg, 'error');
+                
+                // If connecting to localhost failed, offer demo mode as alternative
+                if (serverUrl && (serverUrl.includes('localhost') || serverUrl.includes('127.0.0.1'))) {
+                    setTimeout(() => {
+                        this.showLocalhostFailureDialog();
+                    }, 1500);
+                }
             }
         });
         
         // Demo mode link
         document.getElementById('demoModeLink').addEventListener('click', (e) => {
             e.preventDefault();
+            this.showDemoModeDialog();
+        });
+        
+        // Quick demo button for better UX
+        document.getElementById('quickDemoButton').addEventListener('click', () => {
             this.showDemoModeDialog();
         });
         
@@ -741,7 +762,7 @@ class MultiplayerUI {
         if (serverUrl && (serverUrl.includes('localhost') || serverUrl.includes('127.0.0.1')) && 
             (baseMessage.includes('Connection failed') || baseMessage.includes('refused'))) {
             return `Cannot connect to ${serverUrl}. No multiplayer server is running on this address. ` +
-                   `Try starting a server or use a different address.`;
+                   `Try demo mode to explore multiplayer features, or set up a server to play with others.`;
         }
         
         // Check for network/connection errors
@@ -750,6 +771,85 @@ class MultiplayerUI {
         }
         
         return `Connection error: ${baseMessage}`;
+    }
+    
+    /**
+     * Show special dialog when localhost connection fails
+     */
+    showLocalhostFailureDialog() {
+        const dialog = document.createElement('div');
+        dialog.className = 'localhost-failure-dialog';
+        dialog.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3000;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #FF9800;
+            max-width: 520px;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        `;
+        
+        dialog.innerHTML = `
+            <div style="font-size: 48px; margin-bottom: 15px;">🤔</div>
+            <h3 style="margin-top: 0; color: #FF9800;">No Local Server Found</h3>
+            <p>It looks like there's no multiplayer server running on localhost:8080.</p>
+            <p style="color: #ccc; font-size: 14px; margin-bottom: 20px;">
+                This is normal! The game is a client that connects to multiplayer servers. 
+                To try multiplayer features right now, you can use demo mode.
+            </p>
+            <div style="background: rgba(156, 39, 176, 0.2); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <strong style="color: #9C27B0;">💡 Recommended:</strong><br>
+                <span style="font-size: 14px;">Start with demo mode to explore multiplayer features safely</span>
+            </div>
+            <div style="margin-top: 25px;">
+                <button id="startDemoFromFailureBtn" class="mp-button primary" style="margin: 5px; background: #9C27B0;">
+                    🎮 Try Demo Mode
+                </button>
+                <button id="learnMoreBtn" class="mp-button" style="margin: 5px; background: #2196F3;">
+                    📚 Learn About Servers
+                </button>
+                <button id="dismissFailureBtn" class="mp-button" style="margin: 5px;">
+                    Maybe Later
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        
+        // Event handlers for dialog buttons
+        document.getElementById('startDemoFromFailureBtn').addEventListener('click', () => {
+            dialog.remove();
+            this.startDemoMode();
+        });
+        
+        document.getElementById('learnMoreBtn').addEventListener('click', () => {
+            dialog.remove();
+            window.open('https://github.com/SpeedCraftTV/Pixel-Harvest#multiplayer-setup', '_blank');
+        });
+        
+        document.getElementById('dismissFailureBtn').addEventListener('click', () => {
+            dialog.remove();
+        });
+        
+        // Close on backdrop click
+        dialog.addEventListener('click', (e) => {
+            if (e.target === dialog) {
+                dialog.remove();
+            }
+        });
+        
+        // Auto-close after 10 seconds if no interaction
+        setTimeout(() => {
+            if (document.body.contains(dialog)) {
+                dialog.remove();
+            }
+        }, 10000);
     }
     
     /**
@@ -774,14 +874,23 @@ class MultiplayerUI {
         `;
         
         dialog.innerHTML = `
-            <h3 style="margin-top: 0; color: #9C27B0;">Demo Mode</h3>
-            <p>Demo mode allows you to simulate multiplayer features without a real server.</p>
+            <h3 style="margin-top: 0; color: #9C27B0;">🎮 Demo Mode</h3>
+            <p>Demo mode allows you to explore all multiplayer features offline!</p>
+            <div style="background: rgba(76, 175, 80, 0.2); padding: 12px; border-radius: 6px; margin: 15px 0;">
+                <strong style="color: #4CAF50;">✨ What you can try:</strong><br>
+                <div style="font-size: 14px; text-align: left; margin-top: 8px;">
+                    • Create and join virtual rooms<br>
+                    • Test chat and communication features<br>
+                    • Explore multiplayer UI and controls<br>
+                    • Practice before joining real servers
+                </div>
+            </div>
             <p style="color: #ccc; font-size: 14px;">
                 Note: This is a local simulation only. To play with other players, 
-                you'll need to set up a real multiplayer server.
+                you'll need to connect to a real multiplayer server.
             </p>
             <div style="margin-top: 20px;">
-                <button id="startDemoBtn" class="mp-button primary" style="margin: 5px;">Start Demo</button>
+                <button id="startDemoBtn" class="mp-button primary" style="margin: 5px;">🚀 Start Demo</button>
                 <button id="cancelDemoBtn" class="mp-button" style="margin: 5px;">Cancel</button>
             </div>
         `;
@@ -819,7 +928,7 @@ class MultiplayerUI {
         // Simulate successful connection
         this.multiplayerModule.setState('CONNECTED');
         this.updateConnectionStatus('CONNECTED', 'ONLINE');
-        this.showNotification('Demo mode started! You are now in offline multiplayer simulation.', 'success');
+        this.showNotification('Demo mode started! 🎮 You are now in offline multiplayer simulation. Try creating a room!', 'success');
         
         // Show room controls for demo
         const roomSection = document.querySelector('.room-section');
