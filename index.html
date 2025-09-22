@@ -2584,6 +2584,15 @@
             const menuDropdown = document.getElementById('menuDropdown');
             const languageSelector = document.getElementById('languageSelector');
             
+            // Check if elements exist before proceeding
+            if (!mainMenuButton || !menuDropdown || !languageSelector) {
+                console.warn('Menu system elements not found, retrying in 300ms...');
+                setTimeout(initMenuSystem, 300);
+                return;
+            }
+            
+            console.log('Menu system initializing with all elements present');
+            
             // Set initial language in selector
             languageSelector.value = currentLanguage;
             
@@ -4274,8 +4283,10 @@
             // Initialize UI
             setupUI();
             
-            // Initialize menu system
-            initMenuSystem();
+            // Initialize menu system - delay to ensure DOM manipulations are complete
+            setTimeout(() => {
+                initMenuSystem();
+            }, 300);
             
             // Initialize new systems UI
             updateWeatherUI();
