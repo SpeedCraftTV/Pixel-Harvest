@@ -1,0 +1,14 @@
+:root {
+  /* Valeur centralisée pour éviter les magic numbers */
+  --z-unified-menu: 1000;
+}
+
+/* Règle pour le menu unifié */
+#unifiedMenu {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: var(--z-unified-menu) !important; /* !important pour overrider les styles inline existants */
+  pointer-events: auto;
+  touch-action: manipulation;
+}
